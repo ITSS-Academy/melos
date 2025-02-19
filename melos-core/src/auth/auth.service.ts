@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import * as admin from 'firebase-admin';
+import { SupabaseProvider } from 'src/supabase/supabase';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(private readonly supabaseProvider: SupabaseProvider) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async verifyToken(idToken: string): Promise<any> {
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const { uid, email, name, picture } = decodedToken;
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+      console.log('-----------------', decodedToken);
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+      const { data, error, count } = await this.supabaseProvider
+        .getClient()
+        .from('auth')
+        .select('*', { count: 'exact' })
+        .eq('uid', decodedToken.uid);
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (count === 0) {
+        const { data, error } = await this.supabaseProvider
+          .getClient()
+          .from('auth')
+          .insert([{ uid, email, name, picture }]);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+      } else if (count > 1) {
+        throw new Error('Multiple rows returned for a single user');
+      }
+
+      return data[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 }
