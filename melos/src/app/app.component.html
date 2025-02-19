@@ -1,0 +1,60 @@
+<div class="header">
+  <app-header></app-header>
+</div>
+
+<div class="body">
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidebar -->
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      [mode]="'side'"
+      [opened]="true"
+      [style.width]="isExpanded ? '240px' : '120px'"
+
+    >
+
+      <!-- Danh sách menu -->
+      <mat-nav-list class="nav-list" >
+
+        <a class="center-flex" mat-list-item (click)="toggleSidenav()">
+          <div
+            [ngClass]="{ 'center-flex-collapsed': !isExpanded, 'center-flex-expanded': isExpanded }"
+            class="center-flex">
+            <mat-icon class="material-symbols-rounded">menu</mat-icon>
+            <span *ngIf="isExpanded" class="menu-title">Menu</span>
+          </div>
+        </a>
+
+
+        <a class="center-flex" mat-list-item *ngFor="let item of menuItems" (click)="onMenuClick(item.route)"
+           [ngClass]="{ 'active': item.route === activeLink }"
+        >
+          <div
+            class="center-flex"
+            [ngClass]="{ 'center-flex-collapsed': !isExpanded, 'center-flex-expanded': isExpanded }"
+          >
+            <mat-icon class="material-symbols-rounded">{{ item.icon }}</mat-icon>
+            <span *ngIf="isExpanded" class="menu-title">{{ item.title }}</span>
+          </div>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Nội dung chính -->
+    <mat-sidenav-content
+      [style.marginLeft.px]="isExpanded ? 240 : 120"
+      class="content"
+
+    >
+      <!-- Nội dung chính của trang -->
+      <div class="main-content" >
+        <router-outlet ></router-outlet>
+
+
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
+
