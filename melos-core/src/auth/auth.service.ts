@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { SupabaseProvider } from 'src/supabase/supabase';
 
@@ -30,7 +34,7 @@ export class AuthService {
           .insert([{ uid, email, name, picture }]);
 
         if (error) {
-          throw new Error(error.message);
+          throw new HttpException(error.message, 500);
         }
       } else if (count > 1) {
         throw new Error('Multiple rows returned for a single user');

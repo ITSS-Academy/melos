@@ -50,7 +50,7 @@
       <!-- Nội dung chính của trang -->
       <div class="main-content" >
         <router-outlet ></router-outlet>
-
+        <app-music-bar *ngIf="!isSongPlaying" (songPlaying)="onSongPlaying($event)"></app-music-bar>
 
       </div>
     </mat-sidenav-content>

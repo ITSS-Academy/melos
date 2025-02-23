@@ -1,1 +1,5 @@
-<p>home works!</p>
+@for (music of songLists; track music.id){
+  <app-music-card
+    [song]="music"
+  ></app-music-card>
+}

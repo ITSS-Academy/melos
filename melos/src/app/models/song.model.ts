@@ -1,4 +1,4 @@
-export class Song {
+export interface SongModel {
   id: string;
 
   title: string;

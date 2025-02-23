@@ -1,5 +1,5 @@
 // import { Pipe, PipeTransform } from '@angular/core';
-// import { ProfileModel } from '../../models/profile.model';
+// import { ProfileModel } from '../../models/profile.models';
 // import { map } from 'rxjs/operators';
 // import { Observable } from 'rxjs';
 // import { ProfileService } from '../../services/profile/profile.services';

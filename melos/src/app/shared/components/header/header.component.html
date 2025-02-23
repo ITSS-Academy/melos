@@ -1,3 +1,11 @@
 <mat-toolbar color="primary" class="toolbar">
-  <mat-icon class="material-symbols-rounded">library_music</mat-icon>
+  <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//logo-melos.png" alt="Melos logo" class="logo-melos" />
+  <div class="outline-search">
+      <mat-icon class="material-symbols-rounded">search</mat-icon>
+      <input type="text" placeholder="Search some song" class="search-input" />
+  </div>
+
+  <button mat-icon-button class="user-none-login" (click)="openDialog()" aria-label="Example icon-button with share icon">
+    <mat-icon class="material-symbols-rounded">person</mat-icon>
+  </button>
 </mat-toolbar>

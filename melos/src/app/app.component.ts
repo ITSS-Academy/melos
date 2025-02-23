@@ -1,25 +1,32 @@
-import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {MaterialModule} from './shared/material.module';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {filter} from 'rxjs';
-import {HeaderComponent} from './shared/components/header/header.component';
+import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { MaterialModule } from './shared/material.module';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { filter } from 'rxjs';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { MusicBarComponent } from './shared/components/music-bar/music-bar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MaterialModule, NgClass, NgIf, NgForOf, RouterOutlet, HeaderComponent],
+  imports: [
+    MaterialModule,
+    NgClass,
+    NgIf,
+    NgForOf,
+    RouterOutlet,
+    HeaderComponent,
+    MusicBarComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-
 })
 export class AppComponent implements OnInit {
   title = 'melos';
 
-activeLink = '';
+  activeLink = '';
+  isSongPlaying = false;
 
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.router.events
@@ -27,14 +34,11 @@ activeLink = '';
       .subscribe(() => {
         this.setActiveLink();
         console.log(this.router.url);
-
       });
 
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
   }
-
-
 
   isExpanded = true; // Mở rộng sidebar mặc định
 
@@ -48,11 +52,9 @@ activeLink = '';
 
   // Lấy route hiện tại
 
-
-
   toggleSidenav() {
     this.isExpanded = !this.isExpanded;
-    localStorage.setItem('isExpanded', JSON.stringify(this.isExpanded));// Đổi trạng thái mở/thu nhỏ
+    localStorage.setItem('isExpanded', JSON.stringify(this.isExpanded)); // Đổi trạng thái mở/thu nhỏ
   }
 
   onMenuClick(route: string) {
@@ -61,7 +63,7 @@ activeLink = '';
   }
 
   setActiveLink(): void {
-   if (this.router.url.includes('/home')) {
+    if (this.router.url.includes('/home')) {
       this.activeLink = this.menuItems[0].route;
       console.log(this.activeLink);
     } else if (this.router.url.includes('/playlist')) {
@@ -79,4 +81,7 @@ activeLink = '';
     }
   }
 
+  onSongPlaying(isPlaying: boolean) {
+    this.isSongPlaying = isPlaying;
+  }
 }

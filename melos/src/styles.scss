@@ -235,5 +235,14 @@ body { margin: 0;
   background-color: var(--scrim);
   box-sizing: border-box;
   overflow: hidden;
+  font-family: 'Nunito Sans', sans-serif;
   //color: var(--onSurface);
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  -ms-overflow-style: none;
 }
