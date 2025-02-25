@@ -3,14 +3,14 @@
 </div>
 
 <div class="body">
-  <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav-container class="sidenav-container" >
     <!-- Sidebar -->
     <mat-sidenav
       #drawer
       class="sidenav"
       [mode]="'side'"
       [opened]="true"
-      [style.width]="isExpanded ? '240px' : '120px'"
+      [style.width]="isExpanded ? '200px' : '100px'"
 
     >
 
@@ -43,18 +43,19 @@
 
     <!-- Nội dung chính -->
     <mat-sidenav-content
-      [style.marginLeft.px]="isExpanded ? 240 : 120"
+      [style.marginLeft.px]="isExpanded ? 200 : 100"
       class="content"
-
     >
       <!-- Nội dung chính của trang -->
       <div class="main-content" >
         <router-outlet ></router-outlet>
-        <!-- <app-music-bar *ngIf="!isSongPlaying" (songPlaying)="onSongPlaying($event)"></app-music-bar> -->
-
       </div>
     </mat-sidenav-content>
+
+
   </mat-sidenav-container>
+  <app-music-bar *ngIf="!isSongPlaying" ></app-music-bar>
+
 
 </div>
 
