@@ -1,5 +1,5 @@
-import {Routes} from "@angular/router";
-import {SearchComponent} from './search.component';
+import { Routes } from '@angular/router';
+import { SearchComponent } from './search.component';
 
 export const SEARCH_ROUTES: Routes = [
   {
@@ -7,17 +7,11 @@ export const SEARCH_ROUTES: Routes = [
     component: SearchComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'search-all',
-        pathMatch: 'full',
-      },
-      {
         path: 'search-all',
         loadComponent: () =>
           import('./components/search-all/search-all.component').then(
             (m) => m.SearchAllComponent,
           ),
-
       },
       {
         path: 'search-song',
@@ -25,7 +19,6 @@ export const SEARCH_ROUTES: Routes = [
           import('./components/search-songs/search-songs.component').then(
             (m) => m.SearchSongsComponent,
           ),
-
       },
       {
         path: 'search-peoples',
@@ -33,10 +26,12 @@ export const SEARCH_ROUTES: Routes = [
           import('./components/search-peoples/search-peoples.component').then(
             (m) => m.SearchPeoplesComponent,
           ),
-
       },
       {
-      }
-    ]
-  }
+        path: '',
+        redirectTo: 'search-all',
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
