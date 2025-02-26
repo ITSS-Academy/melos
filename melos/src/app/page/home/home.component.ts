@@ -6,11 +6,13 @@ import { SongState } from '../../ngrx/song/song.state';
 import { SongService } from '../../services/song/song.service';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { MusicCardComponent } from '../../shared/components/music-card/music-card.component';
+import {MaterialModule} from "../../shared/material.module";
+import {NgFor} from "@angular/common";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MusicCardComponent],
+  imports: [MusicCardComponent, MaterialModule,NgFor],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store: Store<{
       song: SongState;
     }>,
+    public SongService: SongService,
   ) {
     this.songLists$ = store.select('song', 'songList');
 
@@ -42,5 +45,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  toLeft(list: string) {
+    const carousel = document.getElementById(list) as HTMLElement;
+    carousel.scrollLeft -= carousel.clientWidth;
+  }
+  toRight(list: string) {
+    const carousel = document.getElementById(list) as HTMLElement;
+    carousel.scrollLeft += carousel.clientWidth;
   }
 }

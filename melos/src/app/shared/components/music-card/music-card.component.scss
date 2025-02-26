@@ -6,3 +6,56 @@
   background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
   background-size: cover;
 }
+
+.song-card {
+  cursor: pointer;
+  user-select: none;
+  margin-top: 4px;
+  padding: 8px;
+  gap: 8px;
+  width: 166px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  .song-card-img {
+    width: 166px;
+    height: 166px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 16px;
+    img {
+      height: 100%;
+      transition: 250ms;
+    }
+    img:hover {
+      scale: 1.1;
+    }
+  }
+  .song-card-info {
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 4px;
+    width: 100%;
+    .title-song {
+      width: 100%;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      height: 1.5em;
+      white-space: nowrap;
+    }
+    p {
+      font-size: 12px;
+      margin: 0;
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 1.5em;
+      white-space: nowrap;
+    }
+  }
+}
