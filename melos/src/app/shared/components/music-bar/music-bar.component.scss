@@ -1,0 +1,107 @@
+.music-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: var(--surface);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  //position: absolute;
+  //bottom: 0;
+  //z-index: 1;
+  box-sizing: border-box;
+}
+
+/* Song Info */
+.song-info {
+  display: flex;
+  align-items: center;
+}
+
+.song-thumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.song-title {
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button.mat-icon-button {
+  color: #fff;
+  transition: 0.3s;
+}
+
+button.mat-icon-button:hover {
+  color: #1db954;
+}
+
+.play-btn {
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+/* Progress Bar */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 40%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  background: #555;
+  border-radius: 5px;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #1db954;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Volume & Playlist */
+.extra-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-bar {
+  width: 70px;
+  height: 4px;
+  appearance: none;
+  background: #555;
+  border-radius: 5px;
+}
+
+.volume-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #1db954;
+  border-radius: 50%;
+  cursor: pointer;
+}
