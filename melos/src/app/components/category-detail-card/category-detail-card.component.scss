@@ -1,0 +1,164 @@
+
+  .music{
+    position: relative;
+    width: 100%;
+    border-radius: 15px;
+    height: calc((275px / 3) - 13px);
+    margin-bottom: 20px;
+    background-color: var(--surfaceContainer);
+    cursor: pointer;
+
+
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+
+    .left{
+      height: 100%;
+      display: flex;
+
+      .img{
+        height: 100%;
+        aspect-ratio: 1/1;
+
+        position: relative;
+
+
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+      }
+      .title{
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+
+
+
+        p:first-child{
+          margin: 0;
+          font-size: 18px;
+          font-weight: 300;
+          z-index: 9999;
+
+          &:hover{
+            color: #1db954;
+          }
+        }
+        p{
+          margin: 0;
+          font-size: 14px;
+          font-weight: 300;
+          z-index: 9999;
+          &:hover{
+            color: #1db954;
+          }
+        }
+
+      }
+    }
+    p{
+      margin-right: 15px;
+      margin-bottom: 0;
+    }
+
+  }
+  .music-sub{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .img-sub {
+      height: 100%;
+      aspect-ratio: 1/1;
+      position: relative;
+
+      .material-symbols-outlined{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 300%;
+      }
+    }
+    .right-title-sub{
+      display: flex;
+
+      margin-right: 10px;
+      color: var(--onSurfaceVariant);
+      align-items: center;
+
+
+    }
+
+
+  }
+
+.music:hover .music-sub{
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+.music:hover .img,.right-title {
+  opacity: .4;
+}
+
+.music:hover .right-title {
+  opacity: 0;
+}
+
+.content-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.content-icon::before {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: var(--onSurface); /* Màu đỏ nhạt */
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: scale(0.3);
+}
+
+.content-icon:hover::before {
+  opacity: 0.3;
+  transform: scale(1.2);
+}
+
+.item {
+  font-size: 30px;
+
+  transition: color 0.3s;
+}
+
+.content-icon:hover .item {
+  color: var(--onSurface);
+}
+
+
+

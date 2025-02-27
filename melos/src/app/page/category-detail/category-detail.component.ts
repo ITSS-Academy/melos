@@ -1,20 +1,26 @@
 import { Component } from '@angular/core';
-import {CategoryCardComponent} from '../../components/category-card/category-card.component';
 import {ActivatedRoute} from '@angular/router';
+import {CategoryDetailCardComponent} from '../../components/category-detail-card/category-detail-card.component';
 
 @Component({
-  selector: 'app-category',
+  selector: 'app-category-detail',
   standalone: true,
   imports: [
-    CategoryCardComponent
+    CategoryDetailCardComponent
   ],
-  templateUrl: './category.component.html',
-  styleUrl: './category.component.scss'
+  templateUrl: './category-detail.component.html',
+  styleUrl: './category-detail.component.scss'
 })
-export class CategoryComponent {
+export class CategoryDetailComponent {
 
-
-
+  currentMusic!: any
+  constructor(private activatedRoute: ActivatedRoute) {
+    const id = this.activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.currentMusic = this.viewDetail(id);
+    }
+    console.log('Current Category:', this.currentMusic);
+  }
   viewDetail(id: string) {
     const parsedId = parseInt(id, 10);
     return this.categories.find(category => category.id === parsedId);
@@ -80,6 +86,4 @@ export class CategoryComponent {
   ]
 
 
-
 }
-
