@@ -8,9 +8,9 @@
 
   @if (authData) {
 
-    <button mat-icon-button class="user-login"  aria-label="Example icon-button with share icon" [matMenuTriggerFor]="menu">
-      <img src="{{ authData.photoURL }}" class="user-profile" (error)="onImageError($event)" />
-    </button>
+    <div class="user-login"  aria-label="Example icon-button with share icon">
+      <img src="{{ authData.photoURL }}" class="user-profile" (error)="onImageError($event)"  [matMenuTriggerFor]="menu"/>
+    </div>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>

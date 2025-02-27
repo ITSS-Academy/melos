@@ -2,11 +2,6 @@
   max-width: 400px;
 }
 
-.example-header-image {
-  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
-  background-size: cover;
-}
-
 .song-card {
   cursor: pointer;
   user-select: none;
@@ -15,7 +10,7 @@
   gap: 8px;
   width: 166px;
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   align-items: center;
   .song-card-img {
     width: 166px;

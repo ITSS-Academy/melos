@@ -21,7 +21,6 @@ import * as AuthActions from './ngrx/auth/auth.actions';
     RouterOutlet,
     HeaderComponent,
     MusicBarComponent,
-    AsyncPipe,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -41,6 +40,7 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         const token = await user?.getIdToken();
+        console.log(token);
         const authData: AuthModel = {
           idToken: token,
           displayName: user.displayName,
