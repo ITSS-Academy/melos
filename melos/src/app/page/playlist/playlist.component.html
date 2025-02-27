@@ -1,0 +1,17 @@
+<div id="playlist">
+  <h2>YourPlaylist</h2>
+  <div id="playlist-main">
+    @for (playlist of playlists; track $index) {
+      <app-playlist-card
+        [name]="playlist.name"
+        [img]="playlist.img"
+        [tag]="playlist.tag"
+        [comment]="playlist.comment"
+        [singer_name]="playlist.singer_name"
+        [category]="playlist.category"
+      ></app-playlist-card>
+    }
+
+  </div>
+</div>
+

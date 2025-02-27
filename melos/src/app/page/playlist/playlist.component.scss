@@ -1,0 +1,10 @@
+#playlist-main{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  justify-content: start;
+  padding: 10px;
+  box-sizing: border-box;
+}
