@@ -4,5 +4,346 @@
 <!--      [song]="music"-->
 <!--    ></app-music-card>-->
 <!--  }-->
-
+    <div class="home-rcmd-list">
+        <div class="sub-contain-list">
+            <div class="title-list">
+                <h6><b>Title</b></h6>
+                <span>Xem thêm ></span>
+            </div>
+            <div class="carousel">
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-1')">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </button>
+                <div class="song-list" id="song-list-1">
+                    <app-music-card
+                            *ngFor="let song of SongService.dummyData; let i = index"
+                            [song]="song"
+                    ></app-music-card>
+                </div>
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-1')">
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="sub-contain-list">
+            <div class="title-list">
+                <h6><b>Title</b></h6>
+                <span>Xem thêm ></span>
+            </div>
+            <div class="carousel">
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-2')">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </button>
+                <div class="song-list" id="song-list-2">
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/67684c62a63146554c5124c8ad8fa62f/0x1900-000000-80-0-0.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Bulbel</span>
+                            <p>Mili</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                </div>
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-2')">
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="sub-contain-list">
+            <div class="title-list">
+                <h6><b>Title</b></h6>
+                <span>Xem thêm ></span>
+            </div>
+            <div class="carousel">
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-3')">
+                    <mat-icon>arrow_back_ios</mat-icon>
+                </button>
+                <div class="song-list" id="song-list-3">
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/67684c62a63146554c5124c8ad8fa62f/0x1900-000000-80-0-0.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Bulbel</span>
+                            <p>Mili</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                    <div class="song-card">
+                        <div class="song-card-img">
+                            <img src="https://i.ytimg.com/vi/1w7OgIMMRc4/maxresdefault.jpg" alt="">
+                        </div>
+                        <div class="song-card-info">
+                            <span class="title-song">Sweet Child O'  asjfkah jhlashdkjahd dfsdfdfsdf</span>
+                            <p>Guns N' Roses</p>
+                        </div>
+                    </div>
+                </div>
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-3')">
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
