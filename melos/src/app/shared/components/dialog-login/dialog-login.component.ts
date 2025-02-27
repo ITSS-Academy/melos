@@ -1,29 +1,19 @@
-import { Component,OnDestroy, OnInit } from '@angular/core';
-import {MaterialModule} from '../../material.module';
-import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MaterialModule } from '../../material.module';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../../../ngrx/auth/auth.state';
+import * as AuthActions from '../../../ngrx/auth/auth.actions';
 @Component({
   selector: 'app-dialog-login',
   standalone: true,
   imports: [MaterialModule],
   templateUrl: './dialog-login.component.html',
-  styleUrl: './dialog-login.component.scss'
+  styleUrl: './dialog-login.component.scss',
 })
-export class DialogLoginComponent  {
-  currentUser: any;
+export class DialogLoginComponent {
+  constructor(private store: Store<{ auth: AuthState }>) {}
 
-  constructor(private auth: Auth) {
+  login() {
+    this.store.dispatch(AuthActions.login());
   }
-  async login() {
-    try {
-      const credential = await signInWithPopup(this.auth, new GoogleAuthProvider());
-      this.currentUser = credential.user;
-      console.log(this.currentUser);
-      const token = await credential.user.getIdToken();
-      console.log(token);
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
-  }
-
 }

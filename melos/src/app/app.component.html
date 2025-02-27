@@ -1,5 +1,8 @@
 <div class="header">
-  <app-header></app-header>
+  <app-header
+    [name] = "(auth$ | async)?.displayName"
+    [photo]="(auth$ | async)?.photoURL"
+  ></app-header>
 </div>
 
 <div class="body">
