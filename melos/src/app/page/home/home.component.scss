@@ -14,7 +14,7 @@
     h6 {
       margin: 0;
     }
-    span{
+    span {
       cursor: pointer;
     }
   }
@@ -29,10 +29,10 @@
   .carousel {
     position: relative;
     width: 100%;
-    .to-left{
+    .to-left {
       position: absolute;
       transform: translateY(-50%);
-      left: 0px;
+      left: 0;
       top: 50%;
       background-color: rgba(255, 255, 255, 0.73);
       color: var(--scrim);
@@ -42,7 +42,7 @@
     .to-right {
       position: absolute;
       transform: translateY(-50%);
-      right: 0px;
+      right: 0;
       top: 50%;
       background-color: rgba(255, 255, 255, 0.73);
       color: var(--scrim);

@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { CategoryModule } from './category/category.module';
 import { AuthMiddleware } from './auth/firebase-auth.middleware';
+import { PlaylistsModule } from './playlists/playlists.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthMiddleware } from './auth/firebase-auth.middleware';
     AuthModule,
     SupabaseModule,
     CategoryModule,
+    PlaylistsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -30,6 +32,10 @@ export class AppModule {
         { path: 'songs', method: RequestMethod.DELETE },
         { path: 'auth', method: RequestMethod.GET },
         { path: 'auth', method: RequestMethod.POST },
+        { path: 'playlists', method: RequestMethod.POST },
+        { path: 'playlists', method: RequestMethod.DELETE },
+        { path: 'playlists', method: RequestMethod.PUT },
+        { path: 'playlists', method: RequestMethod.GET },
       );
   }
 }
