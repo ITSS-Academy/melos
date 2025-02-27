@@ -1,0 +1,29 @@
+#playlist-card{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 20px;
+  border-radius:5px;
+  padding: 5px;
+
+  .playlist-card-img{
+
+    img{
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 10%;
+      object-fit: cover;
+    }
+  }
+  .group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    .playlist-card-title{
+      font-size: 15px;
+    }
+
+  }
+}

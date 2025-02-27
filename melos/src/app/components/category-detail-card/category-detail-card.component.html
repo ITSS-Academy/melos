@@ -1,0 +1,55 @@
+@for (music of list_music; track $index) {
+  <div class="music">
+    <div class="left">
+      <div class="img">
+
+
+        <img [src]=music.img alt="">
+      </div>
+      <div class="title">
+        <p>{{music.category}}</p>
+        <p>{{music.singer_name}}</p>
+      </div>
+    </div>
+    <div class="right-title">
+      <p>{{music.time}}</p>
+    </div>
+
+
+
+    <div class="music-sub">
+      <div class="img-sub">
+        <span class="material-symbols-outlined">
+          play_arrow
+        </span>
+      </div>
+
+      <div class="right-title-sub">
+       <div class="content-icon">
+          <span class="material-symbols-outlined item">
+          favorite
+        </span>
+       </div>
+        <div class="content-icon">
+             <span class="material-symbols-outlined item">
+            playlist_add
+          </span>
+        </div>
+        <div class="content-icon">
+          <span class="material-symbols-outlined item">
+            library_add
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+}
+
+
+
+
+
