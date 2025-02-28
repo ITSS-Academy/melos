@@ -152,17 +152,17 @@ export class SongsController {
     }
   }
 
-  @Get('playlist-song')
-  async getPlaylistSong(@Request() req: any) {
-    try {
-      const { id } = req.query;
-      console.log('req', id);
+  // @Get('playlist-song')
+  // async getPlaylistSong(@Request() req: any) {
+  //   try {
+  //     const { id } = req.query;
+  //     console.log('req', id);
 
-      return await this.songsService.getSongByPlaylistId(id);
-    } catch (e) {
-      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-    }
-  }
+  //     return await this.songsService.getSongByPlaylistId(id);
+  //   } catch (e) {
+  //     throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+  //   }
+  // }
 
   @Get('category-song')
   async getCategorySong(@Request() req: any) {

@@ -90,6 +90,18 @@ export class PlaylistsController {
     }
   }
 
+  @Get('playlist-song')
+  async getPlaylistSong(@Request() req: any) {
+    try {
+      const { id } = req.query;
+      console.log('req', id);
+
+      return await this.playlistsService.getSongByPlaylistId(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   @Put('pin')
   async pinPlaylist(@Body() data: any) {
     try {

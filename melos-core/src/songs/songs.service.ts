@@ -311,21 +311,21 @@ export class SongsService {
     return songs;
   }
 
-  async getSongByPlaylistId(id: string): Promise<Song[]> {
-    log('getSongByPlaylistId', id);
-    //call rpc
-    const { data, error } = await this.supabaseProvider
-      .getClient()
-      .rpc('get_songs_with_playlist', { playlist_id: id });
+  // async getSongByPlaylistId(id: string): Promise<Song[]> {
+  //   log('getSongByPlaylistId', id);
+  //   //call rpc
+  //   const { data, error } = await this.supabaseProvider
+  //     .getClient()
+  //     .rpc('get_songs_with_playlist', { playlist_id: id });
 
-    if (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-    }
+  //   if (error) {
+  //     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+  //   }
 
-    console.log('data', data);
+  //   console.log('data', data);
 
-    return data;
-  }
+  //   return data;
+  // }
 
   async getSongByCategoryId(id: string): Promise<Song[]> {
     const { data, error } = await this.supabaseProvider
