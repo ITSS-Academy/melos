@@ -1,1 +1,20 @@
-<img src="https://avatar.iran.liara.run/public/31">
+<div class="container-artist">
+
+
+  <div class="card">
+    @for (item of song; track $index){
+      <div class="card-artist">
+        <img class="img-artist" [src]=" item.image_url ">
+        <h5>  {{item.composer}} </h5>
+      </div>
+    }
+  </div>
+
+
+
+</div>
+
+
+
+
+

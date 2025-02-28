@@ -1,6 +1,6 @@
 <mat-toolbar  color="primary" class="toolbar">
   <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//logo-melos.png" alt="Melos logo" class="logo-melos" />
-  <div class="outline-search">
+  <div [routerLink]="['/search']" class="outline-search">
       <mat-icon  class="material-symbols-rounded">search</mat-icon>
       <input type="text" placeholder="Search some song" class="search-input" />
   </div>

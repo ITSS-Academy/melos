@@ -1,1 +1,144 @@
-<p>upload works!</p>
+<div class="container-upload">
+
+<!--  upload nhạc-->
+  <mat-stepper headerPosition="top" #stepper>
+    <mat-step [stepControl]="fileUploadForm.controls['audioFile']">
+      <form [formGroup]="fileUploadForm">
+        <ng-template matStepLabel>Upload track file</ng-template>
+
+    <div class="infor-file">
+        <h5>Upload your audio files </h5>
+        <h6>For optimal quality, use MP3, WAV, FLAC, AIFF, or ALAC formats.</h6>
+        <h6>The maximum uncompressed file size is 4GB.</h6>
+    </div>
+
+        <div class="group-1" (click)="openFileChooser()">
+
+          <div class="upload" *ngIf="!selectedFile">
+            <mat-icon class="material-symbols-rounded">cloud_upload</mat-icon>
+            <h6>Click to select file</h6>
+          </div>
+
+          <!-- Hiển thị file -->
+          <div class="upload" *ngIf="selectedFile">
+
+            <h6>{{ selectedFile.name }}</h6>
+          </div>
+
+
+        </div>
+
+        <input type="file" #fileInput (change)="onFileSelected($event)" formControlName="audioFile" hidden accept=".mp3,.wav,.flac,.aiff,.alac" />
+
+
+
+        <div class="btn-upload-1">
+          <button mat-flat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+
+<!--    track ìnformation-->
+
+
+    <mat-step [stepControl]="trackInforForm">
+      <form [formGroup]="trackInforForm">
+        <ng-template matStepLabel>Track Information</ng-template>
+
+        <div class="group-2">
+
+                  <div class="group-3" (click)="openImageChooser()">
+
+                    <div class="img-upload" *ngIf="!selectedImage">
+
+                      <mat-icon class="material-symbols-rounded">add_photo_alternate</mat-icon>
+                      <h6>Add new image</h6>
+
+                    </div>
+
+                    <!-- Hiển thị ảnh bìa sau khi chọn -->
+                    <div class="img-upload" *ngIf="selectedImage">
+                      <img class="img-select" [src]="selectedImage" alt="Selected Image">
+                    </div>
+
+                  </div>
+
+
+          <input type="file" #imageInput (change)="onImageSelected($event)" formControlName="coverImage" accept="image/*" hidden />
+
+
+
+
+
+                  <div class="infor-upload">
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Song title</mat-label>
+                      <input matInput formControlName="title" placeholder="Last name, First name" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Artists Name</mat-label>
+                      <input matInput formControlName="artist" placeholder="Last name, First name" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Other</mat-label>
+                      <mat-select formControlName="other"  required>
+
+                        <mat-option *ngFor="let other of other" [value]="other">{{ other }}</mat-option>
+
+<!--                        <mat-option value="1">Pops</mat-option>-->
+<!--                        <mat-option value="2">Jazz</mat-option>-->
+<!--                        <mat-option value="3">Rock</mat-option>-->
+<!--                        <mat-option value="4">Latin</mat-option>-->
+<!--                        <mat-option value="5">Dance</mat-option>-->
+<!--                        <mat-option value="6">Ballad</mat-option>-->
+<!--                        <mat-option value="7">EDM</mat-option>-->
+<!--                        <mat-option value="8">Country music</mat-option>-->
+
+
+
+                      </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Add a description</mat-label>
+                      <input matInput formControlName="description" placeholder="Last name, First name">
+                    </mat-form-field >
+
+                  </div>
+
+          </div>
+
+
+        <div class="btn-upload-2">
+          <button mat-flat-button matStepperPrevious>Back</button>
+          <button mat-flat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div class="success">
+        <mat-icon class="img-up-3" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+        <h6>File Upload Successfull</h6>
+      </div>
+
+
+      <div class="btn-upload-3">
+        <button mat-flat-button matStepperPrevious>Back</button>
+        <button mat-flat-button (click)="resetForm()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+
+
+
+</div>
+
+
