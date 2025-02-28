@@ -11,6 +11,7 @@ import {
   HttpException,
   HttpStatus,
   UploadedFiles,
+  Request,
   Query,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
@@ -22,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class SongsController {
   constructor(private readonly songsService: SongsService) {}
 
-  @Get()
+  @Get('all')
   async getAllSongs(): Promise<Song[]> {
     return this.songsService.getAllSongs();
   }
@@ -129,6 +130,7 @@ export class SongsController {
         uuid: body.uuid,
         image_url: imageUrl,
         file_path: hlsUrl,
+        views: 0,
       };
 
       const newSong = await this.songsService.createSong(songData);
@@ -150,8 +152,32 @@ export class SongsController {
     }
   }
 
-  @Get(':id')
-  async getSongById(@Param('id') id: string): Promise<Song> {
+  @Get('playlist-song')
+  async getPlaylistSong(@Request() req: any) {
+    try {
+      const { id } = req.query;
+      console.log('req', id);
+
+      return await this.songsService.getSongByPlaylistId(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('category-song')
+  async getCategorySong(@Request() req: any) {
+    try {
+      const { id } = req.query;
+      console.log('req', id);
+
+      return await this.songsService.getSongByCategoryId(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get()
+  async getSongById(@Query('id') id: string): Promise<Song> {
     try {
       return this.songsService.getSongById(id);
     } catch (error) {

@@ -11,6 +11,7 @@ import {
   Query,
   Request,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { PlaylistsService } from './playlists.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -60,7 +61,7 @@ export class PlaylistsController {
     }
   }
 
-  @Post('update-playlist')
+  @Put('update-playlist')
   @UseInterceptors(FileInterceptor('file')) // Nhận file từ FormData
   async updatePlaylist(
     @UploadedFile() file: Express.Multer.File,
@@ -71,7 +72,11 @@ export class PlaylistsController {
       data.songs_id = [];
 
       if (!file) {
-        return await this.playlistsService.createPlaylistWithoutImage(data);
+        return await this.playlistsService.updatePlaylistWithoutImage(
+          data.id,
+          data.uid,
+          data.name,
+        );
       } else {
         return await this.playlistsService.updatePlaylistWithImage(
           data.id,
@@ -80,6 +85,32 @@ export class PlaylistsController {
           file,
         );
       }
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Put('pin')
+  async pinPlaylist(@Body() data: any) {
+    try {
+      console.log('data', data);
+      if (!data.id) {
+        throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
+      }
+      return await this.playlistsService.updatePinedPlaylist(data.id, data.uid);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Delete()
+  async deletePlaylist(@Body() data: any) {
+    try {
+      console.log('data', data);
+      if (!data.id) {
+        throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
+      }
+      return await this.playlistsService.deletePlaylist(data.id, data.uid);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }

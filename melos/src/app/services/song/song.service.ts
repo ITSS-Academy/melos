@@ -45,6 +45,7 @@ export class SongService {
       category_id: '1',
       createdAt: new Date('2021-09-01'),
       uuid: '1',
+      views: 0,
     },
     {
       id: '2',
@@ -57,6 +58,7 @@ export class SongService {
       category_id: '1',
       createdAt: new Date('2021-09-01'),
       uuid: '1',
+      views: 0,
     },
     {
       id: '3',
@@ -69,6 +71,7 @@ export class SongService {
       category_id: '1',
       createdAt: new Date('2021-09-01'),
       uuid: '1',
+      views: 0,
     },
   ];
 }
