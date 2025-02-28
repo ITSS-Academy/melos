@@ -16,4 +16,6 @@ export class Song {
   createdAt: Date;
 
   uuid: string;
+
+  views: number;
 }

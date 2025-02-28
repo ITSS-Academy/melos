@@ -14,6 +14,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'category-detail/:id',
+    loadChildren: () =>
+      import('../app/page/category-detail/category-detail.routes').then(
+        (m) => m.CATEGORY_DETAIL,
+      ),
+  },
+  {
     path: 'profile',
     loadChildren: () =>
       import('../app/page/profile/profile.routes').then(
@@ -29,6 +36,15 @@ export const routes: Routes = [
     path: 'search',
     loadChildren: () =>
       import('../app/page/search/search.routes').then((m) => m.SEARCH_ROUTES),
+  },
+  {
+    path: 'playlist',
+    loadChildren: () =>
+      import('./page/playlist/playlist.routes').then((m) =>m.PLAYLIST_ROUTES),
+  },
+{
+    path:'detail',
+    loadChildren: () => import('../app/page/detail-song/detail-song.routes').then(m => m.DETAIL_SONG_ROUTES),
   },
 
   {

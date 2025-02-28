@@ -11,6 +11,7 @@ import Hls from 'hls.js';
 import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
 import { MaterialModule } from '../../material.module';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-music-bar',
@@ -114,6 +115,7 @@ export class MusicBarComponent implements OnInit {
   currentTime = 0;
   duration = 0;
   volume = 50;
+  subscriptions: Subscription[] = [];
 
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
@@ -121,13 +123,18 @@ export class MusicBarComponent implements OnInit {
   constructor(private songService: SongService) {}
 
   ngOnInit() {
-    this.songService.currentSong$.subscribe((song) => {
-      this.currentSong = song;
-      if (song) {
-        this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
-        this.setupHls();
-      }
-    });
+    this.subscriptions.push(
+      this.songService.currentSong$.subscribe((song) => {
+        this.currentSong = song;
+        if (song) {
+          this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
+          this.setupHls();
+        }
+      }),
+      this.songService.playState$.subscribe((isPlaying) => {
+        this.isPlaying = isPlaying;
+      }),
+    );
   }
 
   setupHls(): void {
@@ -159,10 +166,10 @@ export class MusicBarComponent implements OnInit {
     const audio = this.audioPlayer.nativeElement;
     if (audio.paused) {
       audio.play();
-      this.isPlaying = true;
+      this.songService.setPlayState(!this.isPlaying);
     } else {
       audio.pause();
-      this.isPlaying = false;
+      this.songService.setPlayState(!this.isPlaying);
     }
   }
 

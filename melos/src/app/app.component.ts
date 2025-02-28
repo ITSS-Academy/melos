@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MaterialModule } from './shared/material.module';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { filter } from 'rxjs';
+import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { filter, Observable } from 'rxjs';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { MusicBarComponent } from './shared/components/music-bar/music-bar.component';
+import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
+import { AuthState } from './ngrx/auth/auth.state';
+import { AuthModel } from './models/auth.model';
+import * as AuthActions from './ngrx/auth/auth.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,8 +30,27 @@ export class AppComponent implements OnInit {
 
   activeLink = '';
   isSongPlaying = false;
+  auth$: Observable<AuthModel | null> | undefined;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private auth: Auth,
+    private store: Store<{ auth: AuthState }>,
+  ) {
+    onAuthStateChanged(this.auth, async (user) => {
+      if (user) {
+        const token = await user?.getIdToken();
+        console.log(token);
+        const authData: AuthModel = {
+          idToken: token,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+        };
+        this.store.dispatch(AuthActions.storeAuth({ authData: authData }));
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.router.events
@@ -78,6 +102,8 @@ export class AppComponent implements OnInit {
     } else if (this.router.url.includes('/profile')) {
       this.activeLink = this.menuItems[4].route;
       console.log(this.activeLink);
+    } else {
+      this.activeLink = '';
     }
   }
 

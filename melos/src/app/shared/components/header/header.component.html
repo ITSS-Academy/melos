@@ -5,7 +5,24 @@
       <input type="text" placeholder="Search some song" class="search-input" />
   </div>
 
-  <button mat-icon-button class="user-none-login" (click)="openDialog()" aria-label="Example icon-button with share icon">
-    <mat-icon class="material-symbols-rounded">person</mat-icon>
-  </button>
+
+  @if (authData) {
+
+    <div class="user-login"  aria-label="Example icon-button with share icon">
+      <img src="{{ authData.photoURL }}" class="user-profile" (error)="onImageError($event)"  [matMenuTriggerFor]="menu"/>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Log out</span>
+      </button>
+
+    </mat-menu>
+
+  } @else {
+    <button mat-icon-button class="user-none-login" (click)="openDialog()" aria-label="Example icon-button with share icon">
+      <mat-icon class="material-symbols-rounded">person</mat-icon>
+    </button>
+  }
+
 </mat-toolbar>

@@ -1,0 +1,26 @@
+.card {
+  width: 100%; /* Tự co giãn theo grid */
+
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-size: 20px;
+  border-radius: 5px;
+  padding: 5px;
+
+  .card-img {
+    cursor: pointer;
+
+    img {
+      border-radius: 10%;
+      overflow: hidden;
+      width: 100%; /* Ảnh chiếm toàn bộ chiều ngang thẻ con */
+      aspect-ratio: 1 / 1; /* Đảm bảo ảnh luôn vuông */
+      object-fit: cover; /* Đảm bảo ảnh không méo */
+    }
+  }
+  .card-title {
+    font-size: 15px;
+  }
+}

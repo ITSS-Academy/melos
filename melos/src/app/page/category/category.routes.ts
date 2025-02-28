@@ -5,5 +5,6 @@ export const CATEGORY_ROUTES: Routes = [
   {
     path: '',
     component: CategoryComponent,
-  }
+  },
+
 ];

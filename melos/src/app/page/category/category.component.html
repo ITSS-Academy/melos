@@ -1,2 +1,7 @@
+<div id="category">
+    @for (category of categories; track $index) {
+    <app-category-card [id]="category.id" [img]="category.img" [comment]="category.comment" [category]="category.category" [tag]="category.tag"></app-category-card>
+    }
 
-<p>category works!</p>
+
+</div>

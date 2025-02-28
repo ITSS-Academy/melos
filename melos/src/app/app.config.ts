@@ -10,6 +10,8 @@ import { provideEffects } from '@ngrx/effects';
 import { provideHttpClient } from '@angular/common/http';
 import { songReducer } from './ngrx/song/song.reducers';
 import * as SongEffects from './ngrx/song/song.effect';
+import { authReducer } from './ngrx/auth/auth.reducer';
+import * as AuthEffects from './ngrx/auth/auth.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,8 +20,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore({
       song: songReducer,
+      auth: authReducer,
     }),
-    provideEffects(SongEffects),
+    provideEffects(SongEffects, AuthEffects),
     provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({
