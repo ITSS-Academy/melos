@@ -16,7 +16,7 @@ export class SongService {
   }
 
   getSongList() {
-    return this.http.get<SongModel[]>('http://localhost:3000/songs');
+    return this.http.get<SongModel[]>('http://localhost:3000/songs/all');
   }
 
   private currentSongSubject = new BehaviorSubject<SongModel | null>(null);

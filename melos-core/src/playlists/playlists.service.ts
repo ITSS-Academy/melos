@@ -89,6 +89,7 @@ export class PlaylistsService {
           name: data.name,
           image_url: publicUrl,
           songs_id: data.songs_id,
+          description: data.description,
           is_pined: false,
         })
         .single();
@@ -102,8 +103,9 @@ export class PlaylistsService {
       uid: data.uid,
       name: data.name,
       songs_id: data.songs_id,
-      created_at: Date.now().toString(),
+      created_at: new Date().toISOString(),
       image_url: publicUrl,
+      description: data.description,
       is_pined: false,
     };
 
@@ -122,6 +124,7 @@ export class PlaylistsService {
           name: data.name,
           songs_id: data.songs_id,
           image_url: data.image_url,
+          description: data.description,
           is_pined: false,
         })
         .single();
@@ -135,8 +138,9 @@ export class PlaylistsService {
       uid: data.uid,
       name: data.name,
       songs_id: data.songs_id,
-      created_at: Date.now().toString(),
+      created_at: new Date().toISOString(),
       image_url: data.image_url,
+      description: data.description,
       is_pined: false,
     };
 
@@ -190,6 +194,7 @@ export class PlaylistsService {
     id: string,
     uid: string,
     name: string,
+    description: string,
     file: Express.Multer.File,
   ) {
     let playlist = await this.getPlaylistById(id);
@@ -251,6 +256,7 @@ export class PlaylistsService {
         .from('playlists')
         .update({
           name: name,
+          description: description,
           image_url: publicUrl,
         })
         .eq('id', id)
@@ -264,7 +270,12 @@ export class PlaylistsService {
     return updatedPlaylist;
   }
 
-  async updatePlaylistWithoutImage(id: string, uid: string, name: string) {
+  async updatePlaylistWithoutImage(
+    id: string,
+    uid: string,
+    name: string,
+    description: string,
+  ) {
     let playlist = await this.getPlaylistById(id);
     if (playlist.uid !== uid) {
       throw new HttpException(
@@ -279,6 +290,7 @@ export class PlaylistsService {
         .from('playlists')
         .update({
           name: name,
+          description: description,
         })
         .eq('id', id)
         .single();

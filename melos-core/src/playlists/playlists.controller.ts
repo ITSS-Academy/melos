@@ -76,12 +76,14 @@ export class PlaylistsController {
           data.id,
           data.uid,
           data.name,
+          data.description,
         );
       } else {
         return await this.playlistsService.updatePlaylistWithImage(
           data.id,
           data.uid,
           data.name,
+          data.description,
           file,
         );
       }

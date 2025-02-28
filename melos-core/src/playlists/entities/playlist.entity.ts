@@ -6,4 +6,5 @@ export class Playlist {
   created_at: string;
   image_url: string;
   is_pined: boolean;
+  description: string;
 }
