@@ -1,70 +1,74 @@
 .toolbar {
-  border-radius: 16px;
-  background-color: var(--surface);
-  padding: 0 32px;
-  height: 80px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    border-radius: 16px;
+    background-color: var(--surface);
+    padding: 0 32px;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.user-login {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  .user-profile {
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    object-fit: cover;
-    cursor: pointer;
-  }
 
-  &:hover {
-    background-color: var(--surfaceVariant);
-    border-radius: 100%;
-  }
+.user-login {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    .user-profile {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        object-fit: cover;
+        cursor: pointer;
+    }
+    &:hover {
+        background-color: var(--surfaceVariant);
+        border-radius: 100%;
+    }
 }
 
 .logo-melos {
-  width: 168px;
+    width: 168px;
 }
 
 .outline-search {
-  width: 60%;
-  max-width: 500px;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  background-color: var(--surfaceVariant);
-  border-radius: 100px;
-  .material-symbols-rounded {
-    font-size: 26px;
-    color: var(--onSurfaceVariant);
-  }
-  .search-input {
-    height: 100%;
-    width: 80%;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    color: var(--on-surface);
-    font-size: 16px;
-    font-family: "Nunito Sans", sans-serif;
-    font-weight: 500;
-  }
-  .search-input::placeholder {
-    color: var(--onSurfaceVariant); /* Example color */
-    font-size: 16px; /* Example font size */
-    font-family: "Nunito Sans", sans-serif; /* Example font family */
-    font-weight: 500; /* Example font weight */
-  }
+    width: 60%;
+    max-width: 500px;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: var(--surfaceVariant);
+    border-radius: 100px;
+    .material-symbols-rounded {
+        font-size: 26px;
+        color: var(--onSurfaceVariant);
+    }
+    .search-input {
+        height: 100%;
+        width: 80%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        color: var(--on-surface);
+        font-size: 16px;
+        font-family: "Nunito Sans", sans-serif;
+        font-weight: 500;
+    }
+    .search-input::placeholder {
+        color: var(--onSurfaceVariant);
+        /* Example color */
+        font-size: 16px;
+        /* Example font size */
+        font-family: "Nunito Sans", sans-serif;
+        /* Example font family */
+        font-weight: 500;
+        /* Example font weight */
+    }
 }
 
 body.dialog-open {
-  overflow: hidden;
+    overflow: hidden;
 }
