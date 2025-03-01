@@ -1,8 +1,14 @@
 <div id="playlist">
-  <h2>YourPlaylist</h2>
+  <div class="header-playlist">
+    <h2>Your playlist</h2>
+    <span (click)="openDialogCreatNewList()" class="material-symbols-outlined">
+      add_circle
+    </span>
+  </div>
   <div id="playlist-main">
     @for (playlist of playlists; track $index) {
       <app-playlist-card
+        [id]="playlist.id"
         [name]="playlist.name"
         [img]="playlist.img"
         [tag]="playlist.tag"
@@ -13,5 +19,6 @@
     }
 
   </div>
+
 </div>
 

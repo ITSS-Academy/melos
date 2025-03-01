@@ -1,0 +1,43 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+<div class="container-playlist">
+  <h2 mat-dialog-title >Create New Playlist</h2>
+  <div mat-dialog-title class="dialog-playlist">
+    <div class="left-dialog">
+      <label for="fileInput">
+        <div id="uploadDiv">
+          <span class="material-symbols-outlined">
+          add_photo_alternate
+          </span>
+        </div>
+      </label>
+      <!-- Input upload ảnh -->
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+    <div class="right-dialog">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+
+    </div>
+  </div>
+
+
+<mat-dialog-actions class="dialog-actions" align="end">
+
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button mat-dialog-close >Ok</button>
+
+
+</mat-dialog-actions>
+
+</div>
+</form>

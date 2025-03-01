@@ -1,29 +1,25 @@
 import { Component } from '@angular/core';
-import { PlaylistCardComponent } from '../../shared/components/playlist-card/playlist-card.component';
-import {MusicCardComponent} from '../../shared/components/music-card/music-card.component';
-import { MaterialModule } from '../../shared/material.module'; // Import MaterialModul
-import {DialogCreateNewPlaylistComponent} from '../../shared/components/dialog-create-new-playlist/dialog-create-new-playlist.component';
-import {MatDialog} from '@angular/material/dialog';
-
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-playlist',
+  selector: 'app-playlist-detail',
   standalone: true,
-  imports: [PlaylistCardComponent,MaterialModule],
-  templateUrl: './playlist.component.html',
-  styleUrl: './playlist.component.scss',
+  imports: [],
+  templateUrl: './playlist-detail.component.html',
+  styleUrl: './playlist-detail.component.scss'
 })
-
-export class PlaylistComponent {
-
-  constructor(private newPLaylist: MatDialog) {
+export class PlaylistDetailComponent {
+  currentMusic!: any;
+  constructor(private activatedRoute: ActivatedRoute) {
+    const id = this.activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.currentMusic = this.viewDetail(id);
+    }
   }
-  openDialogCreatNewList(){
-    this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
-      width: '40vw',
-      maxWidth:'none',
-      data: {message: 'noi dung'}
-    })
+
+  viewDetail(id: string) {
+    const parsedId = parseInt(id, 10);
+    return this.playlists.find((playlist) => playlist.id === parsedId);
   }
 
   playlists = [
@@ -56,4 +52,5 @@ export class PlaylistComponent {
       singer_name: 'Taylor Swift',
     },
   ];
+
 }

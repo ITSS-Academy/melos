@@ -1,0 +1,72 @@
+.container-playlist{
+  width: 100%;
+  height: 100%;
+  background-color: var(--scrim);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  h2{
+    color: var(--onSurfaceVariant);
+    font-size: 24px;
+  }
+
+  .dialog-playlist{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    align-items: center;
+
+
+
+
+    .left-dialog{
+      width: 50%;
+      aspect-ratio: 1/1;
+      background-color: var(--surfaceContainerLow);
+
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    #uploadDiv{
+      width: 100% ;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+
+      border-radius: 40px;
+      overflow: hidden;
+      span{
+
+        font-size: 100px;
+        color: var(--onSurfaceVariant);
+      }
+    }
+    input{
+      display: none;
+    }
+
+    .right-dialog{
+      width: 50%;
+      aspect-ratio: 1/1;
+    }
+  }
+  group-btn{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.dialog-actions {
+  display: flex;
+  justify-content: space-between; /* Căn 2 nút ra xa */
+
+}
