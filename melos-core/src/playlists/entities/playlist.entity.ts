@@ -5,4 +5,6 @@ export class Playlist {
   uid: string;
   created_at: string;
   image_url: string;
+  is_pined: boolean;
+  description: string;
 }

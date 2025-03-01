@@ -33,3 +33,18 @@ export const getListSongs = createEffect(
   },
   { functional: true },
 );
+
+export const createSong = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.createSong),
+      exhaustMap((action) =>
+        songService.createSong(action.song, action.idToken).pipe(
+          map((song) => SongActions.createSongSuccess({ song })),
+          catchError((error) => of(SongActions.createSongFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);

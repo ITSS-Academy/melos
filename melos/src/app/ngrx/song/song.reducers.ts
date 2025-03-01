@@ -63,4 +63,33 @@ export const songReducer = createReducer(
       isLoading: false,
     };
   }),
+
+  //create song
+  on(SongActions.createSong, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(SongActions.createSongSuccess, (state, { song, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songDetail: song,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.createSongFailure, (state, { error, type }) => {
+    console.log(type);
+    console.log(error);
+    console.log(error.message);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
 );

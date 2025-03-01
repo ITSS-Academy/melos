@@ -5,8 +5,6 @@ import { SupabaseProvider } from 'src/supabase/supabase';
 import { Playlist } from './entities/playlist.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Song } from 'src/songs/entities/song.entity';
-import { get } from 'http';
-import { create } from 'domain';
 
 @Injectable()
 export class PlaylistsService {
@@ -89,6 +87,8 @@ export class PlaylistsService {
           name: data.name,
           image_url: publicUrl,
           songs_id: data.songs_id,
+          description: data.description,
+          is_pined: false,
         })
         .single();
 
@@ -101,8 +101,10 @@ export class PlaylistsService {
       uid: data.uid,
       name: data.name,
       songs_id: data.songs_id,
-      created_at: Date.now().toString(),
+      created_at: new Date().toISOString(),
       image_url: publicUrl,
+      description: data.description,
+      is_pined: false,
     };
 
     return playlist;
@@ -120,6 +122,8 @@ export class PlaylistsService {
           name: data.name,
           songs_id: data.songs_id,
           image_url: data.image_url,
+          description: data.description,
+          is_pined: false,
         })
         .single();
 
@@ -132,8 +136,10 @@ export class PlaylistsService {
       uid: data.uid,
       name: data.name,
       songs_id: data.songs_id,
-      created_at: Date.now().toString(),
+      created_at: new Date().toISOString(),
       image_url: data.image_url,
+      description: data.description,
+      is_pined: false,
     };
 
     return playlist;
@@ -148,7 +154,6 @@ export class PlaylistsService {
         name: 'New Playlist',
         songs_id: [songId],
       });
-
       return playlist;
     } else {
       if (!playListUser.songs_id.includes(songId)) {
@@ -187,9 +192,15 @@ export class PlaylistsService {
     id: string,
     uid: string,
     name: string,
+    description: string,
     file: Express.Multer.File,
   ) {
     let playlist = await this.getPlaylistById(id);
+
+    if (!playlist) {
+      throw new HttpException('Playlist not found', HttpStatus.BAD_REQUEST);
+    }
+
     if (playlist.uid !== uid) {
       throw new HttpException(
         'You are not authorized to update this playlist',
@@ -219,7 +230,7 @@ export class PlaylistsService {
     const filePath = `${id}/${Date.now()}_${randomNumber}`;
     const { data: uploadData, error: uploadError } = await this.supabaseProvider
       .getClient()
-      .storage.from('songs')
+      .storage.from('songs/playlists')
       .upload(filePath, file.buffer, {
         contentType: file.mimetype,
         upsert: false,
@@ -241,11 +252,135 @@ export class PlaylistsService {
       await this.supabaseProvider
         .getClient()
         .from('playlists')
-        .upsert({
-          id: id,
-          uid: uid,
+        .update({
           name: name,
+          description: description,
           image_url: publicUrl,
+        })
+        .eq('id', id)
+        .single();
+
+    if (playlistError) {
+      throw new HttpException(playlistError.message, HttpStatus.BAD_REQUEST);
+    }
+
+    let updatedPlaylist = await this.getPlaylistById(id);
+    return updatedPlaylist;
+  }
+
+  async updatePlaylistWithoutImage(
+    id: string,
+    uid: string,
+    name: string,
+    description: string,
+  ) {
+    let playlist = await this.getPlaylistById(id);
+    if (playlist.uid !== uid) {
+      throw new HttpException(
+        'You are not authorized to update this playlist',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const { data: playlistData, error: playlistError } =
+      await this.supabaseProvider
+        .getClient()
+        .from('playlists')
+        .update({
+          name: name,
+          description: description,
+        })
+        .eq('id', id)
+        .single();
+
+    if (playlistError) {
+      throw new HttpException(playlistError.message, HttpStatus.BAD_REQUEST);
+    }
+
+    let updatedPlaylist = await this.getPlaylistById(id);
+    return updatedPlaylist;
+  }
+
+  async deletePlaylist(id: string, uid: string) {
+    let playlist = await this.getPlaylistById(id);
+
+    if (!playlist) {
+      throw new HttpException('Playlist not found', HttpStatus.BAD_REQUEST);
+    }
+
+    if (playlist.uid !== uid) {
+      throw new HttpException(
+        'You are not authorized to delete this playlist',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    if (playlist.image_url) {
+      const filePath = playlist.image_url.split('/').slice(8).join('/');
+      console.log('filePath', filePath);
+      const { data: deleteData, error: deleteError } =
+        await this.supabaseProvider
+          .getClient()
+          .storage.from('songs')
+          .remove([filePath]);
+
+      if (deleteError) {
+        throw new HttpException(deleteError.message, HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    const { data: playlistData, error: playlistError } =
+      await this.supabaseProvider
+        .getClient()
+        .from('playlists')
+        .delete()
+        .eq('id', id);
+
+    if (playlistError) {
+      throw new HttpException(playlistError.message, HttpStatus.BAD_REQUEST);
+    }
+
+    return true;
+  }
+
+  async getSongByPlaylistId(id: string): Promise<Song[]> {
+    //call rpc
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .rpc('get_songs_with_playlist', { playlist_id: id });
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+
+    return data;
+  }
+
+  async updatePinedPlaylist(id: string, uid: string) {
+    let playlist = await this.getPlaylistById(id);
+
+    if (!playlist) {
+      throw new HttpException('Playlist not found', HttpStatus.BAD_REQUEST);
+    }
+
+    if (playlist.uid !== uid) {
+      throw new HttpException(
+        'You are not authorized to update this playlist',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    console.log('playlist', playlist);
+    let isPined = !playlist.is_pined;
+
+    const { data: playlistData, error: playlistError } =
+      await this.supabaseProvider
+        .getClient()
+        .from('playlists')
+        .update({
+          is_pined: isPined,
         })
         .eq('id', id)
         .single();

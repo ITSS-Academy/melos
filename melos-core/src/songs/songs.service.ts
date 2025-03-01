@@ -12,6 +12,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import Bottleneck from 'bottleneck';
+import { log } from 'console';
 
 @Injectable()
 export class SongsService {
@@ -31,6 +32,7 @@ export class SongsService {
 
   // Tạo bài hát mới
   async createSong(data: Partial<Song>): Promise<Song> {
+    data.views = 0;
     const { data: song, error } = await this.supabaseProvider
       .getClient()
       .from('songs')
@@ -307,5 +309,37 @@ export class SongsService {
     }
 
     return songs;
+  }
+
+  // async getSongByPlaylistId(id: string): Promise<Song[]> {
+  //   log('getSongByPlaylistId', id);
+  //   //call rpc
+  //   const { data, error } = await this.supabaseProvider
+  //     .getClient()
+  //     .rpc('get_songs_with_playlist', { playlist_id: id });
+
+  //   if (error) {
+  //     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+  //   }
+
+  //   console.log('data', data);
+
+  //   return data;
+  // }
+
+  async getSongByCategoryId(id: string): Promise<Song[]> {
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .from('songs')
+      .select('*')
+      .eq('category_id', id);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+
+    return data;
   }
 }

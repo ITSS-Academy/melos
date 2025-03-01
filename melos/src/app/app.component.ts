@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
           displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
+          uid: user.uid,
         };
         this.store.dispatch(AuthActions.storeAuth({ authData: authData }));
       }
