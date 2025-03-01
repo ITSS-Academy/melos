@@ -1,9 +1,5 @@
 <div class="container">
-    <!--  @for (music of songLists; track music.id){-->
-    <!--    <app-music-card-->
-    <!--      [song]="music"-->
-    <!--    ></app-music-card>-->
-    <!--  }-->
+
     <div class="home-rcmd-list">
         <div class="sub-contain-list">
             <div class="title-list">
@@ -16,6 +12,11 @@
                 </button>
                 <div class="song-list" id="song-list-1">
                     <app-music-card *ngFor="let song of SongService.dummyData; let i = index" [song]="song"></app-music-card>
+<!--                    @for (music of songLists; track music.id){-->
+<!--                      <app-music-card-->
+<!--                        [song]="music"-->
+<!--                      ></app-music-card>-->
+<!--                    }-->
                 </div>
                 <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-1')">
                     <mat-icon>arrow_forward_ios</mat-icon>

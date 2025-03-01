@@ -148,6 +148,7 @@ export class MusicBarComponent implements OnInit {
       });
     } else {
       audio.src = this.hlsUrl!;
+      audio.preload = 'auto';
       audio.play();
     }
 
