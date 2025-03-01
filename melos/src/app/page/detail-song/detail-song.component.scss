@@ -15,7 +15,7 @@
   min-width: fit-content;
   border-radius: 16px;
   width: 100%;
-  background-color: rgba(113, 91, 255, 0.63);
+  background-image: linear-gradient(var(--surface), rgba(113, 91, 255, 0.63));
   display: flex;
   box-sizing: border-box;
   padding: 20px 75px;
@@ -93,6 +93,7 @@
       height: 34px;
       white-space: nowrap;
       min-width: fit-content;
+      font-weight: 900;
     }
   }
   .cmt-contain {

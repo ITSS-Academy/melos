@@ -7,13 +7,13 @@ export interface SongModel {
 
   performer: string;
 
-  file_path: string;
+  file_path: string | File;
 
-  image_url: string;
+  image_url: string | File;
 
   category_id: string;
 
-  createdAt: Date;
+  createdAt: string;
 
   uuid: string;
 

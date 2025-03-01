@@ -5,8 +5,6 @@ import { SupabaseProvider } from 'src/supabase/supabase';
 import { Playlist } from './entities/playlist.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { Song } from 'src/songs/entities/song.entity';
-import { get } from 'http';
-import { create } from 'domain';
 
 @Injectable()
 export class PlaylistsService {

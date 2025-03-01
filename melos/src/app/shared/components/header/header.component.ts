@@ -7,11 +7,12 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../../models/auth.model';
 import * as AuthActions from '../../../ngrx/auth/auth.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
