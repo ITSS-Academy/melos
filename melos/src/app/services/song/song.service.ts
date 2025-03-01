@@ -103,8 +103,9 @@ export class SongService {
       image_url:
           'https://i1.sndcdn.com/artworks-cyeDndDTj38pXMYp-zoFfyQ-t500x500.jpg',
       category_id: '1',
-      createdAt: new Date('2021-09-01'),
+      createdAt: new Date('2021-09-01').toISOString(),
       uuid: '1',
+      views: 0,
     },
   ];
 }
