@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MaterialModule } from './shared/material.module';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { MusicBarComponent } from './shared/components/music-bar/music-bar.component';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
   activeLink = '';
   isSongPlaying = false;
-  auth$: Observable<AuthModel | null> | undefined;
+  subscription: Subscription[] = [];
 
   constructor(
     private router: Router,
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         const token = await user?.getIdToken();
-        console.log(token);
+        this.store.dispatch(AuthActions.getAuth({ idToken: token }));
         const authData: AuthModel = {
           idToken: token,
           displayName: user.displayName,

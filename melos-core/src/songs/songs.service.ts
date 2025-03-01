@@ -342,4 +342,22 @@ export class SongsService {
 
     return data;
   }
+
+  async upadteSongViews(id: string): Promise<void> {
+    //get song with id view +1
+
+    let song = await this.getSongById(id);
+    song.views = song.views + 1;
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .from('songs')
+      .update({ views: song.views })
+      .eq('id', id);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+  }
 }
