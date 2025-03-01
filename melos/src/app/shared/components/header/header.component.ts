@@ -7,7 +7,7 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../../models/auth.model';
 import * as AuthActions from '../../../ngrx/auth/auth.actions';
-import {RouterLink} from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',

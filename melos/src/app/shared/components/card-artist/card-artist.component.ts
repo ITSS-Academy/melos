@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import {SongModel} from '../../../models/song.model';
+import { SongModel } from '../../../models/song.model';
 
 @Component({
   selector: 'app-card-artist',
   standalone: true,
   imports: [],
   templateUrl: './card-artist.component.html',
-  styleUrl: './card-artist.component.scss'
+  styleUrl: './card-artist.component.scss',
 })
 export class CardArtistComponent {
-
-  song : SongModel[] = [
+  song: SongModel[] = [
     {
       id: 'Song-1',
 
@@ -26,12 +25,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
     },
 
     {
@@ -49,13 +47,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
-
     },
 
     {
@@ -73,13 +69,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
-
     },
 
     {
@@ -97,13 +91,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
-
     },
 
     {
@@ -121,13 +113,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
-
     },
 
     {
@@ -145,16 +135,11 @@ export class CardArtistComponent {
 
       category_id: 'string',
 
-      createdAt: new Date(2015, 2, 20),
+      createdAt: new Date(2015, 2, 20).toISOString(),
 
       uuid: 'string',
 
       views: 0,
-
-
     },
-
-
   ];
-
 }

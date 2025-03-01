@@ -236,10 +236,14 @@ body {
   margin: 0;
   padding: 23px;
   background-color: var(--scrim);
-  box-sizing: border-box;
+
   overflow: hidden;
   font-family: "Nunito Sans", sans-serif;
   //color: var(--onSurface);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body::-webkit-scrollbar {

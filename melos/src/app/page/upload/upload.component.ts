@@ -1,20 +1,38 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatStepperModule} from '@angular/material/stepper';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
-import {CommonModule} from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
+import { SongModel } from '../../models/song.model';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../../ngrx/auth/auth.state';
+import { Observable, Subscription } from 'rxjs';
+import { AuthModel } from '../../models/auth.model';
+import * as SongActions from '../../ngrx/song/song.actions';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
   imports: [
-
     MatButtonModule,
     MatStepperModule,
     FormsModule,
@@ -25,37 +43,96 @@ import { MatStepper } from '@angular/material/stepper';
     MatIconModule,
     MatSelectModule,
     CommonModule,
-
   ],
   templateUrl: './upload.component.html',
-  styleUrl: './upload.component.scss'
+  styleUrl: './upload.component.scss',
 })
-export class UploadComponent {
+export class UploadComponent implements OnInit {
+  constructor(
+    private store: Store<{
+      auth: AuthState;
+    }>,
+  ) {
+    this.auth$ = this.store.select('auth', 'authData');
+  }
 
+  ngOnInit() {
+    this.subscription.push(
+      this.auth$.subscribe((auth) => {
+        if (auth?.idToken) {
+          this.authData = auth;
+        }
+      }),
+    );
+
+    this.fileUploadForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+    this.trackInforForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+  }
+
+  subscription: Subscription[] = [];
+  auth$!: Observable<AuthModel | null>;
+  authData: AuthModel | null = null;
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
 
-
   selectedFile: File | null = null;
   selectedImage: string | null = null;
 
-  other: string[] = ['Pop', 'Jazz', 'Rock', 'Latin', 'Dance', 'Ballad', 'EDM', 'Country'];
-
-
+  other: string[] = [
+    'Pop',
+    'Jazz',
+    'Rock',
+    'Latin',
+    'Dance',
+    'Ballad',
+    'EDM',
+    'Country',
+  ];
 
   fileUploadForm = new FormGroup({
     audioFile: new FormControl<File | null>(null, Validators.required),
   });
 
-  trackInforForm= new FormGroup({
+  trackInforForm = new FormGroup({
     coverImage: new FormControl<File | null>(null, Validators.required),
     title: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
     other: new FormControl('', Validators.required),
     description: new FormControl(''),
-});
+  });
 
+  formData: SongModel = {} as SongModel;
+
+  confirmForm() {
+    this.formData = {
+      file_path: this.fileUploadForm.value.audioFile ?? '',
+      image_url: this.trackInforForm.value.coverImage ?? '',
+      title: this.trackInforForm.value.title ?? '',
+      performer: this.trackInforForm.value.artist ?? '',
+      category_id: this.trackInforForm.value.other ?? '',
+      composer: this.trackInforForm.value.description ?? '',
+      views: 0,
+      uuid: this.authData?.uid ?? '',
+      id: '1' ?? '',
+      createdAt: new Date().toISOString(),
+    };
+
+    if (this.authData?.idToken) {
+      this.store.dispatch(
+        SongActions.createSong({
+          song: this.formData,
+          idToken: this.authData?.idToken ?? '',
+        }),
+      );
+    }
+
+    console.log('formData:', this.formData);
+  }
 
   // Chọn file nhạc
   onFileSelected(event: Event) {
@@ -63,10 +140,19 @@ export class UploadComponent {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/aiff', 'audio/x-aiff', 'audio/x-alac'];
+    const allowedTypes = [
+      'audio/mpeg',
+      'audio/wav',
+      'audio/flac',
+      'audio/aiff',
+      'audio/x-aiff',
+      'audio/x-alac',
+    ];
 
     if (!allowedTypes.includes(file.type)) {
-      alert('Invalid file type! Please upload an MP3, WAV, FLAC, AIFF, or ALAC file.');
+      alert(
+        'Invalid file type! Please upload an MP3, WAV, FLAC, AIFF, or ALAC file.',
+      );
       input.value = ''; // Reset input file
       return;
     }
@@ -104,7 +190,6 @@ export class UploadComponent {
     }
   }
 
-
   // Reset form
   resetForm() {
     this.fileUploadForm.reset();
@@ -117,7 +202,6 @@ export class UploadComponent {
 
     // Reset lại stepper
     if (this.stepper) this.stepper.reset();
-
   }
 
   // Mở hộp chọn file
@@ -153,16 +237,7 @@ export class UploadComponent {
       reader.readAsDataURL(file);
       // this.fileUploadForm.patchValue({ coverImage: file });
       this.trackInforForm.patchValue({ coverImage: file });
-
     }
-  }
-
-
-
-
-  ngOnInit() {
-    this.fileUploadForm.valueChanges.subscribe(() => this.checkFormCompletion());
-    this.trackInforForm.valueChanges.subscribe(() => this.checkFormCompletion());
   }
 
   checkFormCompletion() {
@@ -173,15 +248,10 @@ export class UploadComponent {
         title: this.trackInforForm.value.title,
         artist: this.trackInforForm.value.artist,
         other: this.trackInforForm.value.other,
-        description: this.trackInforForm.value.description
+        description: this.trackInforForm.value.description,
       });
     }
   }
-
-
-
-
-
 
   // private _formBuilder = inject(FormBuilder);
   //

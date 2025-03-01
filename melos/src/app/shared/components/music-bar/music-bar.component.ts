@@ -158,8 +158,8 @@ export class MusicBarComponent implements OnInit {
     };
 
     // Cập nhật trạng thái play/pause
-    audio.onplay = () => (this.isPlaying = true);
-    audio.onpause = () => (this.isPlaying = false);
+    audio.onplay = () => this.songService.setPlayState(true);
+    audio.onpause = () => this.songService.setPlayState(false);
   }
 
   togglePlayPause() {

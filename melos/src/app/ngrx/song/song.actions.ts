@@ -29,3 +29,20 @@ export const getSongListFailure = createAction(
   '[Song] Get Song List Failure',
   props<{ error: any }>(),
 );
+
+//create song
+
+export const createSong = createAction(
+  '[Song] Create Song',
+  props<{ song: SongModel; idToken: string }>(),
+);
+
+export const createSongSuccess = createAction(
+  '[Song] Create Song Success',
+  props<{ song: SongModel }>(),
+);
+
+export const createSongFailure = createAction(
+  '[Song] Create Song Failure',
+  props<{ error: any }>(),
+);
