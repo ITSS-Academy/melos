@@ -34,7 +34,8 @@
       transform: translateY(-50%);
       left: 0;
       top: 50%;
-      background-color: rgba(255, 255, 255, 0.44);
+      background-color: rgba(255, 255, 255, 0.73);
+      color: var(--scrim);
       pointer-events: auto;
       z-index: 1000;
     }
@@ -43,7 +44,8 @@
       transform: translateY(-50%);
       right: 0;
       top: 50%;
-      background-color: rgba(255, 255, 255, 0.44);
+      background-color: rgba(255, 255, 255, 0.73);
+      color: var(--scrim);
       pointer-events: auto;
       z-index: 1000;
     }

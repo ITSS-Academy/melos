@@ -4,6 +4,7 @@ import {MatIconButton} from "@angular/material/button";
 import {MusicCardComponent} from "../../shared/components/music-card/music-card.component";
 import {NgForOf} from "@angular/common";
 import {MaterialModule} from "../../shared/material.module";
+import {MusicTabComponent} from "../../shared/components/music-tab/music-tab.component";
 @Component({
   selector: 'app-detail-song',
   standalone: true,
@@ -12,7 +13,8 @@ import {MaterialModule} from "../../shared/material.module";
         MatIconButton,
         MusicCardComponent,
         NgForOf,
-        MaterialModule
+        MaterialModule,
+        MusicTabComponent
     ],
   templateUrl: './detail-song.component.html',
   styleUrl: './detail-song.component.scss'
