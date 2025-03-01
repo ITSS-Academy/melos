@@ -4,6 +4,7 @@
   border-radius: 16px;
   display: flex;
   justify-content: center;
+  margin: auto;
 }
 .mat-stepper-horizontal {
   background-color: transparent !important;
@@ -25,6 +26,18 @@
   color: white;
   transition: 0.3s;
   margin-top: 41px;
+}
+
+.uploaded{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.title-uploaded{
+  width: 70%;
 }
 
 .infor-file{
@@ -77,8 +90,8 @@
 }
 
 .img-select{
-  width: 80%;
-  height: 80%;
+  width: 380px;
+  height: 380px;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -97,7 +110,7 @@
 
 .btn-upload-3{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 4.7%;
 }
 

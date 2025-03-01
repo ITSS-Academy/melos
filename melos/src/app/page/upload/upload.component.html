@@ -21,19 +21,23 @@
 
           <!-- Hiển thị file -->
           <div class="upload" *ngIf="selectedFile">
+            <div class="uploaded">
+              <mat-icon class="material-symbols-rounded">audio_file</mat-icon>
+              <h6 class="title-uploaded">{{ selectedFile.name }}</h6>
 
-            <h6>{{ selectedFile.name }}</h6>
+            </div>
+
           </div>
 
 
         </div>
 
-        <input type="file" #fileInput (change)="onFileSelected($event)" formControlName="audioFile" hidden accept=".mp3,.wav,.flac,.aiff,.alac" />
+        <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept=".mp3,.wav,.flac,.aiff,.alac" />
 
 
 
         <div class="btn-upload-1">
-          <button mat-flat-button matStepperNext>Next</button>
+          <button mat-flat-button matStepperNext  [disabled]="!fileUploadForm.valid">Next</button>
         </div>
       </form>
     </mat-step>
@@ -58,20 +62,21 @@
                     </div>
 
                     <!-- Hiển thị ảnh bìa sau khi chọn -->
-                    <div class="img-upload" *ngIf="selectedImage">
+                    <div  *ngIf="selectedImage">
                       <img class="img-select" [src]="selectedImage" alt="Selected Image">
                     </div>
 
                   </div>
 
 
-          <input type="file" #imageInput (change)="onImageSelected($event)" formControlName="coverImage" accept="image/*" hidden />
+          <input type="file" #imageInput (change)="onImageSelected($event)" accept="image/*" hidden />
 
 
 
 
 
-                  <div class="infor-upload">
+
+          <div class="infor-upload">
 
                     <mat-form-field appearance="outline">
                       <mat-label>Song title</mat-label>
@@ -116,7 +121,7 @@
 
         <div class="btn-upload-2">
           <button mat-flat-button matStepperPrevious>Back</button>
-          <button mat-flat-button matStepperNext>Next</button>
+          <button mat-flat-button matStepperNext [disabled]="!trackInforForm.valid">confirm</button>
         </div>
       </form>
     </mat-step>
@@ -130,13 +135,11 @@
 
 
       <div class="btn-upload-3">
-        <button mat-flat-button matStepperPrevious>Back</button>
+<!--        <button mat-flat-button matStepperPrevious>Back</button>-->
         <button mat-flat-button (click)="resetForm()">Reset</button>
       </div>
     </mat-step>
   </mat-stepper>
-
-
 
 
 </div>

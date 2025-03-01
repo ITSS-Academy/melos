@@ -57,12 +57,10 @@ export class UploadComponent {
 });
 
 
-
   // Chọn file nhạc
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0)
-      return;
+    if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
     const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/aiff', 'audio/x-aiff', 'audio/x-alac'];
@@ -73,29 +71,41 @@ export class UploadComponent {
       return;
     }
 
-      this.selectedFile = input.files[0];
-      this.fileUploadForm.patchValue({ audioFile: this.selectedFile });
-      this.fileUploadForm.get('audioFile')?.updateValueAndValidity();
+    this.selectedFile = file;
+    this.fileUploadForm.patchValue({ audioFile: file });
+    this.fileUploadForm.get('audioFile')?.updateValueAndValidity();
 
+    // Reset input file để chọn lại file khác
+    input.value = '';
   }
 
   // Chọn ảnh bìa
+  // onImageSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     const file = input.files[0];
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       this.selectedImage = reader.result as string;
+  //     };
+  //     reader.readAsDataURL(file);
+  //     // this.fileUploadForm.patchValue({ coverImage: file });
+  //     this.trackInforForm.patchValue({ coverImage: file });
+  //
+  //   }
+  // }
+
   onImageSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
+    if (input.files?.length) {
       const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-      // this.fileUploadForm.patchValue({ coverImage: file });
+      this.selectedImage = URL.createObjectURL(file);
       this.trackInforForm.patchValue({ coverImage: file });
-
     }
   }
 
-  // Reset form khi bấm Reset
+
+  // Reset form
   resetForm() {
     this.fileUploadForm.reset();
     this.selectedFile = null;
@@ -105,7 +115,7 @@ export class UploadComponent {
     if (this.fileInput) this.fileInput.nativeElement.value = '';
     if (this.imageInput) this.imageInput.nativeElement.value = '';
 
-    // Reset lại stepper về bước đầu (nếu có)
+    // Reset lại stepper
     if (this.stepper) this.stepper.reset();
 
   }
@@ -148,6 +158,25 @@ export class UploadComponent {
   }
 
 
+
+
+  ngOnInit() {
+    this.fileUploadForm.valueChanges.subscribe(() => this.checkFormCompletion());
+    this.trackInforForm.valueChanges.subscribe(() => this.checkFormCompletion());
+  }
+
+  checkFormCompletion() {
+    if (this.fileUploadForm.valid && this.trackInforForm.valid) {
+      console.log('Thông tin bài hát:', {
+        audioFile: this.fileUploadForm.value.audioFile,
+        coverImage: this.trackInforForm.value.coverImage,
+        title: this.trackInforForm.value.title,
+        artist: this.trackInforForm.value.artist,
+        other: this.trackInforForm.value.other,
+        description: this.trackInforForm.value.description
+      });
+    }
+  }
 
 
 

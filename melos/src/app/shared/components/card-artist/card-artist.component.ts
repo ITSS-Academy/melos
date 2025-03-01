@@ -30,6 +30,8 @@ export class CardArtistComponent {
 
       uuid: 'string',
 
+      views: 0,
+
     },
 
     {
@@ -50,6 +52,9 @@ export class CardArtistComponent {
       createdAt: new Date(2015, 2, 20),
 
       uuid: 'string',
+
+      views: 0,
+
 
     },
 
@@ -72,6 +77,9 @@ export class CardArtistComponent {
 
       uuid: 'string',
 
+      views: 0,
+
+
     },
 
     {
@@ -92,6 +100,9 @@ export class CardArtistComponent {
       createdAt: new Date(2015, 2, 20),
 
       uuid: 'string',
+
+      views: 0,
+
 
     },
 
@@ -114,6 +125,9 @@ export class CardArtistComponent {
 
       uuid: 'string',
 
+      views: 0,
+
+
     },
 
     {
@@ -134,6 +148,9 @@ export class CardArtistComponent {
       createdAt: new Date(2015, 2, 20),
 
       uuid: 'string',
+
+      views: 0,
+
 
     },
 
