@@ -11,11 +11,13 @@ import Hls from 'hls.js';
 import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
 import { MaterialModule } from '../../material.module';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SongState } from '../../../ngrx/song/song.state';
 import * as SongActions from '../../../ngrx/song/song.actions';
-
+import { PlayState } from '../../../ngrx/play/play.state';
+import * as PlayActions from '../../../ngrx/play/play.actions';
+import { play } from '../../../ngrx/play/play.actions';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -33,6 +35,7 @@ export class MusicBarComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   hasUpdatedViews = false;
+  play$!: Observable<boolean>;
 
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
@@ -41,8 +44,11 @@ export class MusicBarComponent implements OnInit {
     private songService: SongService,
     private store: Store<{
       song: SongState;
+      play: PlayState;
     }>,
-  ) {}
+  ) {
+    this.play$ = this.store.select('play', 'isPlaying');
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -53,7 +59,7 @@ export class MusicBarComponent implements OnInit {
           this.setupHls();
         }
       }),
-      this.songService.playState$.subscribe((isPlaying) => {
+      this.play$.subscribe((isPlaying) => {
         this.isPlaying = isPlaying;
       }),
     );
@@ -66,12 +72,12 @@ export class MusicBarComponent implements OnInit {
       hls.loadSource(this.hlsUrl!);
       hls.attachMedia(audio);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play();
+        audio.play().then((r) => this.store.dispatch(PlayActions.play()));
       });
     } else {
       audio.src = this.hlsUrl!;
       audio.preload = 'auto';
-      audio.play();
+      audio.play().then((r) => this.store.dispatch(PlayActions.play()));
     }
 
     // Cập nhật tiến trình
@@ -85,18 +91,17 @@ export class MusicBarComponent implements OnInit {
     };
 
     // Cập nhật trạng thái play/pause
-    audio.onplay = () => this.songService.setPlayState(true);
-    audio.onpause = () => this.songService.setPlayState(false);
+    audio.onplay = () => this.store.dispatch(PlayActions.play());
+    audio.onpause = () => this.store.dispatch(PlayActions.pause());
   }
 
   togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
     if (audio.paused) {
-      audio.play();
-      this.songService.setPlayState(!this.isPlaying);
+      audio.play().then((r) => this.store.dispatch(PlayActions.play()));
     } else {
       audio.pause();
-      this.songService.setPlayState(!this.isPlaying);
+      this.store.dispatch(PlayActions.pause());
     }
   }
 
