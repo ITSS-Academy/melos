@@ -24,4 +24,9 @@ export class CategoryController {
   async getCategoryById(@Query('id') id: string): Promise<Category> {
     return this.categoryService.getCategoriesById(id);
   }
+
+  @Get('all')
+  async getAllCategories(): Promise<Category[]> {
+    return this.categoryService.getAllCategories();
+  }
 }
