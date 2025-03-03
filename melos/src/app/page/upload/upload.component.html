@@ -1,14 +1,13 @@
 <div class="container-upload">
 
   <!--  upload nhạc-->
-  <mat-stepper headerPosition="top" #stepper >
-    <mat-step [stepControl]="fileUploadForm.controls['audioFile']">
+  <mat-stepper headerPosition="top" #stepper linear>
+    <mat-step [stepControl]="fileUploadForm.controls['audioFile']" [completed]="fileUploadForm.valid">
       <form [formGroup]="fileUploadForm" class="form-upload">
         <ng-template matStepLabel>Upload track file</ng-template>
 
       <div class="all-main">
         <div class="infor-file">
-
             <h5>Upload your audio files </h5>
             <h6>For optimal quality, use MP3, WAV, FLAC, AIFF, or ALAC formats.</h6>
             <h6>The maximum uncompressed file size is 4GB.</h6>
@@ -45,7 +44,7 @@
     <!--    track ìnformation-->
 
 
-    <mat-step [stepControl]="trackInforForm">
+    <mat-step [stepControl]="trackInforForm" [completed]="trackInforForm.valid" linear>
       <form [formGroup]="trackInforForm" class="form-upload">
         <ng-template matStepLabel>Track Information</ng-template>
 
@@ -89,16 +88,6 @@
 
                 <mat-option *ngFor="let other of other" [value]="other">{{ other }}</mat-option>
 
-                <!--                        <mat-option value="1">Pops</mat-option>-->
-                <!--                        <mat-option value="2">Jazz</mat-option>-->
-                <!--                        <mat-option value="3">Rock</mat-option>-->
-                <!--                        <mat-option value="4">Latin</mat-option>-->
-                <!--                        <mat-option value="5">Dance</mat-option>-->
-                <!--                        <mat-option value="6">Ballad</mat-option>-->
-                <!--                        <mat-option value="7">EDM</mat-option>-->
-                <!--                        <mat-option value="8">Country music</mat-option>-->
-
-
               </mat-select>
             </mat-form-field>
 
@@ -120,18 +109,26 @@
       </form>
     </mat-step>
 
-    <mat-step>
+    <mat-step  linear>
       <ng-template matStepLabel>Done</ng-template>
-      <div class="success">
-        <mat-icon class="img-up-3" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
-        <h6>File Upload Successfull</h6>
+
+      <app-loading *ngIf="isLoading$ | async"></app-loading>
+
+      <div>
+        <div class="success">
+          <mat-icon class="img-up-3" aria-hidden="false" aria-label="Example home icon" fontIcon="check"></mat-icon>
+          <h6>File Upload Successfull</h6>
+        </div>
+
+
+        <div class="btn-upload-3">
+          <!--        <button mat-flat-button matStepperPrevious>Back</button>-->
+          <button mat-flat-button (click)="resetForm()">Reset</button>
+        </div>
       </div>
 
 
-      <div class="btn-upload-3">
-        <!--        <button mat-flat-button matStepperPrevious>Back</button>-->
-        <button mat-flat-button (click)="resetForm()">Reset</button>
-      </div>
+
     </mat-step>
   </mat-stepper>
 

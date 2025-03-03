@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  inject,
+  inject, OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -29,6 +29,14 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import * as SongActions from '../../ngrx/song/song.actions';
 
+import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCardModule} from '@angular/material/card';
+import {LoadingComponent} from '../../shared/components/loading/loading.component';
+import {SongState} from '../../ngrx/song/song.state';
+
+
 @Component({
   selector: 'app-upload',
   standalone: true,
@@ -43,39 +51,24 @@ import * as SongActions from '../../ngrx/song/song.actions';
     MatIconModule,
     MatSelectModule,
     CommonModule,
+    MatProgressSpinnerModule,
+    MatSliderModule,
+    MatRadioModule,
+    MatCardModule,
+    LoadingComponent,
+
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
-export class UploadComponent implements OnInit {
-  constructor(
-    private store: Store<{
-      auth: AuthState;
-    }>,
-  ) {
-    this.auth$ = this.store.select('auth', 'authData');
-  }
+export class UploadComponent implements OnInit, OnDestroy {
 
-  ngOnInit() {
-    this.subscription.push(
-      this.auth$.subscribe((auth) => {
-        if (auth?.idToken) {
-          this.authData = auth;
-        }
-      }),
-    );
-
-    this.fileUploadForm.valueChanges.subscribe(() =>
-      this.checkFormCompletion(),
-    );
-    this.trackInforForm.valueChanges.subscribe(() =>
-      this.checkFormCompletion(),
-    );
-  }
-
+  formData: SongModel = {} as SongModel;
   subscription: Subscription[] = [];
   auth$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
+  isLoading$!: Observable<boolean>;
+
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -106,32 +99,66 @@ export class UploadComponent implements OnInit {
     description: new FormControl(''),
   });
 
-  formData: SongModel = {} as SongModel;
+
+  constructor(
+    private store: Store<{
+      auth: AuthState;
+      song: SongState;
+    }>,
+  ) {
+    this.auth$ = this.store.select('auth', 'authData');
+    this.isLoading$ = this.store.select('song', 'isLoading');
+  }
+
+  ngOnInit() {
+    this.subscription.push(
+      this.auth$.subscribe((auth) => {
+        if (auth?.idToken) {
+          this.authData = auth;
+        }
+      }),
+    );
+
+    this.fileUploadForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+    this.trackInforForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+  }
+
+
+
 
   confirmForm() {
-    this.formData = {
-      file_path: this.fileUploadForm.value.audioFile ?? '',
-      image_url: this.trackInforForm.value.coverImage ?? '',
-      title: this.trackInforForm.value.title ?? '',
-      performer: this.trackInforForm.value.artist ?? '',
-      category_id: this.trackInforForm.value.other ?? '',
-      composer: this.trackInforForm.value.description ?? '',
-      views: 0,
-      uuid: this.authData?.uid ?? '',
-      id: '1' ?? '',
-      createdAt: new Date().toISOString(),
-    };
 
-    if (this.authData?.idToken) {
-      this.store.dispatch(
-        SongActions.createSong({
-          song: this.formData,
-          idToken: this.authData?.idToken ?? '',
-        }),
-      );
-    }
+      this.formData = {
+        file_path: this.fileUploadForm.value.audioFile ?? '',
+        image_url: this.trackInforForm.value.coverImage ?? '',
+        title: this.trackInforForm.value.title ?? '',
+        performer: this.trackInforForm.value.artist ?? '',
+        category_id: this.trackInforForm.value.other ?? '',
+        composer: this.trackInforForm.value.description ?? '',
+        views: 0,
+        uuid: this.authData?.uid ?? '',
+        id: '1' ?? '',
+        createdAt: new Date().toISOString(),
+      };
+
+      if (this.authData?.idToken) {
+        this.store.dispatch(
+          SongActions.createSong({
+            song: this.formData,
+            idToken: this.authData?.idToken ?? '',
+          }),
+        );
+      }
 
     console.log('formData:', this.formData);
+  }
+
+  ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
   }
 
   // Chọn file nhạc
