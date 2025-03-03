@@ -48,3 +48,19 @@ export const createSong = createEffect(
   },
   { functional: true },
 );
+
+//update views
+export const updateSongViews = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.updateSongViews),
+      exhaustMap((action) =>
+        songService.updateSongViews(action.id).pipe(
+          map(() => SongActions.updateSongViewsSuccess()),
+          catchError((error) => of(SongActions.getSongByIdFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);

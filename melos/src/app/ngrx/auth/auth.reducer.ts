@@ -6,6 +6,7 @@ export const initialState: AuthState = {
   authData: null,
   isLogging: false,
   error: null,
+  auth: null,
 };
 
 export const authReducer = createReducer(
@@ -60,6 +61,33 @@ export const authReducer = createReducer(
     console.log(type);
     return <AuthState>{
       ...state,
+      error: error,
+    };
+  }),
+
+  //getAuth
+  on(AuthActions.getAuth, (state, { type }) => {
+    console.log(type);
+    return <AuthState>{
+      ...state,
+      isLogging: true,
+    };
+  }),
+
+  on(AuthActions.getAuthSuccess, (state, { auth, type }) => {
+    console.log(type);
+    return <AuthState>{
+      ...state,
+      auth: auth,
+      isLogging: false,
+    };
+  }),
+
+  on(AuthActions.getAuthFailure, (state, { error, type }) => {
+    console.log(type);
+    return <AuthState>{
+      ...state,
+      isLogging: false,
       error: error,
     };
   }),

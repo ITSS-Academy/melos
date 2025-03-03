@@ -22,7 +22,7 @@ export class CategoryService {
       });
 
     if (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
     console.log(data);
@@ -36,9 +36,20 @@ export class CategoryService {
       .rpc('get_category_by_id', { p_id: id });
 
     if (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
     return data[0] as Category;
+  }
+
+  async getAllCategories(): Promise<Category[]> {
+    const { data: categoryData, error: categoryError } =
+      await this.supabaseProvider.getClient().from('categories').select('*');
+
+    if (categoryError) {
+      throw new HttpException(categoryError.message, HttpStatus.BAD_REQUEST);
+    }
+
+    return categoryData;
   }
 }

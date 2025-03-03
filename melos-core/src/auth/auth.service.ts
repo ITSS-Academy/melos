@@ -34,8 +34,20 @@ export class AuthService {
           .insert([{ uid, email, name, picture }]);
 
         if (error) {
-          throw new HttpException(error.message, 500);
+          throw new HttpException(error.message, 400);
         }
+
+        const { data: user, error: userError } = await this.supabaseProvider
+          .getClient()
+          .from('auth')
+          .select('*')
+          .eq('uid', decodedToken.uid);
+
+        if (userError) {
+          throw new HttpException(userError.message, 400);
+        }
+
+        return user[0];
       } else if (count > 1) {
         throw new Error('Multiple rows returned for a single user');
       }

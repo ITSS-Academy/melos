@@ -92,4 +92,27 @@ export const songReducer = createReducer(
       isLoading: false,
     };
   }),
+
+  //update views
+  on(SongActions.updateSongViews, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+    };
+  }),
+
+  on(SongActions.updateSongViewsSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+    };
+  }),
+
+  on(SongActions.updateSongViewsFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+    };
+  }),
 );

@@ -11,8 +11,13 @@ import Hls from 'hls.js';
 import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
 import { MaterialModule } from '../../material.module';
-import { Subscription } from 'rxjs';
-
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { SongState } from '../../../ngrx/song/song.state';
+import * as SongActions from '../../../ngrx/song/song.actions';
+import { PlayState } from '../../../ngrx/play/play.state';
+import * as PlayActions from '../../../ngrx/play/play.actions';
+import { play } from '../../../ngrx/play/play.actions';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -21,94 +26,6 @@ import { Subscription } from 'rxjs';
   styleUrl: './music-bar.component.scss',
 })
 export class MusicBarComponent implements OnInit {
-  // // apiUrl = 'http://localhost:3000/songs/7846deea-49d2-4652-ae49-575a66bfbe52/hls-url';
-  // currentSong: SongModel | null = null;
-  // constructor(private songService: SongService) {}
-  // hlsUrl: string | null = null;
-  // error: string | null = null;
-  // @ViewChild('audioPlayer', { static: true })
-  // audioPlayer!: ElementRef<HTMLAudioElement>;
-  // @Output()
-  // songPlaying = new EventEmitter<boolean>();
-  //
-  // ngOnInit() {
-  //   this.songService.currentSong$.subscribe((song) => {
-  //     this.currentSong = song;
-  //     // this.songPlaying.emit(!!song);
-  //     console.log(song);
-  //     if (song) {
-  //       console.log(song);
-  //
-  //       this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
-  //       console.log(this.hlsUrl);
-  //       this.setupHls();
-  //     }
-  //   });
-  // }
-  // // getSong() {
-  // //   // Gọi API để lấy thông tin bài hát và URL HLS playlist
-  // //
-  // //   this.http.get<{ hlsUrl: string }>(this.apiUrl).subscribe(
-  // //     (response) => {
-  // //       console.log(response.hlsUrl);
-  // //
-  // //       this.hlsUrl = response.hlsUrl;
-  // //       this.setupHls();
-  // //     },
-  // //     (err) => {
-  // //       this.error = 'Failed to load HLS URL. Please check your API.';
-  // //     }
-  // //   );
-  // // }
-  //
-  // setupHls(): void {
-  //   console.log(this.hlsUrl);
-  //   if (!this.hlsUrl || !this.audioPlayer) {
-  //     console.error('Missing HLS URL or audio element');
-  //     return;
-  //   }
-  //
-  //   const audio = this.audioPlayer.nativeElement;
-  //
-  //   if (Hls.isSupported()) {
-  //     const hls = new Hls({
-  //       maxBufferLength: 30, // Buffer tối đa 30 giây
-  //       maxMaxBufferLength: 60, // Buffer tối đa khi mạng tốt
-  //       startFragPrefetch: true, // Prefetch phân đoạn tiếp theo
-  //     });
-  //     hls.loadSource(this.hlsUrl);
-  //     hls.attachMedia(audio);
-  //
-  //     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-  //       console.log('HLS manifest loaded, ready to play');
-  //     });
-  //
-  //     hls.on(Hls.Events.ERROR, (event, data) => {
-  //       if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-  //         if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
-  //           console.warn('Buffer stalled, attempting to recover...');
-  //           hls.startLoad(); // Thử tải lại
-  //         } else {
-  //           console.error('Media error detected, attempting to recover...');
-  //           hls.recoverMediaError(); // Thử phục hồi media
-  //         }
-  //       } else if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-  //         console.error('Network error detected:', data);
-  //       } else {
-  //         console.error('Fatal error detected:', data);
-  //         hls.destroy(); // Dừng stream nếu lỗi nghiêm trọng
-  //       }
-  //     });
-  //   } else if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-  //     audio.src = this.hlsUrl;
-  //     audio.play().catch((err) => {
-  //       console.error('Error playing HLS:', err);
-  //       this.error = 'Failed to play HLS stream';
-  //     });
-  //   } else {
-  //     this.error = 'HLS is not supported on your browser.';
-  //   }
-  // }
   currentSong: SongModel | null = null;
   hlsUrl: string | null = null;
   isPlaying = false;
@@ -117,10 +34,21 @@ export class MusicBarComponent implements OnInit {
   volume = 50;
   subscriptions: Subscription[] = [];
 
+  hasUpdatedViews = false;
+  play$!: Observable<boolean>;
+
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
 
-  constructor(private songService: SongService) {}
+  constructor(
+    private songService: SongService,
+    private store: Store<{
+      song: SongState;
+      play: PlayState;
+    }>,
+  ) {
+    this.play$ = this.store.select('play', 'isPlaying');
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -131,7 +59,7 @@ export class MusicBarComponent implements OnInit {
           this.setupHls();
         }
       }),
-      this.songService.playState$.subscribe((isPlaying) => {
+      this.play$.subscribe((isPlaying) => {
         this.isPlaying = isPlaying;
       }),
     );
@@ -146,24 +74,31 @@ export class MusicBarComponent implements OnInit {
       hls.loadSource(this.hlsUrl!);
       hls.attachMedia(audio);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play();
+        audio.play().then((r) => this.store.dispatch(PlayActions.play()));
       });
     } else {
       audio.src = this.hlsUrl!;
       audio.preload = 'auto';
-      audio.play();
+      audio.play().then((r) => this.store.dispatch(PlayActions.play()));
     }
 
     // Cập nhật tiến trình
     audio.ontimeupdate = () => {
       this.currentTime = audio.currentTime;
       this.duration = audio.duration || 100;
+<<<<<<< HEAD
       this.updateProgressBar(); // Gọi hàm cập nhật thanh tiến trình
+=======
+      if (this.currentTime >= 10 && !this.hasUpdatedViews) {
+        this.hasUpdatedViews = true;
+        this.updateViews();
+      }
+>>>>>>> 939c88de4114c46cc29dde3e1eddb97f92f59b75
     };
 
     // Cập nhật trạng thái play/pause
-    audio.onplay = () => this.songService.setPlayState(true);
-    audio.onpause = () => this.songService.setPlayState(false);
+    audio.onplay = () => this.store.dispatch(PlayActions.play());
+    audio.onpause = () => this.store.dispatch(PlayActions.pause());
   }
 
   //Cập nhật thanh có màu theo thời gian bài hát chạy
@@ -180,11 +115,19 @@ export class MusicBarComponent implements OnInit {
   togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
     if (audio.paused) {
-      audio.play();
-      this.songService.setPlayState(!this.isPlaying);
+      audio.play().then((r) => this.store.dispatch(PlayActions.play()));
     } else {
       audio.pause();
-      this.songService.setPlayState(!this.isPlaying);
+      this.store.dispatch(PlayActions.pause());
+    }
+  }
+
+  updateViews() {
+    if (this.currentSong) {
+      console.log('Updating views for song:', this.currentSong.id);
+      this.store.dispatch(
+        SongActions.updateSongViews({ id: this.currentSong.id }),
+      );
     }
   }
 
