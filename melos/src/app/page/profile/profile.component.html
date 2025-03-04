@@ -5,6 +5,15 @@
       <img class="avatar" src="https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Goi-y-nhung-avatar-nam-anime-cho-Facebook-5.jpg?1704789568569" alt="Avatar">
       <span class="username">Trần Thành Huy</span>
     </div>
+    <div class="main">
+      <div class="container-search">
+        <mat-tab-group class="btn-tabs" (selectedTabChange)="onTabChange($event)">
+          <mat-tab class="btn-tabs" label="History"></mat-tab>
+          <mat-tab class="btn-tabs" label="Upload"></mat-tab>
+        </mat-tab-group>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
   </div>
 
 </div>
