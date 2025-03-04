@@ -13,6 +13,7 @@ import {
   UploadedFiles,
   Request,
   Query,
+  Put,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { Song } from './entities/song.entity';
@@ -163,6 +164,28 @@ export class SongsController {
   //     throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
   //   }
   // }
+
+  @Put('update-views')
+  async updateViews(@Request() req: any) {
+    try {
+      const { id } = req.query;
+      return await this.songsService.upadteSongViews(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('user-song')
+  async getUserSong(@Request() req: any) {
+    try {
+      const { uid } = req.query;
+      console.log('req', uid);
+
+      return await this.songsService.getSongByUserId(uid);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   @Get('category-song')
   async getCategorySong(@Request() req: any) {

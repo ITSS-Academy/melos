@@ -12,6 +12,11 @@ import { songReducer } from './ngrx/song/song.reducers';
 import * as SongEffects from './ngrx/song/song.effect';
 import { authReducer } from './ngrx/auth/auth.reducer';
 import * as AuthEffects from './ngrx/auth/auth.effects';
+import { playReducer } from './ngrx/play/play.reducer';
+import { categoryReducer } from './ngrx/category/category.reducers';
+import * as CategoryEffects from './ngrx/category/category.effects';
+import { historyReducer } from './ngrx/history/history.reducer';
+import * as HistoryEffects from './ngrx/history/history.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,8 +26,11 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       song: songReducer,
       auth: authReducer,
+      play: playReducer,
+      category: categoryReducer,
+      history: historyReducer,
     }),
-    provideEffects(SongEffects, AuthEffects),
+    provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects),
     provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({

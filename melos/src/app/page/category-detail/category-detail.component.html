@@ -7,14 +7,10 @@
   </div>
   <div class="container-right">
     <div class="list_music">
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
+        @for (music of songLists; track music.id) {
+            <app-music-tab [song]="music"
+            ></app-music-tab>
+        }
     </div>
   </div>
 </div>

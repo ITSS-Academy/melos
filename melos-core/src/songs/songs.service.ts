@@ -342,4 +342,38 @@ export class SongsService {
 
     return data;
   }
+
+  async upadteSongViews(id: string): Promise<void> {
+    //get song with id view +1
+
+    let song = await this.getSongById(id);
+    song.views = song.views + 1;
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .from('songs')
+      .update({ views: song.views })
+      .eq('id', id);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+  }
+
+  async getSongByUserId(uid: string): Promise<Song[]> {
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .from('songs')
+      .select('*')
+      .eq('uuid', uid);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+
+    return data;
+  }
 }

@@ -34,10 +34,17 @@ export class SongService {
     formData.append('files', song.image_url);
     formData.append('uuid', song.uuid);
     formData.append('views', song.views.toString());
-    formData.append('category_id', '83dbd264-a983-440f-941e-ace43ce5f2ff');
+    formData.append('category_id', song.category_id);
     return this.http.post<SongModel>('http://localhost:3000/songs', formData, {
       headers,
     });
+  }
+
+  updateSongViews(songId: string) {
+    return this.http.put(
+      `http://localhost:3000/songs/update-views?id=${songId}`,
+      {},
+    );
   }
 
   private currentSongSubject = new BehaviorSubject<SongModel | null>(null);
@@ -45,13 +52,6 @@ export class SongService {
 
   setCurrentSong(song: SongModel) {
     this.currentSongSubject.next(song);
-  }
-
-  private playStateSubject = new BehaviorSubject<boolean>(false);
-  playState$ = this.playStateSubject.asObservable();
-
-  setPlayState(isPlaying: boolean) {
-    this.playStateSubject.next(isPlaying);
   }
 
   dummyData: SongModel[] = [
@@ -101,7 +101,7 @@ export class SongService {
       performer: 'Mili',
       file_path: '',
       image_url:
-          'https://i1.sndcdn.com/artworks-cyeDndDTj38pXMYp-zoFfyQ-t500x500.jpg',
+        'https://i1.sndcdn.com/artworks-cyeDndDTj38pXMYp-zoFfyQ-t500x500.jpg',
       category_id: '1',
       createdAt: new Date('2021-09-01').toISOString(),
       uuid: '1',

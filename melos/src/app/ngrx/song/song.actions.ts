@@ -46,3 +46,19 @@ export const createSongFailure = createAction(
   '[Song] Create Song Failure',
   props<{ error: any }>(),
 );
+
+//update views
+
+export const updateSongViews = createAction(
+  '[Song] Update Song Views',
+  props<{ id: string }>(),
+);
+
+export const updateSongViewsSuccess = createAction(
+  '[Song] Update Song Views Success',
+);
+
+export const updateSongViewsFailure = createAction(
+  '[Song] Update Song Views Failure',
+  props<{ error: any }>(),
+);

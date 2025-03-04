@@ -97,8 +97,11 @@ button.mat-icon-button:hover {
   width: 100%;
   height: 4px;
   appearance: none;
-  background: #555;
+  //background: #555;
+  background: linear-gradient(to right, #A0CAFD var(--progress, 0%), #555 var(--progress, 0%));
   border-radius: 5px;
+  position: relative;
+  transition: background 0.1s linear;
 }
 
 .progress-bar::-webkit-slider-thumb {
@@ -109,6 +112,17 @@ button.mat-icon-button:hover {
   border-radius: 50%;
   cursor: pointer;
 }
+
+//.progress-bar::before {
+//  content: "";
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  height: 100%;
+//  width: var(--progress, 0%); /* Giá trị sẽ thay đổi */
+//  background: #A0CAFD;
+//  transition:  width 0.2s ease-in-out;;
+//}
 
 /* Volume & Playlist */
 .extra-controls {
@@ -121,9 +135,12 @@ button.mat-icon-button:hover {
   width: 70px;
   height: 4px;
   appearance: none;
-  background: #555;
+  background: linear-gradient(to right, #A0CAFD var(--volume, 0%), #555 var(--volume, 0%));
+  transition: background 0.1s ease-in-out;
   border-radius: 5px;
+  position: relative;
 }
+
 
 .volume-bar::-webkit-slider-thumb {
   appearance: none;
@@ -132,11 +149,46 @@ button.mat-icon-button:hover {
   background: #A0CAFD;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
+
 
 .line {
   height: 25px;
   width: 2px;
   background-color: var(--onSurface);
   margin: 0 15px;
+}
+
+#next-song-section {
+  display: none;
+  padding: 10px 30px;
+  width: 70vh;
+  height: 50%;
+  background-color: var(--surface);
+  position: absolute;
+  bottom: 14%;
+  right: 25px;
+  z-index: 100;
+  border-radius: 24px;
+  border: 2px var(--surfaceContainer) solid;
+  h3 {
+    color: var(--onSurface);
+    font-weight: 900;
+    height: 10%;
+    margin-bottom: 3%;
+  }
+  .next-song-list {
+    height: 87%;
+    width: 100%;
+    color: var(--onSurface);
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    overflow-y: scroll;
+  }
+  .next-song-list::-webkit-scrollbar{
+    display: none
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MaterialModule } from './shared/material.module';
 import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { MusicBarComponent } from './shared/components/music-bar/music-bar.component';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
@@ -30,25 +30,29 @@ export class AppComponent implements OnInit {
 
   activeLink = '';
   isSongPlaying = false;
-  auth$: Observable<AuthModel | null> | undefined;
+  auth$: Observable<any> | undefined;
+  subscription: Subscription[] = [];
+  authData: AuthModel | undefined;
 
   constructor(
     private router: Router,
     private auth: Auth,
     private store: Store<{ auth: AuthState }>,
   ) {
+    this.auth$ = this.store.select('auth', 'auth');
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         const token = await user?.getIdToken();
+        this.store.dispatch(AuthActions.getAuth({ idToken: token }));
         console.log(token);
-        const authData: AuthModel = {
+        this.authData = {
           idToken: token,
           displayName: user.displayName,
           email: user.email,
           photoURL: user.photoURL,
           uid: user.uid,
         };
-        this.store.dispatch(AuthActions.storeAuth({ authData: authData }));
+        this.store.dispatch(AuthActions.storeAuth({ authData: this.authData }));
       }
     });
   }
@@ -63,6 +67,25 @@ export class AppComponent implements OnInit {
 
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
+
+    // if (this.auth$) {
+    //   this.auth$.subscribe((auth) => {
+    //     if (auth?.uid) {
+    //       console.log(auth);
+    //       this.authData = {
+    //         ...this.authData,
+    //         photoURL: auth.picture,
+    //         idToken: this.authData!.idToken,
+    //         uid: auth.uid,
+    //         displayName: auth.displayName,
+    //         email: auth.email,
+    //       };
+    //
+    //     }
+    //   });
+    // }
+
+    this.subscription.push();
   }
 
   isExpanded = true; // Mở rộng sidebar mặc định
