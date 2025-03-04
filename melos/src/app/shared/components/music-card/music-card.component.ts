@@ -19,7 +19,6 @@ export class MusicCardComponent {
     console.log(this.song);
 
     this.songService.setCurrentSong(this.song);
-
     // setTimeout(() => {
     //   const audioElement = document.getElementById(
     //     'singleAudio',
