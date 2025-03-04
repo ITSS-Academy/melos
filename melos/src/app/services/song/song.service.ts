@@ -40,18 +40,18 @@ export class SongService {
     });
   }
 
+  updateSongViews(songId: string) {
+    return this.http.put(
+      `http://localhost:3000/songs/update-views?id=${songId}`,
+      {},
+    );
+  }
+
   private currentSongSubject = new BehaviorSubject<SongModel | null>(null);
   currentSong$ = this.currentSongSubject.asObservable();
 
   setCurrentSong(song: SongModel) {
     this.currentSongSubject.next(song);
-  }
-
-  private playStateSubject = new BehaviorSubject<boolean>(false);
-  playState$ = this.playStateSubject.asObservable();
-
-  setPlayState(isPlaying: boolean) {
-    this.playStateSubject.next(isPlaying);
   }
 
   dummyData: SongModel[] = [

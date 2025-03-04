@@ -12,6 +12,7 @@ import { songReducer } from './ngrx/song/song.reducers';
 import * as SongEffects from './ngrx/song/song.effect';
 import { authReducer } from './ngrx/auth/auth.reducer';
 import * as AuthEffects from './ngrx/auth/auth.effects';
+import { playReducer } from './ngrx/play/play.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       song: songReducer,
       auth: authReducer,
+      play: playReducer,
     }),
     provideEffects(SongEffects, AuthEffects),
     provideHttpClient(),

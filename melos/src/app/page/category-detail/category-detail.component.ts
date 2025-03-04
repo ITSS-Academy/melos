@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
 import { OnInit, OnDestroy } from "@angular/core";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {getSongList} from "../../ngrx/song/song.actions";
 import {SongState} from "../../ngrx/song/song.state";
 import {Store} from "@ngrx/store";
@@ -20,12 +20,15 @@ export class CategoryDetailComponent  implements OnInit, OnDestroy {
   currentMusic!: any;
   subscriptions: Subscription[] = [];
   songLists: SongModel[] = [];
+  songLists$!: Observable<SongModel[]>;
   constructor(
       private activatedRoute: ActivatedRoute,
       private store: Store<{
         song: SongState;
       }>
     ) {
+
+    this.songLists$ = this.store.select('song', 'songList')
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.currentMusic = this.viewDetail(id);
@@ -38,7 +41,7 @@ export class CategoryDetailComponent  implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.subscriptions.push(
-      this.store.select('song', 'songList').subscribe((songLists) => {
+      this.songLists$.subscribe((songLists) => {
         if (songLists.length > 0) {
           this.songLists = songLists;
           console.log(songLists);

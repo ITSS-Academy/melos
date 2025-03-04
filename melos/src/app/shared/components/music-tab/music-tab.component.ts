@@ -2,7 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MaterialModule} from "../../material.module";
 import {SongService} from "../../../services/song/song.service";
 import {SongModel} from "../../../models/song.model";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import * as PlayAction from "../../../ngrx/play/play.actions";
+import {Store} from "@ngrx/store";
+import {SongState} from "../../../ngrx/song/song.state";
+import {PlayState} from "../../../ngrx/play/play.state";
 
 @Component({
   selector: 'app-music-tab',
@@ -13,9 +17,10 @@ import {Subscription} from "rxjs";
 })
 export class MusicTabComponent implements OnInit {
   isPlaying = false;
+  isPlaying$!: Observable<boolean>;
   private subscription: Subscription[] = [];
-  constructor(private songService: SongService) {
-
+  constructor(private songService: SongService, private store: Store<{ song: SongState, play: PlayState }>) {
+    this.isPlaying$ = this.store.select('play', 'isPlaying');
   }
   ngOnInit() {
     this.subscription.push(
@@ -26,17 +31,23 @@ export class MusicTabComponent implements OnInit {
           } catch (e) {
             console.log(e);
           }
+        }),
+        this.isPlaying$.subscribe((isPlaying) => {
+          this.isPlaying = isPlaying;
         })
     )
   }
   @Input() song!:SongModel;
   playSong() {
     if (this.isPlaying) {
-      this.songService.setPlayState(false);
+      console.log(this.song);
+      this.store.dispatch(PlayAction.pause());
+      return;
+    } else {
+      console.log(this.song);
+      this.songService.setCurrentSong(this.song);
+      this.store.dispatch(PlayAction.play());
       return;
     }
-    console.log(this.song);
-    this.songService.setCurrentSong(this.song);
-    this.songService.setPlayState(true);
   }
 }

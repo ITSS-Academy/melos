@@ -1,28 +1,28 @@
-<div class="ns-card">
-    <div class="ns-img-contain">
-        <div class="play-btn">
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="playSong()">
-                <mat-icon>{{isPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
+    <div class="ns-card">
+        <div class="ns-img-contain">
+            <div class="play-btn">
+                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="playSong()">
+                    <mat-icon>{{isPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
+                </button>
+            </div>
+            <img [src]="song?.image_url" alt="music-cover">
+        </div>
+        <div class="ns-info">
+            <span class="name-ns">{{song?.title}}</span>
+            <p class="content-ns">{{song?.performer }}</p>
+        </div>
+        <div class="ns-time">
+            <span>3:00</span>
+        </div>
+        <div class="opt-btn">
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>playlist_add</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>library_add</mat-icon>
             </button>
         </div>
-        <img [src]="song?.image_url" alt="music-cover">
     </div>
-    <div class="ns-info">
-        <span class="name-ns">{{song?.title}}</span>
-        <p class="content-ns">{{song?.performer}}</p>
-    </div>
-    <div class="ns-time">
-        <span>3:00</span>
-    </div>
-    <div class="opt-btn">
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-            <mat-icon>favorite</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-            <mat-icon>playlist_add</mat-icon>
-        </button>
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-            <mat-icon>library_add</mat-icon>
-        </button>
-    </div>
-</div>
