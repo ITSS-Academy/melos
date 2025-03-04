@@ -158,6 +158,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       uuid: this.authData?.uid ?? '',
       id: '1' ?? '',
       createdAt: new Date().toISOString(),
+      duration: 0,
     };
 
     // if (this.authData?.idToken) {
