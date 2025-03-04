@@ -39,7 +39,9 @@ import {CategoryModel} from '../../models/category.model';
 import {CategoryState} from '../../ngrx/category/category.state';
 
 import * as CategoryActions from '../../ngrx/category/category.actions';
-
+import {map, startWith} from 'rxjs/operators';
+import {AsyncPipe} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-upload',
@@ -60,6 +62,8 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
     MatRadioModule,
     MatCardModule,
     LoadingComponent,
+    MatAutocompleteModule,
+    AsyncPipe,
 
   ],
   templateUrl: './upload.component.html',
@@ -140,7 +144,6 @@ export class UploadComponent implements OnInit, OnDestroy {
         }
 
       })
-
     );
 
     this.fileUploadForm.valueChanges.subscribe(() =>
@@ -150,7 +153,24 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.checkFormCompletion(),
     );
 
+    // this.category$ = this.trackInforForm.controls['category_id'].valueChanges.pipe(
+    //   startWith(''),
+    //   map(value => this._filter(value ? value.toString() : ''))
+    // );
   }
+
+  // private _filter(value: string): CategoryModel[] {
+  //   if (!this.cateGoryList || !Array.isArray(this.cateGoryList)) {
+  //     return [];
+  //   }
+  //
+  //   const filterValue = value.trim().toLowerCase();
+  //
+  //   // Nếu value rỗng, trả về toàn bộ danh sách thay vì lọc
+  //   return filterValue ? this.cateGoryList.filter(option =>
+  //     option.name?.toLowerCase().includes(filterValue)
+  //   ) : this.cateGoryList;
+  // }
 
 
 
