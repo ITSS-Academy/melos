@@ -39,12 +39,12 @@ export class MusicTabComponent implements OnInit {
   }
   @Input() song!:SongModel;
   playSong() {
-    if (this.isPlaying) {
-      console.log(this.song);
+    if (this.isPlaying && this.song.id == this.songService.currentPlaySong?.id) {
+      console.log("Now Play: ",this.song.title);
       this.store.dispatch(PlayAction.pause());
       return;
     } else {
-      console.log(this.song);
+      console.log("Now Play: ",this.song.title);
       this.songService.setCurrentSong(this.song);
       this.store.dispatch(PlayAction.play());
       return;

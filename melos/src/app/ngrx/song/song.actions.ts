@@ -62,3 +62,22 @@ export const updateSongViewsFailure = createAction(
   '[Song] Update Song Views Failure',
   props<{ error: any }>(),
 );
+
+
+//Song Categories
+export const getSongCategories = createAction(
+    '[Song] Get Song Categories',
+    props<{ id: string }>(),
+);
+export const getSongCategoriesSuccess = createAction(
+    '[Song] Get Song Categories Success',
+    props<{ songCategories: SongModel[] }>(),
+);
+export const getSongCategoriesFailure = createAction(
+    '[Song] Get Song Categories Failure',
+    props<{ error: any }>(),
+);
+
+export  const  clearStateSongCategory = createAction(
+    '[Song] Clear State Song Category',
+);
