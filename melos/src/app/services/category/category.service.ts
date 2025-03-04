@@ -16,7 +16,7 @@ export class CategoryService {
 
   getCategoryDetail(categoryId: string) {
     return this.http.get<CategoryModel>(
-      `http://localhost:3000/category/${categoryId}`
+      `http://localhost:3000/category?id=${categoryId}`
     );
   }
 

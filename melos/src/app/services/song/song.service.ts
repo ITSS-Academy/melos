@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SongService {
+  public currentPlaySong: any;
   constructor(private http: HttpClient) {}
 
   getSongDetail(songId: string) {
@@ -18,6 +19,11 @@ export class SongService {
   getSongList() {
     return this.http.get<SongModel[]>('http://localhost:3000/songs/all');
   }
+
+    getSongByCategory(categoryId: string) {
+    console.log('getSongByCategory', categoryId);
+        return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
+    }
 
   createSong(song: SongModel, idToken: string) {
     //with header Authorization
@@ -51,6 +57,7 @@ export class SongService {
   currentSong$ = this.currentSongSubject.asObservable();
 
   setCurrentSong(song: SongModel) {
+    this.currentPlaySong = song;
     this.currentSongSubject.next(song);
   }
 

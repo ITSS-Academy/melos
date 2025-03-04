@@ -1,8 +1,7 @@
 #category{
   width: 100%;
-  max-width: fit-content;
   height: 100%;
-  padding: 10px;
+  padding: 45px;
   margin: 0 auto;
   display: flex;
   flex-flow: row wrap ;
@@ -10,6 +9,10 @@
   justify-content: start; /* Canh lề trái khi xuống hàng */
   box-sizing: border-box;
   background-color: var(--surface);
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   app-category-card {
     height: fit-content;
   }

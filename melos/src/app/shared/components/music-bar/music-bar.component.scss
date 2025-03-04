@@ -29,12 +29,24 @@
   border-radius: 5px;
   margin-right: 10px;
 }
-
+.text {
+  height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  overflow: hidden;
+  min-width: 5vw;
+}
 .song-title {
   color: #fff;
   font-size: 16px;
+  min-width: 5vw;
+  height: 50%;
   padding: 0;
-  margin: 5px 0 0 0;
+  margin: 0 0 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -163,7 +175,7 @@ button.mat-icon-button:hover {
 
 #next-song-section {
   display: none;
-  padding: 10px 30px;
+  padding: 30px 30px;
   width: 70vh;
   height: 50%;
   background-color: var(--surface);
@@ -173,7 +185,7 @@ button.mat-icon-button:hover {
   z-index: 100;
   border-radius: 24px;
   border: 2px var(--surfaceContainer) solid;
-  h3 {
+  h6 {
     color: var(--onSurface);
     font-weight: 900;
     height: 10%;

@@ -8,6 +8,9 @@ import {SongState} from "../../ngrx/song/song.state";
 import {Store} from "@ngrx/store";
 import {SongModel} from "../../models/song.model";
 import * as SongActions from "../../ngrx/song/song.actions";
+import {CategoryModel} from "../../models/category.model";
+import {CategoryState} from "../../ngrx/category/category.state";
+import * as CategoryActions from "../../ngrx/category/category.actions";
 
 @Component({
   selector: 'app-category-detail',
@@ -19,90 +22,52 @@ import * as SongActions from "../../ngrx/song/song.actions";
 export class CategoryDetailComponent  implements OnInit, OnDestroy {
   currentMusic!: any;
   subscriptions: Subscription[] = [];
-  songLists: SongModel[] = [];
-  songLists$!: Observable<SongModel[]>;
+  songListsCategory: SongModel[] = [];
+  songListsCategory$!: Observable<SongModel[]>;
+  categoryDetail!: CategoryModel;
+  categoryDetail$!: Observable<CategoryModel>;
   constructor(
       private activatedRoute: ActivatedRoute,
       private store: Store<{
         song: SongState;
+        category: CategoryState;
       }>
     ) {
 
-    this.songLists$ = this.store.select('song', 'songList')
-    const id = this.activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.currentMusic = this.viewDetail(id);
-    }
-    console.log('Current Category:', this.currentMusic);
+    this.songListsCategory$ = this.store.select('song', 'songCategories')
+    this.categoryDetail$ = this.store.select('category', 'categoryDetail');
   }
-  viewDetail(id: string) {
-    const parsedId = parseInt(id, 10);
-    return this.categories.find((category) => category.id === parsedId);
-  }
+
   ngOnInit() {
+    this.activatedRoute.params.subscribe((params) => {
+      const id = params['id'];
+      if (id) {
+        console.log("id: ",id);
+
+        this.store.dispatch(SongActions.getSongCategories({id: id}));
+        this.store.dispatch(CategoryActions.getCategoryById({id: id}));
+      }
+    }),
     this.subscriptions.push(
-      this.songLists$.subscribe((songLists) => {
+      this.songListsCategory$.subscribe((songLists) => {
         if (songLists.length > 0) {
-          this.songLists = songLists;
+          this.songListsCategory = songLists;
           console.log(songLists);
         }
       }),
     );
+    this.subscriptions.push(
+        this.categoryDetail$.subscribe((categoryDetail) => {
+          if (categoryDetail) {
+            this.categoryDetail = categoryDetail;
+            console.log(categoryDetail);
+          }
+        }),
+    );
   }
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.store.dispatch(SongActions.clearStateSongCategory());
+    this.store.dispatch(CategoryActions.clearCategoryDetail());
   }
-
-  categories = [
-    {
-      id: 1,
-      img: 'https://cdn6.aptoide.com/imgs/f/a/0/fa09e649e67d44f6abe20d80b87ca210_icon.png',
-      comment: '',
-      tag: '',
-      category: 'Anison',
-    },
-    {
-      id: 2,
-      img: 'https://play-lh.googleusercontent.com/xGDL1hGdZbrV38H3ts8cF5c5sQmIvLFtIyiIZcE4lmbxSrGccpRKsMaOaXE1KL5CDwk',
-      comment: '',
-      tag: '',
-      category: 'EDM',
-    },
-    {
-      id: 3,
-      img: 'https://static.vecteezy.com/system/resources/thumbnails/024/569/707/small_2x/rock-music-concert-background-illustration-ai-generative-free-photo.jpg',
-      comment: '',
-      tag: '',
-      category: 'Rock',
-    },
-    {
-      id: 4,
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXR9cKCwLfAyxAlQcF5MdcibYCETp0Wa5iuw&s',
-      comment: '',
-      tag: '',
-      category: 'Country music',
-      singer_name: '',
-    },
-    {
-      id: 5,
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZVZH0d5ZaMtAOWI2nYa9n8Uw28w4P-_rlAw&s',
-      comment: '',
-      tag: '',
-      category: 'Jazz',
-    },
-    {
-      id: 6,
-      img: 'https://i.ytimg.com/vi/DrITKSRCqGo/maxresdefault.jpg',
-      comment: '',
-      tag: '',
-      category: 'Opera',
-    },
-    {
-      id: 7,
-      img: 'https://admin.musiconline.co/uploads/images/blog/header/hip-hop-muzik-tarihi.jpg',
-      comment: '',
-      tag: '',
-      category: 'Hip Hop',
-    },
-  ];
 }
