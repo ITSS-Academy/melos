@@ -35,6 +35,10 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatCardModule} from '@angular/material/card';
 import {LoadingComponent} from '../../shared/components/loading/loading.component';
 import {SongState} from '../../ngrx/song/song.state';
+import {CategoryModel} from '../../models/category.model';
+import {CategoryState} from '../../ngrx/category/category.state';
+
+import * as CategoryActions from '../../ngrx/category/category.actions';
 
 
 @Component({
@@ -68,6 +72,10 @@ export class UploadComponent implements OnInit, OnDestroy {
   auth$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
   isLoading$!: Observable<boolean>;
+  category$!: Observable<CategoryModel[]>;
+  cateGoryList: CategoryModel[] = [];
+
+
 
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -76,16 +84,16 @@ export class UploadComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   selectedImage: string | null = null;
 
-  other: string[] = [
-    'Pop',
-    'Jazz',
-    'Rock',
-    'Latin',
-    'Dance',
-    'Ballad',
-    'EDM',
-    'Country',
-  ];
+  // other: string[] = [
+  //   'Pop',
+  //   'Jazz',
+  //   'Rock',
+  //   'Latin',
+  //   'Dance',
+  //   'Ballad',
+  //   'EDM',
+  //   'Country',
+  // ];
 
   fileUploadForm = new FormGroup({
     audioFile: new FormControl<File | null>(null, Validators.required),
@@ -95,7 +103,8 @@ export class UploadComponent implements OnInit, OnDestroy {
     coverImage: new FormControl<File | null>(null, Validators.required),
     title: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
-    other: new FormControl('', Validators.required),
+    // other: new FormControl('', Validators.required),
+    category_id: new FormControl('', Validators.required),
     description: new FormControl(''),
   });
 
@@ -104,19 +113,34 @@ export class UploadComponent implements OnInit, OnDestroy {
     private store: Store<{
       auth: AuthState;
       song: SongState;
+      category: CategoryState;
     }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
     this.isLoading$ = this.store.select('song', 'isLoading');
+    this.category$ = this.store.select('category', 'categoryList'); // Lấy danh sách thể loại từ Store
+
+    this.store.dispatch(CategoryActions.getCategoryList());
   }
 
   ngOnInit() {
+
+
     this.subscription.push(
       this.auth$.subscribe((auth) => {
         if (auth?.idToken) {
           this.authData = auth;
         }
       }),
+
+      this.category$.subscribe((categories) => {
+        if (categories.length > 0) {
+          this.cateGoryList = categories;
+          console.log('categories:', this.cateGoryList);
+        }
+
+      })
+
     );
 
     this.fileUploadForm.valueChanges.subscribe(() =>
@@ -125,7 +149,10 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.trackInforForm.valueChanges.subscribe(() =>
       this.checkFormCompletion(),
     );
+
   }
+
+
 
 
 
@@ -137,7 +164,8 @@ export class UploadComponent implements OnInit, OnDestroy {
         image_url: this.trackInforForm.value.coverImage ?? '',
         title: this.trackInforForm.value.title ?? '',
         performer: this.trackInforForm.value.artist ?? '',
-        category_id: this.trackInforForm.value.other ?? '',
+        // category_id: this.trackInforForm.value.other ?? '',
+        category_id: this.trackInforForm.value.category_id ?? '',
         composer: this.trackInforForm.value.description ?? '',
         views: 0,
         uuid: this.authData?.uid ?? '',
@@ -274,7 +302,8 @@ export class UploadComponent implements OnInit, OnDestroy {
         coverImage: this.trackInforForm.value.coverImage,
         title: this.trackInforForm.value.title,
         artist: this.trackInforForm.value.artist,
-        other: this.trackInforForm.value.other,
+        // other: this.trackInforForm.value.other,
+        category: this.trackInforForm.value.category_id,
         description: this.trackInforForm.value.description,
       });
     }

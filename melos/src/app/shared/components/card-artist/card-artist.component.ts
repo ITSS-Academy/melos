@@ -15,9 +15,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 
@@ -37,9 +37,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 
@@ -59,9 +59,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 
@@ -81,9 +81,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 
@@ -103,9 +103,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 
@@ -125,9 +125,9 @@ export class CardArtistComponent {
 
       title: 'Nhạc việt',
 
-      composer: 'Dick',
+      composer: 'Nhìn Quá ',
 
-      performer: 'Dick',
+      performer: 'Nhìn Quá',
 
       file_path: 'string',
 

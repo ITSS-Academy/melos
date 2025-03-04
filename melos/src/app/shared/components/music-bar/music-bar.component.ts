@@ -86,14 +86,14 @@ export class MusicBarComponent implements OnInit {
     audio.ontimeupdate = () => {
       this.currentTime = audio.currentTime;
       this.duration = audio.duration || 100;
-<<<<<<< HEAD
+
       this.updateProgressBar(); // Gọi hàm cập nhật thanh tiến trình
-=======
+
       if (this.currentTime >= 10 && !this.hasUpdatedViews) {
         this.hasUpdatedViews = true;
         this.updateViews();
       }
->>>>>>> 939c88de4114c46cc29dde3e1eddb97f92f59b75
+
     };
 
     // Cập nhật trạng thái play/pause

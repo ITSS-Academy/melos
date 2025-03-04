@@ -84,9 +84,11 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Other</mat-label>
-              <mat-select formControlName="other" required>
+              <mat-select formControlName="category_id" required>
 
-                <mat-option *ngFor="let other of other" [value]="other">{{ other }}</mat-option>
+                <mat-option *ngFor="let category of category$ | async" [value]="category.id">
+                  {{category.name}}
+                </mat-option>
 
               </mat-select>
             </mat-form-field>
