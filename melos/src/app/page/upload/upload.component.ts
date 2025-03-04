@@ -138,7 +138,6 @@ export class UploadComponent implements OnInit, OnDestroy {
           this.cateGoryList = categories;
           console.log('categories:', this.cateGoryList);
         }
-
       })
 
     );
