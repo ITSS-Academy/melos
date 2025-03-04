@@ -93,7 +93,7 @@ export const songReducer = createReducer(
     };
   }),
 
-  //update views
+  //upload views
   on(SongActions.updateSongViews, (state, { type }) => {
     console.log(type);
     return {
