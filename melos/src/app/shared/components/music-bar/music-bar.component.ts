@@ -12,11 +12,12 @@ import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
 import { MaterialModule } from '../../material.module';
 import { Subscription } from 'rxjs';
+import {MusicTabComponent} from "../music-tab/music-tab.component";
 
 @Component({
   selector: 'app-music-bar',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule, MusicTabComponent],
   templateUrl: './music-bar.component.html',
   styleUrl: './music-bar.component.scss',
 })
@@ -116,7 +117,7 @@ export class MusicBarComponent implements OnInit {
   duration = 0;
   volume = 50;
   subscriptions: Subscription[] = [];
-
+  overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
 
@@ -200,5 +201,28 @@ export class MusicBarComponent implements OnInit {
       .toString()
       .padStart(2, '0');
     return `${minutes}:${seconds}`;
+  }
+
+  overlaySongList() {
+    if (this.overlayOpen) {
+      this.overlayOff();
+      this.overlayOpen = false;
+    } else {
+      this.overlayOn();
+      this.overlayOpen = true;
+    }
+  }
+
+  overlayOn() {
+    let section = document.getElementById('next-song-section')
+    if (section) {
+      section.style.display = "block"
+    }
+  }
+  overlayOff() {
+    let section = document.getElementById('next-song-section')
+    if (section) {
+      section.style.display = "none"
+    }
   }
 }

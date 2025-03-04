@@ -7,12 +7,13 @@ import { SongService } from '../../services/song/song.service';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { MusicCardComponent } from '../../shared/components/music-card/music-card.component';
 import {MaterialModule} from "../../shared/material.module";
-import {NgFor} from "@angular/common";
+
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MusicCardComponent, MaterialModule,NgFor],
+  imports: [MusicCardComponent, MaterialModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

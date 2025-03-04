@@ -140,3 +140,35 @@ button.mat-icon-button:hover {
   background-color: var(--onSurface);
   margin: 0 15px;
 }
+
+#next-song-section {
+  display: none;
+  padding: 10px 30px;
+  width: 70vh;
+  height: 50%;
+  background-color: var(--surface);
+  position: absolute;
+  bottom: 14%;
+  right: 25px;
+  z-index: 100;
+  border-radius: 24px;
+  border: 2px var(--surfaceContainer) solid;
+  h3 {
+    color: var(--onSurface);
+    font-weight: 900;
+    height: 10%;
+    margin-bottom: 3%;
+  }
+  .next-song-list {
+    height: 87%;
+    width: 100%;
+    color: var(--onSurface);
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    overflow-y: scroll;
+  }
+  .next-song-list::-webkit-scrollbar{
+    display: none
+  }
+}

@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
+import { OnInit, OnDestroy } from "@angular/core";
+import {Subscription} from "rxjs";
+import {getSongList} from "../../ngrx/song/song.actions";
+import {SongState} from "../../ngrx/song/song.state";
+import {Store} from "@ngrx/store";
+import {SongModel} from "../../models/song.model";
+import * as SongActions from "../../ngrx/song/song.actions";
 
 @Component({
   selector: 'app-category-detail',
@@ -9,9 +16,16 @@ import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.c
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.scss',
 })
-export class CategoryDetailComponent {
+export class CategoryDetailComponent  implements OnInit, OnDestroy {
   currentMusic!: any;
-  constructor(private activatedRoute: ActivatedRoute) {
+  subscriptions: Subscription[] = [];
+  songLists: SongModel[] = [];
+  constructor(
+      private activatedRoute: ActivatedRoute,
+      private store: Store<{
+        song: SongState;
+      }>
+    ) {
     const id = this.activatedRoute.snapshot.params['id'];
     if (id) {
       this.currentMusic = this.viewDetail(id);
@@ -21,6 +35,19 @@ export class CategoryDetailComponent {
   viewDetail(id: string) {
     const parsedId = parseInt(id, 10);
     return this.categories.find((category) => category.id === parsedId);
+  }
+  ngOnInit() {
+    this.subscriptions.push(
+      this.store.select('song', 'songList').subscribe((songLists) => {
+        if (songLists.length > 0) {
+          this.songLists = songLists;
+          console.log(songLists);
+        }
+      }),
+    );
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   categories = [

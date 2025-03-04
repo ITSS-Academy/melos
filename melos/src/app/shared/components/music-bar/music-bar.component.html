@@ -43,9 +43,22 @@
     <input type="range" class="volume-bar" min="0" max="100" [value]="volume" (input)="changeVolume($event)">
     <button mat-icon-button><mat-icon class="material-symbols-rounded">volume_up</mat-icon></button>
     <div class="line"></div>
-    <button mat-icon-button><mat-icon class="material-symbols-rounded">queue_music</mat-icon></button>
+    <button mat-icon-button><mat-icon class="material-symbols-rounded" (click)="overlaySongList()">queue_music</mat-icon></button>
   </div>
 </div>
 
 <!-- Hidden Audio Element -->
 <audio #audioPlayer crossorigin="anonymous"></audio>
+
+<!-- Next song -->
+<div id="next-song-section">
+    <h3>Next Song</h3>
+    <div class="next-song-list">
+        <app-music-tab></app-music-tab>
+        <app-music-tab></app-music-tab>
+        <app-music-tab></app-music-tab>
+        <app-music-tab></app-music-tab>
+        <app-music-tab></app-music-tab>
+        <app-music-tab></app-music-tab>
+    </div>
+</div>
