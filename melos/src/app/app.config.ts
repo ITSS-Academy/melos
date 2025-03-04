@@ -13,8 +13,11 @@ import * as SongEffects from './ngrx/song/song.effect';
 import { authReducer } from './ngrx/auth/auth.reducer';
 import * as AuthEffects from './ngrx/auth/auth.effects';
 import { playReducer } from './ngrx/play/play.reducer';
-import {categoryReducer} from './ngrx/category/category.reducers';
+import { categoryReducer } from './ngrx/category/category.reducers';
 import * as CategoryEffects from './ngrx/category/category.effects';
+import { historyReducer } from './ngrx/history/history.reducer';
+import * as HistoryEffects from './ngrx/history/history.effects';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -25,8 +28,9 @@ export const appConfig: ApplicationConfig = {
       auth: authReducer,
       play: playReducer,
       category: categoryReducer,
+      history: historyReducer,
     }),
-    provideEffects(SongEffects, AuthEffects, CategoryEffects),
+    provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects),
     provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({

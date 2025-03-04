@@ -1,0 +1,17 @@
+import { createAction, props } from '@ngrx/store';
+import { SongModel } from '../../models/song.model';
+
+export const getHistorySongList = createAction(
+  '[History] Get History Song List',
+  props<{ uid: string; idToken: string }>(),
+);
+
+export const GetHistorySongListSuccess = createAction(
+  '[History] Get History Song List Success',
+  props<{ historySongList: SongModel[] }>(),
+);
+
+export const GetHistorySongListFailure = createAction(
+  '[History] Get History Song List Failure',
+  props<{ error: any }>(),
+);
