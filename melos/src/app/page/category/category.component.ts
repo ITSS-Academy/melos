@@ -66,5 +66,12 @@ export class CategoryComponent {
       tag: '',
       category: 'Hip Hop',
     },
+    {
+      id: 8,
+      img: 'https://admin.musiconline.co/uploads/images/blog/header/hip-hop-muzik-tarihi.jpg',
+      comment: '',
+      tag: '',
+      category: 'Hip Hop',
+    },
   ];
 }

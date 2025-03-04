@@ -175,6 +175,18 @@ export class SongsController {
     }
   }
 
+  @Get('user-song')
+  async getUserSong(@Request() req: any) {
+    try {
+      const { uid } = req.query;
+      console.log('req', uid);
+
+      return await this.songsService.getSongByUserId(uid);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   @Get('category-song')
   async getCategorySong(@Request() req: any) {
     try {

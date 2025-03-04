@@ -1,11 +1,16 @@
 #category{
   width: 100%;
+  max-width: fit-content;
+  height: 100%;
   padding: 10px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(11, 1fr); /* 7 cột */
-  grid-auto-rows: 1fr; /* Các hàng có chiều cao bằng nhau */
-  gap: 20px; /* Khoảng cách giữa các thẻ con ngang & dọc */
+  display: flex;
+  flex-flow: row wrap ;
+  gap: 0px 20px; /* Khoảng cách giữa các thẻ con ngang & dọc */
   justify-content: start; /* Canh lề trái khi xuống hàng */
   box-sizing: border-box;
+  background-color: var(--surface);
+  app-category-card {
+    height: fit-content;
+  }
 }

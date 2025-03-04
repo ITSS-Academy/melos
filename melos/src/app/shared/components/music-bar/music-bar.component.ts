@@ -18,10 +18,12 @@ import * as SongActions from '../../../ngrx/song/song.actions';
 import { PlayState } from '../../../ngrx/play/play.state';
 import * as PlayActions from '../../../ngrx/play/play.actions';
 import { play } from '../../../ngrx/play/play.actions';
+import {MusicTabComponent} from "../music-tab/music-tab.component";
+
 @Component({
   selector: 'app-music-bar',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule,MusicTabComponent],
   templateUrl: './music-bar.component.html',
   styleUrl: './music-bar.component.scss',
 })
@@ -37,6 +39,7 @@ export class MusicBarComponent implements OnInit {
   hasUpdatedViews = false;
   play$!: Observable<boolean>;
 
+  overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
 
@@ -60,7 +63,15 @@ export class MusicBarComponent implements OnInit {
         }
       }),
       this.play$.subscribe((isPlaying) => {
-        this.isPlaying = isPlaying;
+        if (isPlaying) {
+            this.audioPlayer.nativeElement.play();
+          this.isPlaying = isPlaying;
+
+        }else {
+            this.audioPlayer.nativeElement.pause();
+          this.isPlaying = isPlaying;
+
+        }
       }),
     );
 
@@ -167,5 +178,28 @@ export class MusicBarComponent implements OnInit {
       .toString()
       .padStart(2, '0');
     return `${minutes}:${seconds}`;
+  }
+
+  overlaySongList() {
+    if (this.overlayOpen) {
+      this.overlayOff();
+      this.overlayOpen = false;
+    } else {
+      this.overlayOn();
+      this.overlayOpen = true;
+    }
+  }
+
+  overlayOn() {
+    let section = document.getElementById('next-song-section')
+    if (section) {
+      section.style.display = "block"
+    }
+  }
+  overlayOff() {
+    let section = document.getElementById('next-song-section')
+    if (section) {
+      section.style.display = "none"
+    }
   }
 }
