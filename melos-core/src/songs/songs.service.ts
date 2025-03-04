@@ -360,4 +360,20 @@ export class SongsService {
 
     console.log('data', data);
   }
+
+  async getSongByUserId(uid: string): Promise<Song[]> {
+    const { data, error } = await this.supabaseProvider
+      .getClient()
+      .from('songs')
+      .select('*')
+      .eq('uuid', uid);
+
+    if (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+
+    console.log('data', data);
+
+    return data;
+  }
 }
