@@ -70,7 +70,7 @@ button.mat-icon-button:hover {
 //}
 
 .play-btn {
-  background-color: #A0CAFD ;
+  background-color: var(--primaryFixedDim) ;
   color: black;
   border-radius: 50%;
   width: 40px;
@@ -98,7 +98,7 @@ button.mat-icon-button:hover {
   height: 4px;
   appearance: none;
   //background: #555;
-  background: linear-gradient(to right, #A0CAFD var(--progress, 0%), #555 var(--progress, 0%));
+  background: linear-gradient(to right, var(--primaryFixedDim) var(--progress, 0%), #555 var(--progress, 0%));
   border-radius: 5px;
   position: relative;
   transition: background 0.1s linear;
@@ -108,7 +108,7 @@ button.mat-icon-button:hover {
   appearance: none;
   width: 10px;
   height: 10px;
-  background: #A0CAFD;
+  background: var(--primaryFixedDim);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -135,7 +135,7 @@ button.mat-icon-button:hover {
   width: 70px;
   height: 4px;
   appearance: none;
-  background: linear-gradient(to right, #A0CAFD var(--volume, 0%), #555 var(--volume, 0%));
+  background: linear-gradient(to right, var(--primaryFixedDim) var(--volume, 0%), #555 var(--volume, 0%));
   transition: background 0.1s ease-in-out;
   border-radius: 5px;
   position: relative;
@@ -146,7 +146,7 @@ button.mat-icon-button:hover {
   appearance: none;
   width: 10px;
   height: 10px;
-  background: #A0CAFD;
+  background: var(--primaryFixedDim);
   border-radius: 50%;
   cursor: pointer;
   position: relative;

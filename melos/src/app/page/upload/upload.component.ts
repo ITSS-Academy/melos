@@ -43,6 +43,9 @@ import { CategoryModel } from '../../models/category.model';
 import { CategoryState } from '../../ngrx/category/category.state';
 
 import * as CategoryActions from '../../ngrx/category/category.actions';
+import {map, startWith} from 'rxjs/operators';
+import {AsyncPipe} from '@angular/common';
+import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-upload',
@@ -63,6 +66,9 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
     MatRadioModule,
     MatCardModule,
     LoadingComponent,
+    MatAutocompleteModule,
+    AsyncPipe,
+
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
@@ -79,20 +85,11 @@ export class UploadComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
-
+  categoryIdTemp:string = '';
   selectedFile: File | null = null;
   selectedImage: string | null = null;
 
-  // other: string[] = [
-  //   'Pop',
-  //   'Jazz',
-  //   'Rock',
-  //   'Latin',
-  //   'Dance',
-  //   'Ballad',
-  //   'EDM',
-  //   'Country',
-  // ];
+
 
   fileUploadForm = new FormGroup({
     audioFile: new FormControl<File | null>(null, Validators.required),
@@ -102,7 +99,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     coverImage: new FormControl<File | null>(null, Validators.required),
     title: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
-    // other: new FormControl('', Validators.required),
     category_id: new FormControl('', Validators.required),
     description: new FormControl(''),
   });
@@ -134,7 +130,8 @@ export class UploadComponent implements OnInit, OnDestroy {
           this.cateGoryList = categories;
           console.log('categories:', this.cateGoryList);
         }
-      }),
+
+      })
     );
 
     this.fileUploadForm.valueChanges.subscribe(() =>
@@ -143,7 +140,40 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.trackInforForm.valueChanges.subscribe(() =>
       this.checkFormCompletion(),
     );
+
+    this.category$ = this.trackInforForm.controls['category_id'].valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value ? value.toString() : ''))
+    );
   }
+
+  private _filter(value: string): CategoryModel[] {
+    if (!this.cateGoryList || !Array.isArray(this.cateGoryList)) {
+      return [];
+    }
+
+    const filterValue = value.trim().toLowerCase();
+
+    // Nếu value rỗng, trả về toàn bộ danh sách thay vì lọc
+    return filterValue ? this.cateGoryList.filter(option =>
+      option.name?.toLowerCase().includes(filterValue)
+    ) : this.cateGoryList;
+  }
+
+  onCategorySelected(event: MatAutocompleteSelectedEvent) {
+    const selectedName = event.option.value; // Giá trị name
+    const selectedCategory = this.cateGoryList.find(cat => cat.name === selectedName); // Tìm category
+    if (selectedCategory) {
+     this.categoryIdTemp = selectedCategory.id
+    }
+  }
+
+
+
+
+
+
+
 
   confirmForm() {
     this.formData = {
@@ -151,23 +181,22 @@ export class UploadComponent implements OnInit, OnDestroy {
       image_url: this.trackInforForm.value.coverImage ?? '',
       title: this.trackInforForm.value.title ?? '',
       performer: this.trackInforForm.value.artist ?? '',
-      // category_id: this.trackInforForm.value.other ?? '',
-      category_id: this.trackInforForm.value.category_id ?? '',
+      category_id: this.categoryIdTemp,
       composer: this.trackInforForm.value.description ?? '',
       views: 0,
       uuid: this.authData?.uid ?? '',
-      id: '1' ?? '',
+      id: '',
       createdAt: new Date().toISOString(),
     };
 
-    // if (this.authData?.idToken) {
-    //   this.store.dispatch(
-    //     SongActions.createSong({
-    //       song: this.formData,
-    //       idToken: this.authData?.idToken ?? '',
-    //     }),
-    //   );
-    // }
+    if (this.authData?.idToken) {
+      this.store.dispatch(
+        SongActions.createSong({
+          song: this.formData,
+          idToken: this.authData?.idToken ?? '',
+        }),
+      );
+    }
 
     console.log('formData:', this.formData);
   }
@@ -296,76 +325,4 @@ export class UploadComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private _formBuilder = inject(FormBuilder);
-  //
-  // firstFormGroup = this._formBuilder.group({
-  //   firstCtrl: ['', Validators.required],
-  // });
-  // secondFormGroup = this._formBuilder.group({
-  //   secondCtrl: ['', Validators.required],
-  // });
-  // isEditable = false;
-  //
-  //
-  // @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  // @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
-  //
-  // selectedFile: File | null = null;
-  // selectedImage: string | null = null;
-  //
-  // // Mở hộp thoại chọn file
-  // openFileChooser() {
-  //   this.fileInput.nativeElement.click();
-  // }
-  //
-  // openImageChooser() {
-  //   this.imageInput.nativeElement.click();
-  // }
-  //
-  // // Xử lý khi người dùng chọn file
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.selectedFile = input.files[0];
-  //     console.log('File selected:', this.selectedFile.name);
-  //   }
-  // }
-  //
-  // // Xử lý khi người dùng chọn ảnh
-  // onImageSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     const file = input.files[0];
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.selectedImage = reader.result as string;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
-  //
-  // // Kéo thả file
-  // onDragOver(event: DragEvent) {
-  //   event.preventDefault();
-  // }
-  //
-  // onDropFile(event: DragEvent) {
-  //   event.preventDefault();
-  //   if (event.dataTransfer?.files.length) {
-  //     this.selectedFile = event.dataTransfer.files[0];
-  //     console.log('File dragged:', this.selectedFile.name);
-  //   }
-  // }
-  //
-  // onDropImage(event: DragEvent) {
-  //   event.preventDefault();
-  //   if (event.dataTransfer?.files.length) {
-  //     const file = event.dataTransfer.files[0];
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.selectedImage = reader.result as string;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
 }
