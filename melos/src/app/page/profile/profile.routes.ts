@@ -1,10 +1,15 @@
-import {Routes} from "@angular/router";
+import { Routes } from '@angular/router';
 
-import {ProfileComponent} from './profile.component';
+import { ProfileComponent } from './profile.component';
 
 export const PROFILE_ROUTES: Routes = [
   {
     path: '',
-    component: ProfileComponent
-  }
+    component: ProfileComponent,
+    children: [
+      {
+        path: 'profile-history',
+      },
+    ],
+  },
 ];
