@@ -18,4 +18,6 @@ export class Song {
   uuid: string;
 
   views: number;
+
+  duration: number;
 }

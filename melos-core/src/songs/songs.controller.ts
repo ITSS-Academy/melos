@@ -105,10 +105,14 @@ export class SongsController {
     const songId = uuidv4();
 
     try {
+      const duration = await this.songsService.getAudioDuration(
+        musicFile.buffer,
+      );
       const hlsDir = await this.songsService.convertToHls(
         musicFile.buffer,
         songId,
       );
+
       // const hlsDir = await this.songsService.convertToHls(file.buffer, songId);
       const hlsUrl = await this.songsService.uploadHlsToSupabase(
         'songs',
@@ -132,6 +136,7 @@ export class SongsController {
         image_url: imageUrl,
         file_path: hlsUrl,
         views: 0,
+        duration: duration,
       };
 
       const newSong = await this.songsService.createSong(songData);
@@ -147,6 +152,7 @@ export class SongsController {
         uuid: body.uuid,
         image_url: imageUrl,
         file_path: hlsUrl,
+        duration: duration,
       };
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
