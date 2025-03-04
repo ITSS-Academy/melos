@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
   Query,
+  Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
@@ -21,8 +24,13 @@ export class CategoryController {
   }
 
   @Get()
-  async getCategoryById(@Query('id') id: string): Promise<Category> {
-    return this.categoryService.getCategoriesById(id);
+  async getCategoryById(@Request() req: any): Promise<Category> {
+    try {
+      const { id } = req.query;
+      return this.categoryService.getCategoriesById(id);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Get('all')

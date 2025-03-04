@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { AuthState } from './ngrx/auth/auth.state';
 import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
+import * as CategoryActions from './ngrx/category/category.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -64,7 +65,7 @@ export class AppComponent implements OnInit {
         this.setActiveLink();
         console.log(this.router.url);
       });
-
+    this.store.dispatch(CategoryActions.getCategoryList());
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
 

@@ -8,12 +8,11 @@ import { Song } from '../songs/entities/song.entity';
 import { SupabaseProvider } from '../supabase/supabase';
 import * as ffmpeg from 'fluent-ffmpeg';
 import * as ffmpegStatic from 'ffmpeg-static';
+import { exec } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import Bottleneck from 'bottleneck';
-import { log } from 'console';
-
 @Injectable()
 export class SongsService {
   constructor(private readonly supabaseProvider: SupabaseProvider) {}
@@ -33,6 +32,8 @@ export class SongsService {
   // Tạo bài hát mới
   async createSong(data: Partial<Song>): Promise<Song> {
     data.views = 0;
+    console.log('data', data);
+
     const { data: song, error } = await this.supabaseProvider
       .getClient()
       .from('songs')
@@ -42,6 +43,41 @@ export class SongsService {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     return song as Song;
+  }
+
+  async getAudioDuration(buffer: Buffer): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const tempFilePath = path.join(
+        os.tmpdir(),
+        `temp_audio_${Date.now()}.mp3`,
+      );
+      fs.writeFileSync(tempFilePath, buffer);
+
+      const command = `"${ffmpegStatic}" -i "${tempFilePath}" 2>&1 | findstr "Duration"`;
+
+      exec(command, (error, stdout) => {
+        fs.unlinkSync(tempFilePath); // Xóa file sau khi xử lý
+
+        if (error) {
+          console.error('Lỗi khi lấy duration:', error);
+          reject(new Error('Không thể lấy duration'));
+          return;
+        }
+
+        // Trích xuất thời lượng từ output của FFmpeg
+        const match = stdout.match(/Duration: (\d+):(\d+):(\d+\.\d+)/);
+        if (match) {
+          const duration =
+            parseInt(match[1]) * 3600 +
+            parseInt(match[2]) * 60 +
+            parseFloat(match[3]);
+          console.log(`🕒 Thời lượng: ${duration} giây`);
+          resolve(duration);
+        } else {
+          reject(new Error('Không thể đọc duration từ FFmpeg output'));
+        }
+      });
+    });
   }
 
   // Lấy bài hát theo ID
@@ -224,7 +260,7 @@ export class SongsService {
     try {
       console.log('Uploading image...');
       return new Promise((resolve, reject) => {
-        const file_path = `upload/${id}/${timeStamp}-${image.originalname}`;
+        const file_path = `upload/${id}/${timeStamp}`;
         this.supabaseProvider
           .getClient()
           .storage.from(bucket)

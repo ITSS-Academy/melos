@@ -30,6 +30,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
 
     {
@@ -52,6 +54,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
 
     {
@@ -74,6 +78,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
 
     {
@@ -96,6 +102,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
 
     {
@@ -118,6 +126,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
 
     {
@@ -140,6 +150,8 @@ export class CardArtistComponent {
       uuid: 'string',
 
       views: 0,
+
+      duration: 0,
     },
   ];
 }

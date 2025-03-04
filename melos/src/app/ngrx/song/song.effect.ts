@@ -34,6 +34,24 @@ export const getListSongs = createEffect(
   { functional: true },
 );
 
+export const getSongByCategory = createEffect(
+    (actions$ = inject(Actions), songService = inject(SongService)) => {
+        return actions$.pipe(
+            ofType(SongActions.getSongCategories),
+            exhaustMap((action) =>{
+                console.log(action.id);
+                return songService.getSongByCategory(action.id).pipe(
+                    map((songList) => SongActions.getSongCategoriesSuccess({ songCategories: songList })),
+                    catchError((error) => of(SongActions.getSongCategoriesFailure({ error }))),
+                );
+                }
+
+            ),
+        );
+    },
+    { functional: true },
+)
+
 export const createSong = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
     return actions$.pipe(

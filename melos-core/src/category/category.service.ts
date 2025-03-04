@@ -33,7 +33,11 @@ export class CategoryService {
   async getCategoriesById(id: string): Promise<Category> {
     const { data, error } = await this.supabaseProvider
       .getClient()
-      .rpc('get_category_by_id', { p_id: id });
+      .from('categories')
+      .select('*')
+      .eq('id', id);
+
+    console.log(data);
 
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
