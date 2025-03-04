@@ -1,7 +1,8 @@
 import {
   Component,
   ElementRef,
-  inject, OnDestroy,
+  inject,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -29,17 +30,19 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import * as SongActions from '../../ngrx/song/song.actions';
 
-import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSliderModule} from '@angular/material/slider';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatCardModule} from '@angular/material/card';
-import {LoadingComponent} from '../../shared/components/loading/loading.component';
-import {SongState} from '../../ngrx/song/song.state';
-import {CategoryModel} from '../../models/category.model';
-import {CategoryState} from '../../ngrx/category/category.state';
+import {
+  ProgressSpinnerMode,
+  MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { SongState } from '../../ngrx/song/song.state';
+import { CategoryModel } from '../../models/category.model';
+import { CategoryState } from '../../ngrx/category/category.state';
 
 import * as CategoryActions from '../../ngrx/category/category.actions';
-
 
 @Component({
   selector: 'app-upload',
@@ -60,13 +63,11 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
     MatRadioModule,
     MatCardModule,
     LoadingComponent,
-
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
 export class UploadComponent implements OnInit, OnDestroy {
-
   formData: SongModel = {} as SongModel;
   subscription: Subscription[] = [];
   auth$!: Observable<AuthModel | null>;
@@ -74,8 +75,6 @@ export class UploadComponent implements OnInit, OnDestroy {
   isLoading$!: Observable<boolean>;
   category$!: Observable<CategoryModel[]>;
   cateGoryList: CategoryModel[] = [];
-
-
 
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -108,7 +107,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     description: new FormControl(''),
   });
 
-
   constructor(
     private store: Store<{
       auth: AuthState;
@@ -124,8 +122,6 @@ export class UploadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
     this.subscription.push(
       this.auth$.subscribe((auth) => {
         if (auth?.idToken) {
@@ -138,8 +134,7 @@ export class UploadComponent implements OnInit, OnDestroy {
           this.cateGoryList = categories;
           console.log('categories:', this.cateGoryList);
         }
-      })
-
+      }),
     );
 
     this.fileUploadForm.valueChanges.subscribe(() =>
@@ -148,38 +143,31 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.trackInforForm.valueChanges.subscribe(() =>
       this.checkFormCompletion(),
     );
-
   }
 
-
-
-
-
-
   confirmForm() {
+    this.formData = {
+      file_path: this.fileUploadForm.value.audioFile ?? '',
+      image_url: this.trackInforForm.value.coverImage ?? '',
+      title: this.trackInforForm.value.title ?? '',
+      performer: this.trackInforForm.value.artist ?? '',
+      // category_id: this.trackInforForm.value.other ?? '',
+      category_id: this.trackInforForm.value.category_id ?? '',
+      composer: this.trackInforForm.value.description ?? '',
+      views: 0,
+      uuid: this.authData?.uid ?? '',
+      id: '1' ?? '',
+      createdAt: new Date().toISOString(),
+    };
 
-      this.formData = {
-        file_path: this.fileUploadForm.value.audioFile ?? '',
-        image_url: this.trackInforForm.value.coverImage ?? '',
-        title: this.trackInforForm.value.title ?? '',
-        performer: this.trackInforForm.value.artist ?? '',
-        // category_id: this.trackInforForm.value.other ?? '',
-        category_id: this.trackInforForm.value.category_id ?? '',
-        composer: this.trackInforForm.value.description ?? '',
-        views: 0,
-        uuid: this.authData?.uid ?? '',
-        id: '1' ?? '',
-        createdAt: new Date().toISOString(),
-      };
-
-      if (this.authData?.idToken) {
-        this.store.dispatch(
-          SongActions.createSong({
-            song: this.formData,
-            idToken: this.authData?.idToken ?? '',
-          }),
-        );
-      }
+    // if (this.authData?.idToken) {
+    //   this.store.dispatch(
+    //     SongActions.createSong({
+    //       song: this.formData,
+    //       idToken: this.authData?.idToken ?? '',
+    //     }),
+    //   );
+    // }
 
     console.log('formData:', this.formData);
   }
