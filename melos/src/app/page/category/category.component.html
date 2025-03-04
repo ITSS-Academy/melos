@@ -1,6 +1,6 @@
 <div id="category">
-    @for (category of categories; track $index) {
-    <app-category-card [id]="category.id" [img]="category.img" [comment]="category.comment" [category]="category.category" [tag]="category.tag"></app-category-card>
+    @for (category of categoryList; track $index) {
+    <app-category-card [category]="category" ></app-category-card>
     }
 
 

@@ -96,4 +96,11 @@ export const categoryReducer = createReducer(
       isLoading: false,
     };
   }),
-);
+    on(CategoryActions.clearCategoryDetail, (state,{type}) => {
+      console.log(type);
+      return {
+        ...state,
+        categoryDetail: <CategoryModel>{},
+      };
+    }),
+)

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import {CategoryModel} from "../../../models/category.model";
 
 @Component({
   selector: 'app-category-card',
@@ -9,9 +10,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './category-card.component.scss',
 })
 export class CategoryCardComponent {
-  @Input() id!: number;
-  @Input() img!: string;
-  @Input() comment!: string;
-  @Input() tag!: string;
-  @Input() category: string = '';
+  @Input() category!: CategoryModel;
 }

@@ -19,6 +19,11 @@ export class SongService {
     return this.http.get<SongModel[]>('http://localhost:3000/songs/all');
   }
 
+    getSongByCategory(categoryId: string) {
+    console.log('getSongByCategory', categoryId);
+        return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
+    }
+
   createSong(song: SongModel, idToken: string) {
     //with header Authorization
     const headers = {

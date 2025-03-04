@@ -11,13 +11,16 @@
 
   .card-img {
     cursor: pointer;
-
+    transition: 200ms;
     img {
       border-radius: 10%;
       overflow: hidden;
       width: 100%; /* Ảnh chiếm toàn bộ chiều ngang thẻ con */
       aspect-ratio: 1 / 1; /* Đảm bảo ảnh luôn vuông */
       object-fit: cover; /* Đảm bảo ảnh không méo */
+    }
+    &:hover{
+      scale: 1.1;
     }
   }
   .card-title {

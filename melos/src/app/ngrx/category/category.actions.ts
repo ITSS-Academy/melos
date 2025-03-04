@@ -46,3 +46,7 @@ export const createCategoryFailure = createAction(
   '[Category] Create Category Failure',
   props<{ error: any }>(),
 );
+
+export const clearCategoryDetail = createAction(
+    '[Category] Clear Category Detail'
+);

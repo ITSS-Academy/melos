@@ -1,13 +1,13 @@
 <div id="category-detail">
   <div class="container-left">
     <div class="selected-category">
-      <img [src]=currentMusic.img alt="">
+      <img [src]=categoryDetail?.image_url alt="">
     </div>
-    <h2>{{currentMusic.category}}</h2>
+    <h2>{{categoryDetail?.name}}</h2>
   </div>
   <div class="container-right">
     <div class="list_music">
-        @for (music of songLists; track music.id) {
+        @for (music of songListsCategory; track music.id) {
             <app-music-tab [song]="music"
             ></app-music-tab>
         }

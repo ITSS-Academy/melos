@@ -15,7 +15,6 @@ import * as AuthEffects from './ngrx/auth/auth.effects';
 import { playReducer } from './ngrx/play/play.reducer';
 import {categoryReducer} from './ngrx/category/category.reducers';
 import * as CategoryEffects from './ngrx/category/category.effects';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
