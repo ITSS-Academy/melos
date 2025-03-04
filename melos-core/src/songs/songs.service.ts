@@ -260,7 +260,7 @@ export class SongsService {
     try {
       console.log('Uploading image...');
       return new Promise((resolve, reject) => {
-        const file_path = `upload/${id}/${timeStamp}-${image.originalname}`;
+        const file_path = `upload/${id}/${timeStamp}`;
         this.supabaseProvider
           .getClient()
           .storage.from(bucket)

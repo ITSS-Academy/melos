@@ -11,7 +11,7 @@ export class SongService {
 
   getSongDetail(songId: string) {
     return this.http.get<SongModel>(
-      `http://localhost:3000/songs/${songId}/hls-url`,
+      `http://localhost:3000/songs/${songId}/hls-url`
     );
   }
 
@@ -43,7 +43,7 @@ export class SongService {
   updateSongViews(songId: string) {
     return this.http.put(
       `http://localhost:3000/songs/update-views?id=${songId}`,
-      {},
+      {}
     );
   }
 
