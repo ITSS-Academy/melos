@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class SongService {
+  public currentPlaySong: any;
   constructor(private http: HttpClient) {}
 
   getSongDetail(songId: string) {
@@ -56,6 +57,7 @@ export class SongService {
   currentSong$ = this.currentSongSubject.asObservable();
 
   setCurrentSong(song: SongModel) {
+    this.currentPlaySong = song;
     this.currentSongSubject.next(song);
   }
 
