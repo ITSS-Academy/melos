@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  inject,
+  inject, OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -29,6 +29,18 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import * as SongActions from '../../ngrx/song/song.actions';
 
+import {ProgressSpinnerMode, MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCardModule} from '@angular/material/card';
+import {LoadingComponent} from '../../shared/components/loading/loading.component';
+import {SongState} from '../../ngrx/song/song.state';
+import {CategoryModel} from '../../models/category.model';
+import {CategoryState} from '../../ngrx/category/category.state';
+
+import * as CategoryActions from '../../ngrx/category/category.actions';
+
+
 @Component({
   selector: 'app-upload',
   standalone: true,
@@ -43,39 +55,28 @@ import * as SongActions from '../../ngrx/song/song.actions';
     MatIconModule,
     MatSelectModule,
     CommonModule,
+    MatProgressSpinnerModule,
+    MatSliderModule,
+    MatRadioModule,
+    MatCardModule,
+    LoadingComponent,
+
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
-export class UploadComponent implements OnInit {
-  constructor(
-    private store: Store<{
-      auth: AuthState;
-    }>,
-  ) {
-    this.auth$ = this.store.select('auth', 'authData');
-  }
+export class UploadComponent implements OnInit, OnDestroy {
 
-  ngOnInit() {
-    this.subscription.push(
-      this.auth$.subscribe((auth) => {
-        if (auth?.idToken) {
-          this.authData = auth;
-        }
-      }),
-    );
-
-    this.fileUploadForm.valueChanges.subscribe(() =>
-      this.checkFormCompletion(),
-    );
-    this.trackInforForm.valueChanges.subscribe(() =>
-      this.checkFormCompletion(),
-    );
-  }
-
+  formData: SongModel = {} as SongModel;
   subscription: Subscription[] = [];
   auth$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
+  isLoading$!: Observable<boolean>;
+  category$!: Observable<CategoryModel[]>;
+  cateGoryList: CategoryModel[] = [];
+
+
+
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
@@ -83,16 +84,16 @@ export class UploadComponent implements OnInit {
   selectedFile: File | null = null;
   selectedImage: string | null = null;
 
-  other: string[] = [
-    'Pop',
-    'Jazz',
-    'Rock',
-    'Latin',
-    'Dance',
-    'Ballad',
-    'EDM',
-    'Country',
-  ];
+  // other: string[] = [
+  //   'Pop',
+  //   'Jazz',
+  //   'Rock',
+  //   'Latin',
+  //   'Dance',
+  //   'Ballad',
+  //   'EDM',
+  //   'Country',
+  // ];
 
   fileUploadForm = new FormGroup({
     audioFile: new FormControl<File | null>(null, Validators.required),
@@ -102,36 +103,89 @@ export class UploadComponent implements OnInit {
     coverImage: new FormControl<File | null>(null, Validators.required),
     title: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
-    other: new FormControl('', Validators.required),
+    // other: new FormControl('', Validators.required),
+    category_id: new FormControl('', Validators.required),
     description: new FormControl(''),
   });
 
-  formData: SongModel = {} as SongModel;
+
+  constructor(
+    private store: Store<{
+      auth: AuthState;
+      song: SongState;
+      category: CategoryState;
+    }>,
+  ) {
+    this.auth$ = this.store.select('auth', 'authData');
+    this.isLoading$ = this.store.select('song', 'isLoading');
+    this.category$ = this.store.select('category', 'categoryList'); // Lấy danh sách thể loại từ Store
+
+    this.store.dispatch(CategoryActions.getCategoryList());
+  }
+
+  ngOnInit() {
+
+
+    this.subscription.push(
+      this.auth$.subscribe((auth) => {
+        if (auth?.idToken) {
+          this.authData = auth;
+        }
+      }),
+
+      this.category$.subscribe((categories) => {
+        if (categories.length > 0) {
+          this.cateGoryList = categories;
+          console.log('categories:', this.cateGoryList);
+        }
+      })
+
+    );
+
+    this.fileUploadForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+    this.trackInforForm.valueChanges.subscribe(() =>
+      this.checkFormCompletion(),
+    );
+
+  }
+
+
+
+
+
 
   confirmForm() {
-    this.formData = {
-      file_path: this.fileUploadForm.value.audioFile ?? '',
-      image_url: this.trackInforForm.value.coverImage ?? '',
-      title: this.trackInforForm.value.title ?? '',
-      performer: this.trackInforForm.value.artist ?? '',
-      category_id: this.trackInforForm.value.other ?? '',
-      composer: this.trackInforForm.value.description ?? '',
-      views: 0,
-      uuid: this.authData?.uid ?? '',
-      id: '1' ?? '',
-      createdAt: new Date().toISOString(),
-    };
 
-    if (this.authData?.idToken) {
-      this.store.dispatch(
-        SongActions.createSong({
-          song: this.formData,
-          idToken: this.authData?.idToken ?? '',
-        }),
-      );
-    }
+      this.formData = {
+        file_path: this.fileUploadForm.value.audioFile ?? '',
+        image_url: this.trackInforForm.value.coverImage ?? '',
+        title: this.trackInforForm.value.title ?? '',
+        performer: this.trackInforForm.value.artist ?? '',
+        // category_id: this.trackInforForm.value.other ?? '',
+        category_id: this.trackInforForm.value.category_id ?? '',
+        composer: this.trackInforForm.value.description ?? '',
+        views: 0,
+        uuid: this.authData?.uid ?? '',
+        id: '1' ?? '',
+        createdAt: new Date().toISOString(),
+      };
+
+      if (this.authData?.idToken) {
+        this.store.dispatch(
+          SongActions.createSong({
+            song: this.formData,
+            idToken: this.authData?.idToken ?? '',
+          }),
+        );
+      }
 
     console.log('formData:', this.formData);
+  }
+
+  ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
   }
 
   // Chọn file nhạc
@@ -247,7 +301,8 @@ export class UploadComponent implements OnInit {
         coverImage: this.trackInforForm.value.coverImage,
         title: this.trackInforForm.value.title,
         artist: this.trackInforForm.value.artist,
-        other: this.trackInforForm.value.other,
+        // other: this.trackInforForm.value.other,
+        category: this.trackInforForm.value.category_id,
         description: this.trackInforForm.value.description,
       });
     }

@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { MaterialModule } from '../../material.module';
 import { SongModel } from '../../../models/song.model';
 import { SongService } from '../../../services/song/song.service';
-import * as PlayAction from '../../../ngrx/play/play.actions';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -20,7 +19,7 @@ export class MusicCardComponent {
     console.log(this.song);
 
     this.songService.setCurrentSong(this.song);
-    PlayAction.play();
+
     // setTimeout(() => {
     //   const audioElement = document.getElementById(
     //     'singleAudio',

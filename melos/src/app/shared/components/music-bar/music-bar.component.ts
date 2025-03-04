@@ -74,6 +74,8 @@ export class MusicBarComponent implements OnInit {
         }
       }),
     );
+
+    this.updateChangeVolume();
   }
 
   setupHls(): void {
@@ -95,16 +97,31 @@ export class MusicBarComponent implements OnInit {
     audio.ontimeupdate = () => {
       this.currentTime = audio.currentTime;
       this.duration = audio.duration || 100;
+
+      this.updateProgressBar(); // Gọi hàm cập nhật thanh tiến trình
+
       if (this.currentTime >= 10 && !this.hasUpdatedViews) {
         this.hasUpdatedViews = true;
         this.updateViews();
       }
+
     };
 
     // Cập nhật trạng thái play/pause
     audio.onplay = () => this.store.dispatch(PlayActions.play());
     audio.onpause = () => this.store.dispatch(PlayActions.pause());
   }
+
+  //Cập nhật thanh có màu theo thời gian bài hát chạy
+  updateProgressBar() {
+    const progress = (this.currentTime / this.duration) * 100;
+    const progressBar = document.querySelector('.progress-bar') as HTMLInputElement;
+    if (progressBar) {
+      // progressBar.style.background = `linear-gradient(to right, #2196F3 ${progress}%, #ccc ${progress}%)`;
+      progressBar.style.setProperty('--progress', `${progress}%`);
+    }
+  }
+
 
   togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
@@ -134,7 +151,17 @@ export class MusicBarComponent implements OnInit {
     const audio = this.audioPlayer.nativeElement;
     audio.volume = event.target.value / 100;
     this.volume = event.target.value;
+    this.updateChangeVolume()
   }
+
+  updateChangeVolume() {
+    const volumeBar = document.querySelector('.volume-bar') as HTMLInputElement;
+    if (volumeBar) {
+      const volume = this.volume || 50; // Giả sử mặc định là 50%
+      volumeBar.style.setProperty('--volume', `${volume}%`);
+    }
+  }
+
 
   rewind() {
     this.audioPlayer.nativeElement.currentTime -= 10;
