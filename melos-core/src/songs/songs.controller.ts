@@ -152,6 +152,7 @@ export class SongsController {
         uuid: body.uuid,
         image_url: imageUrl,
         file_path: hlsUrl,
+        views: 0,
         duration: duration,
       };
     } catch (error) {
