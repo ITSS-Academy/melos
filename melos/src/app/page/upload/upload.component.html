@@ -1,4 +1,6 @@
 <div class="container-upload">
+  @if (authData){
+
 
   <!--  upload nhạc-->
   <mat-stepper headerPosition="top" #stepper linear>
@@ -150,7 +152,13 @@
 
     </mat-step>
   </mat-stepper>
-
+  } @else {
+    <div class="not-logged-in">
+      <img class="avatar-not-loggin" src="{{ 'https://avatar.iran.liara.run/public/48' }}"/>
+      <h4>Bạn cần đăng nhập để tải nhạc lên!</h4>
+<!--      <button mat-flat-button color="primary" (click)="redirectToLogin()">Đăng nhập ngay</button>-->
+    </div>
+  }
 
 </div>
 

@@ -194,5 +194,17 @@
   height: 100%;
 }
 
+.not-logged-in{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-not-loggin{
+  width: 200px;
+  height: 200px;
+}
 
 
