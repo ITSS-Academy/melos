@@ -9,6 +9,7 @@ import { CategoryModule } from './category/category.module';
 import { AuthMiddleware } from './auth/firebase-auth.middleware';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { HistoryModule } from './history/history.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { HistoryModule } from './history/history.module';
     CategoryModule,
     PlaylistsModule,
     HistoryModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
