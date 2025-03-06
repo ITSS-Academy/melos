@@ -1,10 +1,12 @@
-<div class="container-history">
+<div class="history-container">
+    <app-loading *ngIf="isLoading$ | async"></app-loading>
 
-  @if (authData){
+    <div class="list-music" *ngIf="!(isLoading$ | async)">
+        @for (song of historySongList; track song.id){
+        <app-music-tab [song]="song"></app-music-tab>
+        }
+    </div>
 
-  } @else {
-    <app-dialog-login></app-dialog-login>
-  }
 
 
 </div>

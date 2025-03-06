@@ -12,6 +12,7 @@ export const getHistorySongList = createEffect(
       exhaustMap((action) =>
         historyService.getHistoryList(action.idToken, action.uid).pipe(
           map((historySongList: SongModel[]) => {
+            console.log('Fetched history songs:', historySongList);
             return HistoryActions.GetHistorySongListSuccess({
               historySongList,
             });

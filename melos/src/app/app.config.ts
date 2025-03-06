@@ -17,6 +17,7 @@ import { categoryReducer } from './ngrx/category/category.reducers';
 import * as CategoryEffects from './ngrx/category/category.effects';
 import { historyReducer } from './ngrx/history/history.reducer';
 import * as HistoryEffects from './ngrx/history/history.effects';
+import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
 import {uploadReducer} from './ngrx/uploaded/uploaded.reducer';
 
 export const appConfig: ApplicationConfig = {
@@ -37,6 +38,7 @@ export const appConfig: ApplicationConfig = {
       AuthEffects,
       CategoryEffects,
       HistoryEffects,
+      UploadEffects,
       // LikeEffects,
     ),
     provideHttpClient(),
