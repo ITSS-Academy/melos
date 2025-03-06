@@ -32,7 +32,13 @@ export const appConfig: ApplicationConfig = {
       history: historyReducer,
       upload: uploadReducer,
     }),
-    provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects),
+    provideEffects(
+      SongEffects,
+      AuthEffects,
+      CategoryEffects,
+      HistoryEffects,
+      // LikeEffects,
+    ),
     provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({

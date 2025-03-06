@@ -10,6 +10,7 @@ import { AuthMiddleware } from './auth/firebase-auth.middleware';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { HistoryModule } from './history/history.module';
 import { QueueModule } from './queue/queue.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { QueueModule } from './queue/queue.module';
     PlaylistsModule,
     HistoryModule,
     QueueModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
