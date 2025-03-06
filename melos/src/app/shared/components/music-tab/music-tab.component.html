@@ -8,7 +8,7 @@
             <img [src]="song?.image_url" alt="music-cover">
         </div>
         <div class="ns-info">
-            <span class="name-ns">{{song?.title}}</span>
+            <span class="name-ns" [routerLink]="['/detail',song?.id]">{{song?.title}}</span>
             <p class="content-ns">{{song?.performer}}</p>
         </div>
         <div class="ns-time">
