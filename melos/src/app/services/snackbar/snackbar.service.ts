@@ -22,7 +22,7 @@ export class SnackbarService {
     this._snackBar.openFromComponent(SnackbarComponent, {
       data: { message, action },
       duration: duration || 3000,
-      horizontalPosition: horizontalPosition || 'end',
+      horizontalPosition: horizontalPosition || 'right',
       verticalPosition: verticalPosition || 'top',
     });
   }
