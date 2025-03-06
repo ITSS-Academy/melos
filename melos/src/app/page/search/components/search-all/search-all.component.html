@@ -12,17 +12,10 @@
 
   <div class="Songs">
     <h5 class="title">Song</h5>
-    <div class="list-music">
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-      <app-music-tab></app-music-tab>
-
+    <div class="list-music" *ngIf="!(isLoading$ | async)">
+      @for (song of (uploadSongList$ | async); track song.id){
+        <app-music-tab [song]="song"></app-music-tab>
+      }
     </div>
 
   </div>

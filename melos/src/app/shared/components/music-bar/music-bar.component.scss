@@ -42,22 +42,22 @@
 .song-title {
   color: #fff;
   font-size: 16px;
-  min-width: 18vw;
-  //height: 50%;
+  max-width: 330px; /* Set a maximum width */
   padding: 0;
   margin: 0;
-  //overflow: hidden;
-  //text-overflow: ellipsis;
-  //white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-
 .song-composer{
-  color: #fff;
-  font-size: 14px;
-  min-width: 16vw;
-  //height: 50%;
+  color: var(--onSurfaceVariant);
+  font-size: 12px;
+  max-width: 330px; /* Set a maximum width */
   padding: 0;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
 }
 

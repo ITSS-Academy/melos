@@ -65,7 +65,7 @@ export class UploadedComponent implements OnInit, OnDestroy {
 
       this.uploadSongList$.subscribe((uploadSongList) => {
         // console.log(uploadSongList);
-        if (uploadSongList && uploadSongList.length > 0) {
+        if (uploadSongList.length > 0) {
           this.uploadSongList = uploadSongList;
           console.log('uploadSongList', this.uploadSongList);
         } else {
