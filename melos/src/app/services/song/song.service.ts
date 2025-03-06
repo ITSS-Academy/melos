@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SongModel } from '../../models/song.model';
 import { BehaviorSubject } from 'rxjs';
+import {idToken} from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +23,12 @@ export class SongService {
 
     getSongByCategory(categoryId: string) {
     console.log('getSongByCategory', categoryId);
-        return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
+      return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
     }
+
+  getSongQueue(uid: string) {
+    //return this.http.get<SongModel[]>('http://localhost:3000/queue/get-song-queues-user', {uid: uid});
+  }
 
   createSong(song: SongModel, idToken: string) {
     //with header Authorization

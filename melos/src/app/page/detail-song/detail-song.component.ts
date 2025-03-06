@@ -75,20 +75,20 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     }
     playSong() {
         if (this.isPlaying) {
-            if (this.songDetail!.id == this.songService.currentPlaySong!.id) {
+            if (this.songDetail?.id == this.songService.currentPlaySong?.id) {
                 this.store.dispatch(PlayAction.pause());
                 return;
             } else {
-                this.songService.setCurrentSong(this.songDetail!);
+                this.songService.setCurrentSong(this.songDetail);
                 this.store.dispatch(PlayAction.play());
                 return;
             }
         } else {
-            if (this.songDetail!.id == this.songService.currentPlaySong!.id) {
+            if (this.songDetail?.id == this.songService.currentPlaySong?.id) {
                 this.store.dispatch(PlayAction.play());
                 return;
             } else {
-                this.songService.setCurrentSong(this.songDetail!);
+                this.songService.setCurrentSong(this.songDetail);
                 this.store.dispatch(PlayAction.play());
                 return;
             }

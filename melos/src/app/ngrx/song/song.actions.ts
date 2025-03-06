@@ -81,3 +81,16 @@ export const getSongCategoriesFailure = createAction(
 export  const  clearStateSongCategory = createAction(
     '[Song] Clear State Song Category',
 );
+
+export const getSongQueue = createAction(
+    '[Song] Get Song Queue',
+    props<{ id: string }>(),
+);
+export const getSongQueueSuccess = createAction(
+    '[Song] Get Song Queue Success',
+    props<{ songQueue: SongModel[] }>(),
+);
+export const getSongQueueFailure = createAction(
+    '[Song] Get Song Queue Failure',
+    props<{ error: any }>(),
+);

@@ -9,6 +9,7 @@ export const initialSongState: SongState = {
   isLoading: false,
   error: null,
   songCategories: <SongModel[]>[],
+  songQueue: <SongModel[]>[],
 };
 
 export const songReducer = createReducer(
@@ -146,5 +147,28 @@ export const songReducer = createReducer(
         ...state,
         songCategories: [],
       }
-    })
+    }),
+    on(SongActions.getSongQueue, (state, { type }) => {
+      console.log(type);
+      return {
+        ...state,
+        isLoading: true,
+      }
+    }),
+    on(SongActions.getSongQueueSuccess, (state, { songQueue, type }) => {
+        console.log(type);
+        return <SongState>{
+            ...state,
+            songQueue: songQueue,
+            isLoading: false,
+        };
+    }),
+    on(SongActions.getSongQueueFailure, (state, { error, type }) => {
+        console.log(type);
+        return {
+            ...state,
+            error: error,
+            isLoading: false,
+        };
+    }),
 );
