@@ -1,11 +1,10 @@
 <div class="container-history">
 
-  <div class="music-tab">
+  @if (authData){
 
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-
-  </div>
+  } @else {
+    <app-dialog-login></app-dialog-login>
+  }
 
 
 </div>
