@@ -20,4 +20,5 @@ export interface SongModel {
   views: number;
 
   duration: number;
+
 }
