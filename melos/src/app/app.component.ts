@@ -11,6 +11,7 @@ import { AuthState } from './ngrx/auth/auth.state';
 import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as CategoryActions from './ngrx/category/category.actions';
+import * as LikeActions from './ngrx/like/like.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -53,6 +54,14 @@ export class AppComponent implements OnInit {
           photoURL: user.photoURL,
           uid: user.uid,
         };
+        if (this.authData?.idToken && this.authData?.uid) {
+          this.store.dispatch(
+            LikeActions.getSongIdLiked({
+              idToken: this.authData?.idToken,
+              uid: this.authData?.uid,
+            }),
+          );
+        }
         this.store.dispatch(AuthActions.storeAuth({ authData: this.authData }));
       }
     });
@@ -66,6 +75,7 @@ export class AppComponent implements OnInit {
         console.log(this.router.url);
       });
     this.store.dispatch(CategoryActions.getCategoryList());
+
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
 

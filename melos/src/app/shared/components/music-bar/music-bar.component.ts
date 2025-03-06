@@ -18,12 +18,12 @@ import * as SongActions from '../../../ngrx/song/song.actions';
 import { PlayState } from '../../../ngrx/play/play.state';
 import * as PlayActions from '../../../ngrx/play/play.actions';
 import { play } from '../../../ngrx/play/play.actions';
-import {MusicTabComponent} from "../music-tab/music-tab.component";
+import { MusicTabComponent } from '../music-tab/music-tab.component';
 
 @Component({
   selector: 'app-music-bar',
   standalone: true,
-  imports: [MaterialModule,MusicTabComponent],
+  imports: [MaterialModule, MusicTabComponent],
   templateUrl: './music-bar.component.html',
   styleUrl: './music-bar.component.scss',
 })
@@ -66,13 +66,11 @@ export class MusicBarComponent implements OnInit {
       }),
       this.play$.subscribe((isPlaying) => {
         if (isPlaying) {
-            this.audioPlayer.nativeElement.play();
+          this.audioPlayer.nativeElement.play();
           this.isPlaying = isPlaying;
-
-        }else {
-            this.audioPlayer.nativeElement.pause();
+        } else {
+          this.audioPlayer.nativeElement.pause();
           this.isPlaying = isPlaying;
-
         }
       }),
     );
@@ -106,7 +104,6 @@ export class MusicBarComponent implements OnInit {
         this.hasUpdatedViews = true;
         this.updateViews();
       }
-
     };
 
     // Cập nhật trạng thái play/pause
@@ -117,13 +114,14 @@ export class MusicBarComponent implements OnInit {
   //Cập nhật thanh có màu theo thời gian bài hát chạy
   updateProgressBar() {
     const progress = (this.currentTime / this.duration) * 100;
-    const progressBar = document.querySelector('.progress-bar') as HTMLInputElement;
+    const progressBar = document.querySelector(
+      '.progress-bar',
+    ) as HTMLInputElement;
     if (progressBar) {
       // progressBar.style.background = `linear-gradient(to right, #2196F3 ${progress}%, #ccc ${progress}%)`;
       progressBar.style.setProperty('--progress', `${progress}%`);
     }
   }
-
 
   togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
@@ -173,7 +171,6 @@ export class MusicBarComponent implements OnInit {
       console.log('Volume:', volume);
     }
   }
-
 
   rewind() {
     this.audioPlayer.nativeElement.currentTime -= 10;
