@@ -58,12 +58,16 @@
     width: 50%;
     min-width: 20vw;
     span {
-      width: 100%;
+      cursor: pointer;
+      width: fit-content;
       max-width: 100%;
       font-size: 16px;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+    }
+    span:hover {
+        text-decoration: underline;
     }
     p {
       width: 100%;

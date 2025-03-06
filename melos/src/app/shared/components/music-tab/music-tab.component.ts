@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, } from '@angular/core';
 import { MaterialModule } from '../../material.module';
 import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
@@ -11,11 +11,12 @@ import { LikeState } from '../../../ngrx/like/like.state';
 import { AuthState } from '../../../ngrx/auth/auth.state';
 import { AuthModel } from '../../../models/auth.model';
 import * as LikeActions from '../../../ngrx/like/like.actions';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-music-tab',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule,RouterLink],
   templateUrl: './music-tab.component.html',
   styleUrl: './music-tab.component.scss',
 })
@@ -57,19 +58,39 @@ export class MusicTabComponent implements OnInit {
       }),
     );
   }
-  @Input() song?: SongModel;
+  @Input() song!: SongModel;
+
+  isPlayingSong() {
+    return this.isPlaying && this.song?.id == this.songService.currentPlaySong?.id;
+  }
   playSong() {
-    if (
-      this.isPlaying &&
-      this.song?.id == this.songService.currentPlaySong?.id
-    ) {
-      this.store.dispatch(PlayAction.pause());
-      return;
+    if (this.isPlaying) {
+      if (this.song?.id == this.songService.currentPlaySong?.id) {
+        this.store.dispatch(PlayAction.pause());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.song);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
     } else {
-      this.songService.setCurrentSong(this.song!);
-      this.store.dispatch(PlayAction.play());
-      return;
+      if (this.song?.id == this.songService.currentPlaySong?.id) {
+        this.store.dispatch(PlayAction.play());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.song);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
     }
+  }
+  formatTime(time: number): string {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+        .toString()
+        .padStart(2, '0');
+    return `${minutes}:${seconds}`;
   }
 
   likeSong(songId: string) {

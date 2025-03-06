@@ -2,17 +2,17 @@
         <div class="ns-img-contain">
             <div class="play-btn">
                 <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="playSong()">
-                    <mat-icon>{{isPlaying ? 'pause' : 'play_arrow'}}</mat-icon>
+                    <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
                 </button>
             </div>
             <img [src]="song?.image_url" alt="music-cover">
         </div>
         <div class="ns-info">
-            <span class="name-ns">{{song?.title}}</span>
+            <span class="name-ns" [routerLink]="['/detail',song?.id]">{{song?.title}}</span>
             <p class="content-ns">{{song?.performer}}</p>
         </div>
         <div class="ns-time">
-            <span>3:00</span>
+            <span>{{ formatTime(song?.duration ?? 0)}}</span>
         </div>
         <div class="opt-btn"><button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')">
           <mat-icon>{{ likeList.includes(song?.id ?? '') ? 'favorite' : 'favorite_border' }}</mat-icon>
