@@ -24,7 +24,7 @@ export const PROFILE_ROUTES: Routes = [
       },
       {
         path: '',
-        redirectTo: 'history',
+        redirectTo: 'profile-history',
         pathMatch: 'full',
       },
     ],

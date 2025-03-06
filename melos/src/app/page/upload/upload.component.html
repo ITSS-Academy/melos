@@ -76,7 +76,7 @@
 
             <mat-form-field appearance="outline" >
               <mat-label>Song title</mat-label>
-              <input matInput formControlName="title" placeholder="Last name, First name" required>
+              <input matInput formControlName="title" placeholder="Enter song title..." required>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -98,7 +98,7 @@
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Other</mat-label>
               <input type="text"
-                     placeholder="Nhập thể loại"
+                     placeholder="Pop, Rock, Jazz,..."
                      aria-label="Other"
                      matInput
                      [formControl]="trackInforForm.controls['category_id']"
@@ -154,9 +154,7 @@
   </mat-stepper>
   } @else {
     <div class="not-logged-in">
-      <img class="avatar-not-loggin" src="{{ 'https://avatar.iran.liara.run/public/48' }}"/>
-      <h4>Bạn cần đăng nhập để tải nhạc lên!</h4>
-<!--      <button mat-flat-button color="primary" (click)="redirectToLogin()">Đăng nhập ngay</button>-->
+      <app-dialog-login></app-dialog-login>
     </div>
   }
 

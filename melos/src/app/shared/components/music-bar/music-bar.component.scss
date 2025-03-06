@@ -31,22 +31,34 @@
 }
 .text {
   height: 100%;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  //align-items: center;
+  gap: 2px;
   overflow: hidden;
-  min-width: 5vw;
+  //min-width: 5vw;
+  flex-direction: column;
+  //justify-content: center;
 }
 .song-title {
   color: #fff;
   font-size: 16px;
-  min-width: 5vw;
-  height: 50%;
+  min-width: 18vw;
+  //height: 50%;
   padding: 0;
-  margin: 0 0 0 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin: 0;
+  //overflow: hidden;
+  //text-overflow: ellipsis;
+  //white-space: nowrap;
+}
+
+.song-composer{
+  color: #fff;
+  font-size: 14px;
+  min-width: 16vw;
+  //height: 50%;
+  padding: 0;
+  margin: 0;
+
 }
 
 

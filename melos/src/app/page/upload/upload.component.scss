@@ -136,6 +136,7 @@
   height: 380px;
   object-fit: cover;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .btn-upload-1 {
@@ -200,11 +201,19 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  border-radius: 200px;
+
+
 }
 
 .avatar-not-loggin{
   width: 200px;
   height: 200px;
+
 }
 
-
+app-dialog-login {
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+}

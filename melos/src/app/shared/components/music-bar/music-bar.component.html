@@ -3,7 +3,8 @@
   <div class="song-info">
     <img src="{{ currentSong?.image_url || 'https://avatar.iran.liara.run/public/48' }}" alt="Song Thumbnail" class="song-thumbnail" />
     <div class="text">
-      <h4 class="song-title">{{ currentSong?.title || 'No Song Playing' }}</h4>
+      <p class="song-title">{{ currentSong?.title || 'No Song Playing' }}</p>
+      <p class="song-composer">{{ currentSong?.composer || 'Unknown Artist' }}</p>
     </div>
   </div>
 

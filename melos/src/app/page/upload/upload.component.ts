@@ -46,6 +46,7 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
 import {map, startWith} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {DialogLoginComponent} from '../../shared/components/dialog-login/dialog-login.component';
 
 @Component({
   selector: 'app-upload',
@@ -68,6 +69,7 @@ import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mate
     LoadingComponent,
     MatAutocompleteModule,
     AsyncPipe,
+    DialogLoginComponent,
 
   ],
   templateUrl: './upload.component.html',
@@ -114,7 +116,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select('song', 'isLoading');
     this.category$ = this.store.select('category', 'categoryList'); // Lấy danh sách thể loại từ Store
 
-    this.store.dispatch(CategoryActions.getCategoryList());
   }
 
   ngOnInit() {
@@ -128,7 +129,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.category$.subscribe((categories) => {
         if (categories.length > 0) {
           this.cateGoryList = categories;
-          console.log('categories:', this.cateGoryList);
+          // console.log('categories:', this.cateGoryList);
         }
 
       })
