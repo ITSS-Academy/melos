@@ -1,10 +1,10 @@
 <div class="container">
     <div class="song-contain">
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn">
-            <mat-icon>play_arrow</mat-icon>
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()">
+            <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
         </button>
         <div class="img-contain">
-            <img src="https://images.genius.com/0d35c4ab953fe95571a0f9647fc705f4.741x741x1.png" alt="">
+            <img [src]=songDetail!.image_url alt="">
         </div>
     </div>
     <div class="opt-btn">
@@ -122,7 +122,7 @@
             </div>
         </div>
         <div class="ns-contain">
-            <h6><b>Next song</b></h6>
+            <h6><b>Suggest song</b></h6>
             <div class="ns-section">
                 <app-music-tab></app-music-tab>
                 <app-music-tab></app-music-tab>

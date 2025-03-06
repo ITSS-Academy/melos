@@ -18,11 +18,12 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { AuthModel } from '../../../models/auth.model';
 import * as LikeActions from '../../../ngrx/like/like.actions';
 import { AsyncPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-music-tab',
   standalone: true,
-  imports: [MaterialModule, AsyncPipe],
+  imports: [MaterialModule, RouterLink],
   templateUrl: './music-tab.component.html',
   styleUrl: './music-tab.component.scss',
 })
@@ -43,7 +44,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       play: PlayState;
       like: LikeState;
       auth: AuthState;
-    }>,
+    }>
   ) {
     this.isPlaying$ = this.store.select('play', 'isPlaying');
     this.likeList$ = this.store.select('like', 'songIdLikes');
@@ -59,7 +60,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
         if (authData?.idToken) {
           this.authData = authData;
         }
-      }),
+      })
     );
   }
 
@@ -69,18 +70,40 @@ export class MusicTabComponent implements OnInit, OnDestroy {
 
   @Input() song?: SongModel;
   @Input() isLike?: boolean;
+
+  isPlayingSong() {
+    return (
+      this.isPlaying && this.song?.id == this.songService.currentPlaySong?.id
+    );
+  }
   playSong() {
-    if (
-      this.isPlaying &&
-      this.song?.id == this.songService.currentPlaySong?.id
-    ) {
-      this.store.dispatch(PlayAction.pause());
-      return;
+    if (this.isPlaying) {
+      if (this.song?.id == this.songService.currentPlaySong?.id) {
+        this.store.dispatch(PlayAction.pause());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.song!);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
     } else {
-      this.songService.setCurrentSong(this.song!);
-      this.store.dispatch(PlayAction.play());
-      return;
+      if (this.song?.id == this.songService.currentPlaySong?.id) {
+        this.store.dispatch(PlayAction.play());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.song!);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
     }
+  }
+  formatTime(time: number): string {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${minutes}:${seconds}`;
   }
 
   async likeSong(songId: string) {
@@ -91,7 +114,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           songId: songId,
           uid: this.authData?.uid,
           idToken: this.authData?.idToken,
-        }),
+        })
       );
     }
   }
