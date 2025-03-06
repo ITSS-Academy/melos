@@ -12,7 +12,7 @@ export const createSong = createEffect(
         likeService.createLike(action.songId, action.uid, action.idToken).pipe(
           map((songId) => {
             console.log('songId', songId);
-            return LikeActions.likeSongSuccess({ songId });
+            return LikeActions.likeSongSuccess({ songId: songId.song_id });
           }),
           catchError((error) => of(LikeActions.likeSongFailure({ error }))),
         ),

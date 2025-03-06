@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   OnInit,
-  Output,
+  Output, Renderer2,
   ViewChild,
 } from '@angular/core';
 import Hls from 'hls.js';
@@ -35,19 +35,22 @@ export class MusicBarComponent implements OnInit {
   duration = 0;
   volume = 50;
   subscriptions: Subscription[] = [];
+  saveVolume = this.volume;
+
   hasUpdatedViews = false;
   play$!: Observable<boolean>;
 
   overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
-
+  section: HTMLElement | null = null;
   constructor(
     private songService: SongService,
     private store: Store<{
       song: SongState;
       play: PlayState;
     }>,
+    private renderer: Renderer2
   ) {
     this.play$ = this.store.select('play', 'isPlaying');
   }
@@ -71,7 +74,7 @@ export class MusicBarComponent implements OnInit {
         }
       }),
     );
-
+    this.section = document.getElementById('next-song-section')
     this.updateChangeVolume();
   }
 
@@ -148,7 +151,16 @@ export class MusicBarComponent implements OnInit {
     const audio = this.audioPlayer.nativeElement;
     audio.volume = event.target.value / 100;
     this.volume = event.target.value;
-    this.updateChangeVolume();
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (this.volume <= 0) {
+      this.renderer.setStyle(muteBtn, 'display', 'flex');
+      this.renderer.setStyle(unmuteBtn, 'display', 'none');
+    } else {
+      this.renderer.setStyle(unmuteBtn, 'display', 'flex');
+      this.renderer.setStyle(muteBtn, 'display', 'none');
+    }
+    this.updateChangeVolume()
   }
 
   updateChangeVolume() {
@@ -156,6 +168,7 @@ export class MusicBarComponent implements OnInit {
     if (volumeBar) {
       const volume = this.volume || 50; // Giả sử mặc định là 50%
       volumeBar.style.setProperty('--volume', `${volume}%`);
+      console.log('Volume:', volume);
     }
   }
 
@@ -187,15 +200,43 @@ export class MusicBarComponent implements OnInit {
   }
 
   overlayOn() {
-    let section = document.getElementById('next-song-section');
-    if (section) {
-      section.style.display = 'block';
+    if (this.section) {
+      this.renderer.setStyle(this.section, 'display', 'block');
     }
   }
   overlayOff() {
-    let section = document.getElementById('next-song-section');
-    if (section) {
-      section.style.display = 'none';
+    if (this.section) {
+      this.renderer.setStyle(this.section, 'display', 'none');
     }
+  }
+
+  //Mute and Unmute song
+
+  clickMute() {
+    this.saveVolume = this.volume;
+    const audio = this.audioPlayer.nativeElement;
+    audio.volume = 0;
+    this.volume = 0.1;
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (unmuteBtn || muteBtn) {
+      this.renderer.setStyle(unmuteBtn, 'display', 'none');
+      this.renderer.setStyle(muteBtn, 'display', 'flex');
+    }
+    console.log("mute")
+    this.updateChangeVolume()
+  }
+  clickUnmute() {
+    const audio = this.audioPlayer.nativeElement;
+    this.volume = this.saveVolume;
+    audio.volume = this.volume / 100;
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (muteBtn || unmuteBtn) {
+      this.renderer.setStyle(unmuteBtn, 'display', 'flex');
+      this.renderer.setStyle(muteBtn, 'display', 'none');
+    }
+    console.log("unmute")
+    this.updateChangeVolume()
   }
 }

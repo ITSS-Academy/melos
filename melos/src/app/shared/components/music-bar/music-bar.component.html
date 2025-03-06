@@ -39,9 +39,9 @@
 
   <!-- Volume & Playlist -->
   <div class="extra-controls">
-    <button mat-icon-button><mat-icon class="material-symbols-rounded">volume_off</mat-icon></button>
+    <button mat-icon-button id="vol-mute-contain" (click)="clickUnmute()"><mat-icon class="material-symbols-rounded">volume_off</mat-icon></button>
+      <button mat-icon-button id="vol-unmute-contain" (click)="clickMute()"><mat-icon class="material-symbols-rounded">volume_up</mat-icon></button>
     <input type="range" class="volume-bar" min="0" max="100" [value]="volume" (input)="changeVolume($event)">
-    <button mat-icon-button><mat-icon class="material-symbols-rounded">volume_up</mat-icon></button>
     <div class="line"></div>
     <button mat-icon-button><mat-icon class="material-symbols-rounded" (click)="overlaySongList()">queue_music</mat-icon></button>
   </div>
