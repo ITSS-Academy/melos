@@ -18,7 +18,9 @@ import * as CategoryEffects from './ngrx/category/category.effects';
 import { historyReducer } from './ngrx/history/history.reducer';
 import * as HistoryEffects from './ngrx/history/history.effects';
 import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
-import {uploadReducer} from './ngrx/uploaded/uploaded.reducer';
+import { uploadReducer } from './ngrx/uploaded/uploaded.reducer';
+import { likeReducer } from './ngrx/like/like.reducers';
+import * as LikeEffects from './ngrx/like/like.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +34,7 @@ export const appConfig: ApplicationConfig = {
       category: categoryReducer,
       history: historyReducer,
       upload: uploadReducer,
+      like: likeReducer,
     }),
     provideEffects(
       SongEffects,
@@ -39,7 +42,7 @@ export const appConfig: ApplicationConfig = {
       CategoryEffects,
       HistoryEffects,
       UploadEffects,
-      // LikeEffects,
+      LikeEffects,
     ),
     provideHttpClient(),
     provideFirebaseApp(() =>
