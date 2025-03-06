@@ -6,17 +6,13 @@
     </span>
   </div>
   <div id="playlist-main">
-    @for (playlist of playlists; track $index) {
-      <app-playlist-card
-        [id]="playlist.id"
-        [name]="playlist.name"
-        [img]="playlist.img"
-        [tag]="playlist.tag"
-        [comment]="playlist.comment"
-        [singer_name]="playlist.singer_name"
-        [category]="playlist.category"
-      ></app-playlist-card>
-    }
+    <ng-container *ngIf="playlists$ | async as playlists; else noPlaylist">
+      <app-playlist-card *ngFor="let playlist of playlists" [playlist]="playlist"></app-playlist-card>
+    </ng-container>
+
+    <ng-template #noPlaylist>
+      <p class="empty-message">No playlists found. Create a new one!</p>
+    </ng-template>
 
   </div>
 

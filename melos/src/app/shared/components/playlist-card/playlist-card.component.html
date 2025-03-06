@@ -1,9 +1,9 @@
 <div id="playlist-card">
   <div class="playlist-card-img">
-    <img [routerLink]="['/playlist-detail', id]"  [src]=img alt="">
+    <img [routerLink]=""  [src]=playlist.image_url alt="">
   </div>
   <div class="group">
-    <h3 class="playlist-card-title">{{name}}</h3>
+    <p class="playlist-card-title">{{playlist.name}}</p>
     <span class="material-symbols-outlined">
     more_vert
   </span>

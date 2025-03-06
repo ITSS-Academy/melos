@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {RouterLink} from '@angular/router';
+import {PlaylistModel} from '../../../models/playlist.model';
 
 @Component({
   selector: 'app-playlist-card',
@@ -11,11 +12,6 @@ import {RouterLink} from '@angular/router';
   styleUrl: './playlist-card.component.scss',
 })
 export class PlaylistCardComponent {
-  @Input() id!: number;
-  @Input() name!: string;
-  @Input() img!: string;
-  @Input() comment!: string;
-  @Input() tag!: string;
-  @Input() category: string = '';
-  @Input() singer_name: string = '';
+  @Input() playlist!: PlaylistModel;
+
 }
