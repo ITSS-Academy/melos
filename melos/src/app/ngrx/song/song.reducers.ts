@@ -9,6 +9,7 @@ export const initialSongState: SongState = {
   isLoading: false,
   error: null,
   songCategories: <SongModel[]>[],
+  songListLiked: <SongModel[]>[],
   songQueue: <SongModel[]>[],
 };
 
@@ -118,15 +119,17 @@ export const songReducer = createReducer(
     };
   }),
 
-    on(SongActions.getSongCategories, (state, { type }) => {
+  on(SongActions.getSongCategories, (state, { type }) => {
     console.log(type);
     return {
       ...state,
       isLoading: true,
     };
-    }),
-    on(SongActions.getSongCategoriesSuccess, (state, { songCategories, type }) => {
-    console.log(type);
+  }),
+  on(
+    SongActions.getSongCategoriesSuccess,
+    (state, { songCategories, type }) => {
+      console.log(type);
       return <SongState>{
         ...state,
         songCategories: songCategories,

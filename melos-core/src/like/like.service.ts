@@ -29,7 +29,7 @@ export class LikeService {
   async getSongLikedByUid(uid: string) {
     const { data, error } = await this.supabaseProvider
       .getClient()
-      .rpc('get_song_liked_by_uid', {
+      .rpc('get_liked_songs', {
         v_uid: uid,
       });
 

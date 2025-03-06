@@ -19,6 +19,7 @@ import { AuthModel } from '../../../models/auth.model';
 import * as LikeActions from '../../../ngrx/like/like.actions';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SnackbarService } from '../../../services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-music-tab',
@@ -38,13 +39,13 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   private subscription: Subscription[] = [];
   constructor(
     private songService: SongService,
-    private cdr: ChangeDetectorRef,
+    private snackbarService: SnackbarService,
     private store: Store<{
       song: SongState;
       play: PlayState;
       like: LikeState;
       auth: AuthState;
-    }>
+    }>,
   ) {
     this.isPlaying$ = this.store.select('play', 'isPlaying');
     this.likeList$ = this.store.select('like', 'songIdLikes');
@@ -60,7 +61,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
         if (authData?.idToken) {
           this.authData = authData;
         }
-      })
+      }),
     );
   }
 
@@ -114,7 +115,15 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           songId: songId,
           uid: this.authData?.uid,
           idToken: this.authData?.idToken,
-        })
+        }),
+      );
+    } else {
+      this.snackbarService.showAlert(
+        'Please login to like this song',
+        'Close',
+        3000,
+        'right',
+        'top',
       );
     }
   }

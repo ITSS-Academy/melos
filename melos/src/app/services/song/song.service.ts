@@ -12,16 +12,14 @@ export class SongService {
   constructor(private http: HttpClient) {}
 
   getSongDetail(songId: string) {
-    return this.http.get<SongModel>(
-      `http://localhost:3000/songs?id=${songId}`
-    );
+    return this.http.get<SongModel>(`http://localhost:3000/songs?id=${songId}`);
   }
 
   getSongList() {
     return this.http.get<SongModel[]>('http://localhost:3000/songs/all');
   }
 
-    getSongByCategory(categoryId: string) {
+  getSongByCategory(categoryId: string) {
     console.log('getSongByCategory', categoryId);
       return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
     }
@@ -54,7 +52,17 @@ export class SongService {
   updateSongViews(songId: string) {
     return this.http.put(
       `http://localhost:3000/songs/update-views?id=${songId}`,
-      {}
+      {},
+    );
+  }
+
+  getSongLiked(uid: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+    return this.http.get<SongModel[]>(
+      `http://localhost:3000/like/get-song-liked-by-uid?uid=${uid}`,
+      { headers },
     );
   }
 

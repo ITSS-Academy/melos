@@ -11,6 +11,7 @@ import { PlaylistsModule } from './playlists/playlists.module';
 import { HistoryModule } from './history/history.module';
 import { QueueModule } from './queue/queue.module';
 import { LikeModule } from './like/like.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LikeModule } from './like/like.module';
     HistoryModule,
     QueueModule,
     LikeModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -43,6 +45,8 @@ export class AppModule {
         { path: 'playlists', method: RequestMethod.PUT },
         { path: 'playlists', method: RequestMethod.GET },
         { path: 'history', method: RequestMethod.ALL },
+        { path: 'queue', method: RequestMethod.ALL },
+        { path: 'like', method: RequestMethod.ALL },
       );
   }
 }
