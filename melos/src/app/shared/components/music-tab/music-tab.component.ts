@@ -33,6 +33,10 @@ export class MusicTabComponent implements OnInit {
     );
   }
   @Input() song!: SongModel;
+
+  isPlayingSong() {
+    return this.isPlaying && this.song.id == this.songService.currentPlaySong?.id;
+  }
   playSong() {
     if (
       this.isPlaying &&
@@ -47,5 +51,13 @@ export class MusicTabComponent implements OnInit {
       this.store.dispatch(PlayAction.play());
       return;
     }
+  }
+  formatTime(time: number): string {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+        .toString()
+        .padStart(2, '0');
+    return `${minutes}:${seconds}`;
   }
 }
