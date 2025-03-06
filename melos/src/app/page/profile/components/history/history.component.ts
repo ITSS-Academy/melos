@@ -6,11 +6,16 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../../../models/auth.model';
 import { SongModel } from '../../../../models/song.model';
 import * as HistoryActions from '../../../../ngrx/history/history.actions';
+import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
+import {DialogLoginComponent} from '../../../../shared/components/dialog-login/dialog-login.component';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [],
+  imports: [
+    MusicTabComponent,
+    DialogLoginComponent
+  ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
 })
