@@ -14,9 +14,14 @@
         <div class="ns-time">
             <span>3:00</span>
         </div>
-        <div class="opt-btn"><button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')">
-          <mat-icon>{{ likeList.includes(song?.id ?? '') ? 'favorite' : 'favorite_border' }}</mat-icon>
+      <div class="opt-btn">
+<!--      @if (this.isLoadingLike$ |async) {-->
+<!--        <mat-spinner></mat-spinner>-->
+<!--      } @else {-->
+     <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')">
+          <mat-icon>{{ isLike ? 'favorite' : 'favorite_border'}}</mat-icon>
         </button>
+<!--      }-->
             <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
                 <mat-icon>playlist_add</mat-icon>
             </button>

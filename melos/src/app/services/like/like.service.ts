@@ -12,7 +12,7 @@ export class LikeService {
       Authorization: idToken,
     };
 
-    return this.http.post<string>(
+    return this.http.post<any>(
       `http://localhost:3000/like/create-like`,
       { song_id: songId, uid: uid },
       { headers },

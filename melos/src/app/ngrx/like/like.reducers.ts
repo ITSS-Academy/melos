@@ -21,6 +21,7 @@ export const likeReducer = createReducer(
 
   on(LikeActions.likeSongSuccess, (state, { songId, type }) => {
     console.log(type);
+    console.log(songId);
     return <LikeState>{
       ...state,
       songIdLikes: [...state.songIdLikes, songId],

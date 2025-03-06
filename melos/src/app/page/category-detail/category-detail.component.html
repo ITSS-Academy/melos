@@ -8,8 +8,19 @@
   <div class="container-right">
     <div class="list_music">
         @for (music of songListsCategory; track music.id) {
-            <app-music-tab [song]="music"
+          @if (likeList.includes(music.id)){
+
+            <app-music-tab
+              [song]="music"
+              [isLike]="likeList.includes(music.id)"
+
             ></app-music-tab>
+          } @else {
+            <app-music-tab
+              [song]="music"
+
+            ></app-music-tab>
+          }
         }
     </div>
   </div>

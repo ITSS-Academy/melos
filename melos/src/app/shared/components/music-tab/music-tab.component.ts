@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { MaterialModule } from '../../material.module';
 import { SongService } from '../../../services/song/song.service';
 import { SongModel } from '../../../models/song.model';
@@ -11,24 +17,27 @@ import { LikeState } from '../../../ngrx/like/like.state';
 import { AuthState } from '../../../ngrx/auth/auth.state';
 import { AuthModel } from '../../../models/auth.model';
 import * as LikeActions from '../../../ngrx/like/like.actions';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-music-tab',
   standalone: true,
-  imports: [MaterialModule],
+  imports: [MaterialModule, AsyncPipe],
   templateUrl: './music-tab.component.html',
   styleUrl: './music-tab.component.scss',
 })
-export class MusicTabComponent implements OnInit {
+export class MusicTabComponent implements OnInit, OnDestroy {
   isPlaying = false;
   isPlaying$!: Observable<boolean>;
   auth$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
   likeList$!: Observable<string[]>;
-  likeList: string[] = [];
+  // isLoadingLike$!: Observable<boolean>;
+
   private subscription: Subscription[] = [];
   constructor(
     private songService: SongService,
+    private cdr: ChangeDetectorRef,
     private store: Store<{
       song: SongState;
       play: PlayState;
@@ -38,6 +47,7 @@ export class MusicTabComponent implements OnInit {
   ) {
     this.isPlaying$ = this.store.select('play', 'isPlaying');
     this.likeList$ = this.store.select('like', 'songIdLikes');
+    // this.isLoadingLike$ = this.store.select('like', 'isLoading');
     this.auth$ = this.store.select('auth', 'authData');
   }
   ngOnInit() {
@@ -50,14 +60,15 @@ export class MusicTabComponent implements OnInit {
           this.authData = authData;
         }
       }),
-      this.likeList$.subscribe((likeList) => {
-        if (likeList.length > 0 && likeList !== this.likeList) {
-          this.likeList = likeList;
-        }
-      }),
     );
   }
+
+  ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
   @Input() song?: SongModel;
+  @Input() isLike?: boolean;
   playSong() {
     if (
       this.isPlaying &&
@@ -72,7 +83,7 @@ export class MusicTabComponent implements OnInit {
     }
   }
 
-  likeSong(songId: string) {
+  async likeSong(songId: string) {
     if (songId && this.authData?.uid && this.authData?.idToken) {
       console.log(songId);
       this.store.dispatch(

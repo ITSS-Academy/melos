@@ -21,7 +21,7 @@ export class LikeService {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
-    console.log('data', data);
+    console.log('data', data.song_id);
 
     return data;
   }
