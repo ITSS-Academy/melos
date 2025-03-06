@@ -1,9 +1,9 @@
 <div id="category-detail">
   <div class="container-left">
     <div class="selected-category">
-      <img [src]=categoryDetail?.image_url alt="">
+      <img [src]=categoryDetail!.image_url alt="">
     </div>
-    <h2>{{categoryDetail?.name}}</h2>
+    <h2>{{categoryDetail!.name}}</h2>
   </div>
   <div class="container-right">
     <div class="list_music">

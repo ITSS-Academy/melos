@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
   historySongList: SongModel[] = [];
 
+
   constructor(
     private store: Store<{
       auth: AuthState;
