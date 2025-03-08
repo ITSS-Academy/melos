@@ -8,7 +8,7 @@ export const PROFILE_ROUTES: Routes = [
     component: ProfileComponent,
     children: [
       {
-        path: 'profile-history/:id',
+        path: 'profile-history',
         loadComponent: () =>
           import('./components/history/history.component').then(
             (m) => m.HistoryComponent,
@@ -16,7 +16,7 @@ export const PROFILE_ROUTES: Routes = [
       },
 
       {
-        path: 'profile-uploaded/:id',
+        path: 'profile-uploaded',
         loadComponent: () =>
           import('./components/uploaded/uploaded.component').then(
             (m) => m.UploadedComponent,
@@ -24,7 +24,7 @@ export const PROFILE_ROUTES: Routes = [
       },
 
       {
-        path: 'profile-like/:id',
+        path: 'profile-like',
         loadComponent: () =>
           import('./components/like/like.component').then(
             (m) => m.LikeComponent,
