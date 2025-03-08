@@ -3,7 +3,10 @@
   <div class="song-info">
     <img src="{{ currentSong?.image_url || 'https://avatar.iran.liara.run/public/48' }}" alt="Song Thumbnail" class="song-thumbnail" />
     <div class="text">
-      <p class="song-title">{{ currentSong?.title || 'No Song Playing' }}</p>
+      <p class="song-title" *ngIf="currentSong?.id;  else noLink" [routerLink]="['/detail', currentSong?.id]">{{ currentSong?.title || 'No Song Playing' }}</p>
+        <ng-template #noLink>
+            <p class="song-title">{{ currentSong?.title || 'No Song Playing' }}</p>
+        </ng-template>
       <p class="song-composer">{{ currentSong?.composer || 'Unknown Artist' }}</p>
     </div>
   </div>
@@ -23,7 +26,16 @@
       <button mat-icon-button (click)="forward()">
         <mat-icon class="material-symbols-rounded">skip_next</mat-icon>
       </button>
-      <button mat-icon-button><mat-icon class="material-symbols-rounded">repeat</mat-icon></button>
+      <button mat-icon-button (click)="loopClick()" class="loop-btn">
+          <mat-icon class="material-symbols-rounded" [ngStyle]="{'color': isLoop ? 'var(--primaryFixedDim)' : 'var(--onSurface)'}">
+              repeat
+          </mat-icon>
+          <span>
+              @if (isLoop) {
+                  1
+              }
+          </span>
+      </button>
     </div>
 
     <!-- Progress Bar -->
@@ -43,7 +55,7 @@
       <button mat-icon-button id="vol-unmute-contain" (click)="clickMute()"><mat-icon class="material-symbols-rounded">volume_up</mat-icon></button>
     <input type="range" class="volume-bar" min="0" max="100" [value]="volume" (input)="changeVolume($event)">
     <div class="line"></div>
-    <button mat-icon-button><mat-icon class="material-symbols-rounded" (click)="overlaySongList()">queue_music</mat-icon></button>
+    <button mat-icon-button (click)="overlaySongList()"><mat-icon class="material-symbols-rounded" >queue_music</mat-icon></button>
   </div>
 </div>
 
@@ -54,11 +66,11 @@
 <div id="next-song-section">
     <h6>Next Song</h6>
     <div class="next-song-list">
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
-        <app-music-tab></app-music-tab>
+        @for (music of songListsQueue; track $index) {
+            <app-music-tab
+                    [song]="music"
+
+            ></app-music-tab>
+        }
     </div>
 </div>

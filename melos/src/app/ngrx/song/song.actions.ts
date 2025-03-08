@@ -81,6 +81,8 @@ export const clearStateSongCategory = createAction(
   '[Song] Clear State Song Category',
 );
 
+
+
 //song liked
 
 export const getSongLiked = createAction(
@@ -96,4 +98,18 @@ export const getSongLikedSuccess = createAction(
 export const getSongLikedFailure = createAction(
   '[Song] Get Song Liked Failure',
   props<{ error: any }>(),
+);
+
+
+export const getSongQueue = createAction(
+    '[Song] Get Song Queue',
+    props<{ uid: string; idToken: string }>(),
+);
+export const getSongQueueSuccess = createAction(
+    '[Song] Get Song Queue Success',
+    props<{ songQueue: SongModel[] }>(),
+);
+export const getSongQueueFailure = createAction(
+    '[Song] Get Song Queue Failure',
+    props<{ error: any }>(),
 );

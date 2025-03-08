@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { SongModel } from '../../models/song.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +15,7 @@ export class LikeService {
     };
 
     return this.http.post<any>(
-      `http://localhost:3000/like/create-like`,
+      `${environment.apiUrl}like/create-like`,
       { song_id: songId, uid: uid },
       { headers },
     );
@@ -25,7 +27,18 @@ export class LikeService {
     };
 
     return this.http.get<string[]>(
-      `http://localhost:3000/like/get-song-id-liked-by-uid?uid=${uid}`,
+      `${environment.apiUrl}like/get-song-id-liked-by-uid?uid=${uid}`,
+      { headers },
+    );
+  }
+
+  deleteLike(songId: string, uid: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+
+    return this.http.delete<any>(
+      `${environment.apiUrl}like/delete-like?uid=${uid}&song_id=${songId}`,
       { headers },
     );
   }

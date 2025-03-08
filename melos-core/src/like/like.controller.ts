@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   Request,
+  Req,
 } from '@nestjs/common';
 import { LikeService } from './like.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -48,11 +49,14 @@ export class LikeController {
   }
 
   @Delete('delete-like')
-  removeLike(@Body() data: { uid: string; song_id: string }) {
+  removeLike(@Request() req: any) {
     try {
-      return this.likeService.remove(data.uid, data.song_id);
+      const { uid, song_id } = req.query;
+      return this.likeService.remove(uid, song_id);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
   }
 }
+
+

@@ -57,4 +57,24 @@ export class AuthService {
       throw new Error(error.message);
     }
   }
+
+  async getUserId(uid: string) {
+    const { data, error, count } = await this.supabaseProvider
+      .getClient()
+      .from('auth')
+      .select('*', { count: 'exact' })
+      .eq('uid', uid);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (count === 0) {
+      throw new UnauthorizedException('User not found');
+    } else if (count > 1) {
+      throw new Error('Multiple rows returned for a single user');
+    }
+
+    return data[0];
+  }
 }

@@ -182,7 +182,7 @@ export class SongsService {
     const files = fs.readdirSync(hlsDir);
     const limiter = new Bottleneck({
       maxConcurrent: 50, // Tăng giới hạn đồng thời
-      minTime: 10, // Giảm thời gian giữa các request
+      minTime: 5, // Giảm thời gian giữa các request
     });
 
     const uploadPromises = files.map((file) =>

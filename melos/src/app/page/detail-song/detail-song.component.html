@@ -1,136 +1,66 @@
-<div class="container">
+@if(songDetail?.id != null || songDetail?.id != undefined) {
+  <div class="container">
     <div class="song-contain">
-        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()">
-            <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
-        </button>
-        <div class="img-contain">
-            <img [src]=songDetail!.image_url alt="">
-        </div>
+      <img [src]=songDetail.image_url alt="" class="background-img">
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()">
+        <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
+      </button>
+      <div class="img-contain">
+        <img [src]=songDetail.image_url alt="">
+      </div>
     </div>
     <div class="opt-btn">
-        <button mat-stroked-button><mat-icon>favorite</mat-icon>Like</button>
-        <button mat-stroked-button><mat-icon>share</mat-icon>Share</button>
-        <button mat-stroked-button><mat-icon>link</mat-icon>Copy link</button>
-        <button mat-stroked-button><mat-icon>playlist_add</mat-icon>Add to next up</button>
-        <button mat-stroked-button><mat-icon>download</mat-icon>Download</button>
-        <button mat-stroked-button><mat-icon>chat</mat-icon>Show more</button>
+      <button mat-stroked-button><mat-icon>favorite</mat-icon>Like</button>
+      <button mat-stroked-button><mat-icon>share</mat-icon>Share</button>
+      <button mat-stroked-button><mat-icon>playlist_add</mat-icon>Add to next up</button>
     </div>
     <div class="song-info-contain">
 
-        <div class="summary-prf">
-            <div class="avt-contain">
-                <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-            </div>
-            <span class="name-prf">Mili</span>
-            <span class="follower-prf"><mat-icon>groups</mat-icon>1,000</span>
-            <button mat-flat-button><mat-icon>person</mat-icon>Follow</button>
+      <div class="summary-prf" (click)="navigateToProfile(songDetail.uuid)">
+        <div class="avt-contain">
+          <img src="{{songDetail.uuid | idToAvatar |async}}" alt="" (error)="onImageError($event)">
         </div>
+        <span class="name-prf">{{songDetail.uuid | idToName | async}}</span>
+      </div>
 
-        <div class="cmt-contain">
-            <h6><b>Comments</b></h6>
-            <div class="cmt-section">
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-                <div class="cmt-card">
-                    <div class="avt-cmt">
-                        <img src="https://i.scdn.co/image/ab6761610000e5ebaabeebac51943424653c45f2" alt="">
-                    </div>
-                    <div class="cmt-info">
-                        <span class="name-cmt">Mili</span>
-                        <p class="content-cmt">This is a great song</p>
-                    </div>
-                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                        <mat-icon>favorite</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <div class="input-cmt">
-                <mat-form-field appearance="outline">
-                    <input matInput placeholder="Write a comment">
-                    <mat-icon matSuffix>send</mat-icon>
-                </mat-form-field>
-            </div>
+      <div class="cmt-contain">
+        <h6><b>Comments</b></h6>
+        <div class="cmt-section">
+       @for(comment of commentList; track comment.id) {
+         <div class="cmt-card">
+           <div class="avt-cmt">
+             <img src="{{comment.uid | idToAvatar |async}}" (error)="onImageError($event)" alt="">
+           </div>
+           <div class="cmt-info">
+             <span class="name-cmt">{{comment.uid | idToName|async}}</span>
+             <p class="content-cmt">{{comment.content}}</p>
+           </div>
+           <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+             <mat-icon>favorite</mat-icon>
+           </button>
+         </div>
+        }
+
         </div>
-        <div class="ns-contain">
-            <h6><b>Suggest song</b></h6>
-            <div class="ns-section">
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-            </div>
+        <div class="input-cmt">
+          <mat-form-field appearance="outline">
+            <input matInput placeholder="Write a comment" (input)="onValueChange($event)" (keyup.enter)="onEnter($event)">
+            <mat-icon matSuffix>send</mat-icon>
+          </mat-form-field>
         </div>
+      </div>
+      <div class="ns-contain">
+        <h6><b>You may like</b></h6>
+        <div class="ns-section">
+          @for (music of mayLike; track music.id) {
+            @if (music.id != songDetail.id) {
+              <app-music-tab
+                [song]="music"
+              ></app-music-tab>}
+          }
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+}

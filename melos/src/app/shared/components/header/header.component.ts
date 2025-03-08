@@ -4,16 +4,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogLoginComponent } from '../dialog-login/dialog-login.component';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../../ngrx/auth/auth.state';
-import { Observable, Subscription } from 'rxjs';
+import { debounceTime, Observable, Subject, Subscription } from 'rxjs';
 import { AuthModel } from '../../../models/auth.model';
 import * as AuthActions from '../../../ngrx/auth/auth.actions';
 import { RouterLink } from '@angular/router';
-
-
+import { ShareModule } from '../../share.module';
+import * as SearchActions from '../../../ngrx/search/search.actions';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MaterialModule, RouterLink],
+  imports: [MaterialModule, RouterLink, ShareModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   auth$!: Observable<AuthModel | null>;
   subscription: Subscription[] = [];
   authData!: AuthModel | null;
+  searchSubject = new Subject<string>();
 
   constructor(
     private store: Store<{
@@ -37,6 +38,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
           console.log(auth);
           this.authData = auth;
         }
+      }),
+      this.searchSubject.pipe(debounceTime(3000)).subscribe((query) => {
+        console.log(query);
+        this.store.dispatch(SearchActions.searchAll({ query }));
       }),
     );
   }
@@ -62,5 +67,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
   async logout() {
     this.store.dispatch(AuthActions.logout());
     this.authData = null;
+  }
+  onValueChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const query = inputElement.value;
+    this.searchSubject.next(query);
+    console.log('Search query:', query);
+  }
+
+  onEnter(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
+    const inputElement = event.target as HTMLInputElement;
+    const query = inputElement.value;
+    if (keyboardEvent.key === 'Enter') {
+      console.log('Enter');
+      this.store.dispatch(SearchActions.searchAll({ query }));
+    }
   }
 }

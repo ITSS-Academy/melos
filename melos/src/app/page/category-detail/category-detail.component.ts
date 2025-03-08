@@ -67,15 +67,13 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
             console.log(likeLists);
           }
         }),
+          this.categoryDetail$.subscribe((categoryDetail) => {
+            if (categoryDetail) {
+              this.categoryDetail = categoryDetail;
+              console.log(categoryDetail);
+            }
+          }),
       );
-    this.subscriptions.push(
-      this.categoryDetail$.subscribe((categoryDetail) => {
-        if (categoryDetail) {
-          this.categoryDetail = categoryDetail;
-          console.log(categoryDetail);
-        }
-      }),
-    );
   }
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());

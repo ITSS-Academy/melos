@@ -54,6 +54,27 @@ export const getSongByCategory = createEffect(
   { functional: true },
 );
 
+export const getSongQueue = createEffect(
+    (actions$ = inject(Actions), songService = inject(SongService)) => {
+        return actions$.pipe(
+            ofType(SongActions.getSongQueue),
+            exhaustMap((action) => {
+                console.log(action.uid);
+                return songService.getSongQueue(action.uid, action.idToken).pipe(
+                    map((songList) =>
+                        SongActions.getSongQueueSuccess({ songQueue: songList }),
+                    ),
+                    catchError((error) =>
+                        of(SongActions.getSongQueueFailure({ error })),
+                    ),
+                );
+            }),
+        );
+    },
+    { functional: true },
+);
+
+
 export const createSong = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
     return actions$.pipe(
@@ -78,6 +99,27 @@ export const updateSongViews = createEffect(
         songService.updateSongViews(action.id).pipe(
           map(() => SongActions.updateSongViewsSuccess()),
           catchError((error) => of(SongActions.getSongByIdFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+
+
+//get song like
+export const getSongLike = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.getSongLiked),
+      exhaustMap((action) =>
+        songService.getSongLiked(action.uid, action.idToken).pipe(
+          map((songListLiked) => {
+            console.log('[Effect] songListLiked:', songListLiked);
+            return SongActions.getSongLikedSuccess({ songListLiked });
+          }),
+          catchError((error) => of(SongActions.getSongLikedFailure({ error }))),
         ),
       ),
     );

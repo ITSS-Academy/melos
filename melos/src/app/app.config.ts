@@ -20,7 +20,14 @@ import * as HistoryEffects from './ngrx/history/history.effects';
 import {playlistReducer} from './ngrx/playlist/playlist.reducers';
 import * as PlaylistEffects from './ngrx/playlist/playlist.effects';
 import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
-import {uploadReducer} from './ngrx/uploaded/uploaded.reducer';
+import { uploadReducer } from './ngrx/uploaded/uploaded.reducer';
+import { likeReducer } from './ngrx/like/like.reducers';
+import * as LikeEffects from './ngrx/like/like.effects';
+import { searchReducer } from './ngrx/search/search.reducers';
+import * as SearchEffects from './ngrx/search/search.effects';
+import { commentReducer } from './ngrx/comment/comment.reducer';
+import * as CommentEffects from './ngrx/comment/comment.effects';
+import { environment } from '../environments/environment.development';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +42,9 @@ export const appConfig: ApplicationConfig = {
       history: historyReducer,
       playlist: playlistReducer,
       upload: uploadReducer,
+      like: likeReducer,
+      search: searchReducer,
+      comment: commentReducer,
     }),
     provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects, PlaylistEffects),
     provideEffects(
@@ -43,19 +53,12 @@ export const appConfig: ApplicationConfig = {
       CategoryEffects,
       HistoryEffects,
       UploadEffects,
-      // LikeEffects,
+      LikeEffects,
+      SearchEffects,
+      CommentEffects,
     ),
     provideHttpClient(),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'melos-db2e8',
-        appId: '1:494365343338:web:8a6e1d7e15eb2b73e7d413',
-        storageBucket: 'melos-db2e8.firebasestorage.app',
-        apiKey: 'AIzaSyDsWw2bJPQjDbqytgbU0FoH7I_v0Xz20iY',
-        authDomain: 'melos-db2e8.firebaseapp.com',
-        messagingSenderId: '494365343338',
-      }),
-    ),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
   ],
 };

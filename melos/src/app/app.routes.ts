@@ -21,7 +21,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'profile',
+    path: 'profile/:id',
     loadChildren: () =>
       import('../app/page/profile/profile.routes').then(
         (m) => m.PROFILE_ROUTES,

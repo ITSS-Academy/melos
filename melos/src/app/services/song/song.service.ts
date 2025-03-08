@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SongModel } from '../../models/song.model';
 import { BehaviorSubject } from 'rxjs';
+import { idToken } from '@angular/fire/auth';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,17 +13,28 @@ export class SongService {
   constructor(private http: HttpClient) {}
 
   getSongDetail(songId: string) {
-    return this.http.get<SongModel>(`http://localhost:3000/songs?id=${songId}`);
+    return this.http.get<SongModel>(`${environment.apiUrl}songs?id=${songId}`);
   }
 
   getSongList() {
-    return this.http.get<SongModel[]>('http://localhost:3000/songs/all');
+    return this.http.get<SongModel[]>(`${environment.apiUrl}songs/all`);
   }
 
   getSongByCategory(categoryId: string) {
     console.log('getSongByCategory', categoryId);
     return this.http.get<SongModel[]>(
-      `http://localhost:3000/songs/category-song?id=${categoryId}`,
+      `${environment.apiUrl}songs/category-song?id=${categoryId}`,
+    );
+  }
+
+  getSongQueue(uid: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+    console.log('getSongQueue', uid);
+    return this.http.get<SongModel[]>(
+      `${environment.apiUrl}queue/get-song-queues-user?uid=` + uid,
+      { headers },
     );
   }
 
@@ -41,14 +54,14 @@ export class SongService {
     formData.append('uuid', song.uuid);
     formData.append('views', song.views.toString());
     formData.append('category_id', song.category_id);
-    return this.http.post<SongModel>('http://localhost:3000/songs', formData, {
+    return this.http.post<SongModel>(`${environment.apiUrl}songs`, formData, {
       headers,
     });
   }
 
   updateSongViews(songId: string) {
     return this.http.put(
-      `http://localhost:3000/songs/update-views?id=${songId}`,
+      `${environment.apiUrl}songs/update-views?id=${songId}`,
       {},
     );
   }
@@ -58,7 +71,7 @@ export class SongService {
       Authorization: idToken,
     };
     return this.http.get<SongModel[]>(
-      `http://localhost:3000/like/get-song-liked-by-uid?uid=${uid}`,
+      `${environment.apiUrl}like/get-song-liked-by-uid?uid=${uid}`,
       { headers },
     );
   }
