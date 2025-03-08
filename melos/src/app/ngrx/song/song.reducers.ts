@@ -182,24 +182,6 @@ export const songReducer = createReducer(
       isLoading: false,
     };
   }),
-
-
-    }),
-    on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
-      console.log(type);
-      return {
-        ...state,
-        error: error,
-        isLoading: false,
-      };
-    }),
-    on(SongActions.clearStateSongCategory, (state,{type})=> {
-      console.log(type);
-      return {
-        ...state,
-        songCategories: [],
-      }
-    }),
     on(SongActions.getSongQueue, (state, { type ,uid, idToken}) => {
       console.log(uid);
       console.log(type);
