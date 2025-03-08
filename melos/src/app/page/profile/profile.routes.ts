@@ -22,6 +22,15 @@ export const PROFILE_ROUTES: Routes = [
             (m) => m.UploadedComponent,
           ),
       },
+
+      {
+        path: 'profile-like',
+        loadComponent: () =>
+          import('./components/like/like.component').then(
+            (m) => m.LikeComponent,
+          ),
+      },
+
       {
         path: '',
         redirectTo: 'profile-history',

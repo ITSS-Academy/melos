@@ -135,6 +135,55 @@ export const songReducer = createReducer(
         songCategories: songCategories,
         isLoading: false,
       };
+    },
+  ),
+  on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+  on(SongActions.clearStateSongCategory, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songCategories: [],
+    };
+  }),
+
+
+
+  //get song liked
+
+  on(SongActions.getSongLiked, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(SongActions.getSongLikedSuccess, (state, { songListLiked, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songListLiked: songListLiked,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.getSongLikedFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
+
     }),
     on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
       console.log(type);
