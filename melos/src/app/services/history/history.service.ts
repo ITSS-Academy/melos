@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SongModel } from '../../models/song.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class HistoryService {
     };
 
     return this.http.get<SongModel[]>(
-      `http://localhost:3000/history?uid=${uid}`,
+      `${environment.apiUrl}history?uid=${uid}`,
       {
         headers,
       },
