@@ -20,3 +20,20 @@ export const AddSongQueue = createEffect(
     },
     { functional: true },
 )
+
+export const RemoveSongQueue = createEffect(
+    (actions$ = inject(Actions), queueService = inject(QueueService)) => {
+        return actions$.pipe(
+            ofType(QueueActions.removeSongQueue),
+            exhaustMap((action) =>{
+                    return queueService.removeQueueSong(action.queue, action.idToken).pipe(
+                        map((queue) => QueueActions.removeSongQueueSuccess({ queue })),
+                        catchError((error) => of(QueueActions.removeSongQueueFailure({ error }))),
+                    );
+                }
+
+            ),
+        );
+    },
+    { functional: true },
+)
