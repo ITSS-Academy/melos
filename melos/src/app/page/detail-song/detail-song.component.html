@@ -16,7 +16,7 @@
     </div>
     <div class="song-info-contain">
 
-      <div class="summary-prf">
+      <div class="summary-prf" (click)="navigateToProfile(songDetail.uuid)">
         <div class="avt-contain">
           <img src="{{songDetail.uuid | idToAvatar |async}}" alt="" (error)="onImageError($event)">
         </div>

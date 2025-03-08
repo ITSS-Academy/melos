@@ -9,7 +9,7 @@ import { SongModel } from '../../models/song.model';
 import { SongState } from '../../ngrx/song/song.state';
 import { Store } from '@ngrx/store';
 import * as SongActions from '../../ngrx/song/song.actions';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as PlayAction from '../../ngrx/play/play.actions';
 import { SongService } from '../../services/song/song.service';
 import { PlayState } from '../../ngrx/play/play.state';
@@ -59,6 +59,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
   constructor(
     private songService: SongService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private store: Store<{
       song: SongState;
       play: PlayState;
@@ -189,5 +190,10 @@ export class DetailSongComponent implements OnInit, OnDestroy {
         }),
       );
     }
+  }
+
+
+  navigateToProfile(uid: string) {
+    this.router.navigate(['/profile', uid]);
   }
 }

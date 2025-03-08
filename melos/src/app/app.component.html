@@ -13,9 +13,7 @@
       [opened]="true"
       [style.width]="isExpanded ? '200px' : '100px'"
 
-    >
-
-      <!-- Danh sách menu -->
+    ><!-- Danh sách menu -->
       <mat-nav-list class="nav-list" >
 
         <a class="center-flex" mat-list-item (click)="toggleSidenav()">
@@ -29,6 +27,18 @@
 
 
         <a class="center-flex" mat-list-item *ngFor="let item of menuItems" (click)="onMenuClick(item.route)"
+           [ngClass]="{ 'active': item.route === activeLink }"
+        >
+          <div
+            class="center-flex"
+            [ngClass]="{ 'center-flex-collapsed': !isExpanded, 'center-flex-expanded': isExpanded }"
+          >
+            <mat-icon class="material-symbols-rounded">{{ item.icon }}</mat-icon>
+            <span *ngIf="isExpanded" class="menu-title">{{ item.title }}</span>
+          </div>
+        </a>
+
+        <a class="center-flex" mat-list-item *ngFor="let item of menuItems2" (click)="navigateToProfile()"
            [ngClass]="{ 'active': item.route === activeLink }"
         >
           <div

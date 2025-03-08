@@ -9,6 +9,7 @@ import {AsyncPipe, NgIf} from '@angular/common';
 import {LoadingComponent} from '../../../../shared/components/loading/loading.component';
 import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
 import * as SongActions from '../../../../ngrx/song/song.actions';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -30,12 +31,14 @@ export class LikeComponent implements OnInit {
   authData: AuthModel | null = null;
   songListLiked: SongModel[] = [];
   isLoading$!: Observable<boolean>;
-
+orderAuth: any;
 
 
   constructor(
+    private activateRoute: ActivatedRoute,
 
     private store: Store<{
+
                  auth: AuthState;
                  song: SongState;
 
@@ -50,21 +53,27 @@ export class LikeComponent implements OnInit {
 
   ngOnInit() {
     this.subscription.push(
-      this.auth$.subscribe((auth) => {
-        if (auth?.uid) {
-          this.authData = auth;
-          console.log('authData Like', this.authData);
+
+
+      this.activateRoute.params.subscribe(params => {
+        console.log('params-------------------', params['id']);
+        const id = params['id'];
+        if (id){
+          this.orderAuth = id;
+          console.log('orderAuth-------------------', this.orderAuth);
           this.store.dispatch(
             SongActions.getSongLiked({
-              uid: this.authData.uid ?? '',
-              idToken: this.authData.idToken ?? '',
+              uid: this.orderAuth,
+              idToken: this.orderAuth.idToken ?? '1',
             }),
           );
         }
       }),
 
 
+
       this.songListLiked$.subscribe((songListLiked) => {
+        console.log('songListLiked', songListLiked);
         if (songListLiked.length > 0) {
           this.songListLiked = songListLiked;
           console.log('[Like Component] Updated likeSongList:', this.songListLiked);
