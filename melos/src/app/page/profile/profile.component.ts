@@ -84,6 +84,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       case 1:
         this.router.navigate(['/profile/profile-uploaded']).then();
         break;
+
+      case 2:
+        this.router.navigate(['/profile/profile-like']).then();
+        break;
     }
 
 

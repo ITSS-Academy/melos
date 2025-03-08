@@ -19,6 +19,7 @@ import { historyReducer } from './ngrx/history/history.reducer';
 import * as HistoryEffects from './ngrx/history/history.effects';
 import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
 import {uploadReducer} from './ngrx/uploaded/uploaded.reducer';
+import  * as LikeEffects from './ngrx/like/like.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,7 +40,7 @@ export const appConfig: ApplicationConfig = {
       CategoryEffects,
       HistoryEffects,
       UploadEffects,
-      // LikeEffects,
+      LikeEffects,
     ),
     provideHttpClient(),
     provideFirebaseApp(() =>

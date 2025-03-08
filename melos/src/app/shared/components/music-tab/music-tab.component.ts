@@ -128,3 +128,4 @@ export class MusicTabComponent implements OnInit, OnDestroy {
     }
   }
 }
+

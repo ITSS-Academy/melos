@@ -84,3 +84,24 @@ export const updateSongViews = createEffect(
   },
   { functional: true },
 );
+
+
+
+//get song like
+export const getSongLike = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.getSongLiked),
+      exhaustMap((action) =>
+        songService.getSongLiked(action.uid, action.idToken).pipe(
+          map((songListLiked) => {
+            console.log('[Effect] songListLiked:', songListLiked);
+            return SongActions.getSongLikedSuccess({ songListLiked });
+          }),
+          catchError((error) => of(SongActions.getSongLikedFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);

@@ -151,4 +151,38 @@ export const songReducer = createReducer(
       songCategories: [],
     };
   }),
+
+
+
+  //get song liked
+
+  on(SongActions.getSongLiked, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(SongActions.getSongLikedSuccess, (state, { songListLiked, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songListLiked: songListLiked,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.getSongLikedFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
+
 );
+
+
