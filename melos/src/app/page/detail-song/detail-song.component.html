@@ -1,10 +1,11 @@
 <div class="container">
     <div class="song-contain">
+        <img [src]=songDetail?.image_url alt="" class="background-img">
         <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()">
             <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
         </button>
         <div class="img-contain">
-            <img [src]=songDetail!.image_url alt="">
+            <img [src]=songDetail?.image_url alt="">
         </div>
     </div>
     <div class="opt-btn">
@@ -122,14 +123,14 @@
             </div>
         </div>
         <div class="ns-contain">
-            <h6><b>Suggest song</b></h6>
+            <h6><b>You may like</b></h6>
             <div class="ns-section">
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
-                <app-music-tab></app-music-tab>
+                @for (music of mayLike; track music.id) {
+                    @if (music.id != songDetail?.id) {
+                        <app-music-tab
+                            [song]="music"
+                    ></app-music-tab>}
+                }
             </div>
         </div>
     </div>
