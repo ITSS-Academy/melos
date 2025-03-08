@@ -25,6 +25,8 @@ import { likeReducer } from './ngrx/like/like.reducers';
 import * as LikeEffects from './ngrx/like/like.effects';
 import { searchReducer } from './ngrx/search/search.reducers';
 import * as SearchEffects from './ngrx/search/search.effects';
+import {queueReducer} from "./ngrx/queue/queue.reducers";
+import * as QueueEffects from "./ngrx/queue/queue.effects";
 import { commentReducer } from './ngrx/comment/comment.reducer';
 import * as CommentEffects from './ngrx/comment/comment.effects';
 import { environment } from '../environments/environment.development';
@@ -44,6 +46,7 @@ export const appConfig: ApplicationConfig = {
       upload: uploadReducer,
       like: likeReducer,
       search: searchReducer,
+        queue: queueReducer,
       comment: commentReducer,
     }),
     provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects, PlaylistEffects),
@@ -55,6 +58,7 @@ export const appConfig: ApplicationConfig = {
       UploadEffects,
       LikeEffects,
       SearchEffects,
+        QueueEffects,
       CommentEffects,
     ),
     provideHttpClient(),

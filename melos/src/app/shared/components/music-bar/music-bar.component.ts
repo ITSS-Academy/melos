@@ -53,6 +53,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
 
   isLoop = false;
+  isRandom = false;
 
   overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
@@ -96,9 +97,20 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           this.isPlaying = isPlaying;
         }
       }),
+        this.songListsQueue$.subscribe((songLists) => {
+            if (songLists.length > 0) {
+                this.songListsQueue = songLists;
+                console.log('Song List Queue: ',songLists);
+            }
+        })
     );
     this.section = document.getElementById('next-song-section')
     this.updateChangeVolume();
+  }
+
+  isInQueue(id: string) : boolean{
+    console.log('Check in queue: ', this.songListsQueue.some((song) => song.id == id));
+    return this.songListsQueue.some((song) => song.id === id)
   }
 
   ngOnDestroy() {
@@ -142,7 +154,11 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.duration = audio.duration || 100;
 
       this.updateProgressBar(); // Gọi hàm cập nhật thanh tiến trình
-
+      if (this.currentTime >= this.duration) {
+        if (!this.isLoop && !this.isRandom) {
+          this.playNextSong();
+        }
+      }
       if (this.currentTime >= 10 && !this.hasUpdatedViews) {
         this.hasUpdatedViews = true;
         this.updateViews();
@@ -152,6 +168,15 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     // Cập nhật trạng thái play/pause
     audio.onplay = () => this.store.dispatch(PlayActions.play());
     audio.onpause = () => this.store.dispatch(PlayActions.pause());
+  }
+
+  playNextSong() {
+    const currentIndex = this.songListsQueue.findIndex(song => song.id === this.currentSong?.id);
+    const nextIndex = (currentIndex + 1) % this.songListsQueue.length;
+    const nextSong = this.songListsQueue[nextIndex];
+    if (nextSong) {
+      this.songService.setCurrentSong(nextSong);
+    }
   }
 
   loopClick () {

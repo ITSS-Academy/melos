@@ -69,6 +69,7 @@
         @for (music of songListsQueue; track $index) {
             <app-music-tab
                     [song]="music"
+                    [isQueue]="true"
 
             ></app-music-tab>
         }
