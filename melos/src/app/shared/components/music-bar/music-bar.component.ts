@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, OnDestroy,
   OnInit,
   Output, Renderer2,
   ViewChild,
@@ -19,15 +19,19 @@ import { PlayState } from '../../../ngrx/play/play.state';
 import * as PlayActions from '../../../ngrx/play/play.actions';
 import { play } from '../../../ngrx/play/play.actions';
 import { MusicTabComponent } from '../music-tab/music-tab.component';
-
+import * as CategoryActions from "../../../ngrx/category/category.actions";
+import {AuthModel} from "../../../models/auth.model";
+import {AuthState} from "../../../ngrx/auth/auth.state";
+import {RouterLink} from "@angular/router";
+import {NgIf, NgStyle} from "@angular/common";
 @Component({
   selector: 'app-music-bar',
   standalone: true,
-  imports: [MaterialModule, MusicTabComponent],
+  imports: [MaterialModule, MusicTabComponent, RouterLink, NgIf, NgStyle],
   templateUrl: './music-bar.component.html',
   styleUrl: './music-bar.component.scss',
 })
-export class MusicBarComponent implements OnInit {
+export class MusicBarComponent implements OnInit, OnDestroy {
   currentSong: SongModel | null = null;
   hlsUrl: string | null = null;
   isPlaying = false;
@@ -35,10 +39,20 @@ export class MusicBarComponent implements OnInit {
   duration = 0;
   volume = 50;
   subscriptions: Subscription[] = [];
+  Queuesubscriptions: Subscription[] = [];
   saveVolume = this.volume;
+  uid!: string ;
+
+  songListsQueue: SongModel[] = [];
+  songListsQueue$!: Observable<SongModel[]>;
 
   hasUpdatedViews = false;
   play$!: Observable<boolean>;
+
+  auth$!: Observable<AuthModel | null>;
+  authData: AuthModel | null = null;
+
+  isLoop = false;
 
   overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
@@ -49,14 +63,23 @@ export class MusicBarComponent implements OnInit {
     private store: Store<{
       song: SongState;
       play: PlayState;
+      auth: AuthState;
     }>,
     private renderer: Renderer2
   ) {
+    this.songListsQueue$ = this.store.select('song', 'songQueue');
     this.play$ = this.store.select('play', 'isPlaying');
+    this.auth$ = this.store.select('auth', 'authData');
   }
 
   ngOnInit() {
     this.subscriptions.push(
+        this.auth$.subscribe((auth) => {
+          if (auth?.idToken && auth.uid) {
+            this.authData = auth;
+            this.uid = auth.uid;
+          }
+        }),
       this.songService.currentSong$.subscribe((song) => {
         this.currentSong = song;
         if (song) {
@@ -76,6 +99,26 @@ export class MusicBarComponent implements OnInit {
     );
     this.section = document.getElementById('next-song-section')
     this.updateChangeVolume();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  clickGetQueue() {
+    this.store.dispatch(SongActions.getSongQueue({
+      uid: this.uid,
+      idToken: this.authData?.idToken ?? ''
+    }));
+    this.Queuesubscriptions.push(
+        this.songListsQueue$.subscribe((songLists) => {
+
+          if (songLists.length > 0) {
+            this.songListsQueue = songLists;
+            console.log('Song List Queue: ',songLists);
+          }
+        }),
+    )
   }
 
   setupHls(): void {
@@ -109,6 +152,29 @@ export class MusicBarComponent implements OnInit {
     // Cập nhật trạng thái play/pause
     audio.onplay = () => this.store.dispatch(PlayActions.play());
     audio.onpause = () => this.store.dispatch(PlayActions.pause());
+  }
+
+  loopClick () {
+    this.isLoop = !this.isLoop;
+    if (this.isLoop) {
+      console.log('Looping song');
+      this.loopSong();
+    } else {
+      console.log('No Looping song');
+      this.noLoopSong();
+    }
+  }
+
+  noLoopSong () {
+    if (this.audioPlayer.nativeElement.loop) {
+      this.audioPlayer.nativeElement.loop = false;
+    }
+  }
+
+  loopSong () {
+    if (!this.audioPlayer.nativeElement.loop) {
+      this.audioPlayer.nativeElement.loop = true;
+    }
   }
 
   //Cập nhật thanh có màu theo thời gian bài hát chạy
@@ -193,9 +259,11 @@ export class MusicBarComponent implements OnInit {
     if (this.overlayOpen) {
       this.overlayOff();
       this.overlayOpen = false;
+      this.Queuesubscriptions.forEach((subscription) => subscription.unsubscribe());
     } else {
       this.overlayOn();
       this.overlayOpen = true;
+      this.clickGetQueue();
     }
   }
 

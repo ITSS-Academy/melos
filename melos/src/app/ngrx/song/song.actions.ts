@@ -101,7 +101,7 @@ export const getSongLikedFailure = createAction(
 
 export const getSongQueue = createAction(
     '[Song] Get Song Queue',
-    props<{ id: string }>(),
+    props<{ uid: string; idToken: string }>(),
 );
 export const getSongQueueSuccess = createAction(
     '[Song] Get Song Queue Success',

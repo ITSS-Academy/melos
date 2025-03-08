@@ -151,7 +151,8 @@ export const songReducer = createReducer(
         songCategories: [],
       }
     }),
-    on(SongActions.getSongQueue, (state, { type }) => {
+    on(SongActions.getSongQueue, (state, { type ,uid, idToken}) => {
+      console.log(uid);
       console.log(type);
       return {
         ...state,

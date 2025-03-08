@@ -24,8 +24,12 @@ export class SongService {
       return this.http.get<SongModel[]>(`http://localhost:3000/songs/category-song?id=${categoryId}`);
     }
 
-  getSongQueue(uid: string) {
-    //return this.http.get<SongModel[]>('http://localhost:3000/queue/get-song-queues-user', {uid: uid});
+  getSongQueue(uid: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    }
+    console.log('getSongQueue', uid);
+    return this.http.get<SongModel[]>('http://localhost:3000/queue/get-song-queues-user?uid=' + uid, {headers});
   }
 
   createSong(song: SongModel, idToken: string) {
