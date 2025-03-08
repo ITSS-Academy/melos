@@ -1,5 +1,5 @@
 .card {
-  width: 210px; /* Tự co giãn theo grid */
+  width: 166px; /* Tự co giãn theo grid */
   user-select: none;
   color: white;
   display: flex;
@@ -19,7 +19,7 @@
       aspect-ratio: 1 / 1; /* Đảm bảo ảnh luôn vuông */
       object-fit: cover; /* Đảm bảo ảnh không méo */
     }
-    &:hover{
+    &:hover {
       scale: 1.1;
     }
   }

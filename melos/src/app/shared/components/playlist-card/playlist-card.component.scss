@@ -1,7 +1,7 @@
 #playlist-card {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 166px;
   box-sizing: border-box;
   font-size: 20px;
   border-radius: 5px;
@@ -24,21 +24,19 @@
     .playlist-card-title {
       font-size: 15px;
     }
-    p{
+    p {
       padding: 0;
       margin: 0;
       text-align: center;
     }
   }
-
 }
-.custom-menu{
-    display: flex;
-    flex-direction: column;
+.custom-menu {
+  display: flex;
+  flex-direction: column;
+}
 
- }
-
-.mat-button{
+.mat-button {
   border-radius: 20px;
   width: 200px;
   height: 60px;

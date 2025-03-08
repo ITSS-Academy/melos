@@ -18,7 +18,7 @@
 
 <div class="song-card" (click)="playSong()">
     <div class="song-card-img">
-        <img [src]="song.image_url" alt="">
+        <img [src]="song.image_url" alt="" loading="lazy">
     </div>
     <div class="song-card-info">
         <span class="title-song">{{song.title}}</span>

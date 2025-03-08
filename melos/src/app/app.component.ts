@@ -77,23 +77,6 @@ export class AppComponent implements OnInit {
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
 
-    // if (this.auth$) {
-    //   this.auth$.subscribe((auth) => {
-    //     if (auth?.uid) {
-    //       console.log(auth);
-    //       this.authData = {
-    //         ...this.authData,
-    //         photoURL: auth.picture,
-    //         idToken: this.authData!.idToken,
-    //         uid: auth.uid,
-    //         displayName: auth.displayName,
-    //         email: auth.email,
-    //       };
-    //
-    //     }
-    //   });
-    // }
-
     this.subscription.push();
   }
 
@@ -106,10 +89,7 @@ export class AppComponent implements OnInit {
     { icon: 'cloud_upload', title: 'Upload', route: 'upload' },
   ];
 
-
-  menuItems2 = [
-    { icon: 'person', title: 'Profile', route: "profile" },
-  ]
+  menuItems2 = [{ icon: 'person', title: 'Profile', route: 'profile' }];
 
   // Lấy route hiện tại
 
@@ -126,7 +106,6 @@ export class AppComponent implements OnInit {
   navigateToProfile() {
     this.activeLink = 'profile';
     this.router.navigate(['profile', this.authData?.uid]);
-
   }
 
   setActiveLink(): void {
@@ -148,9 +127,5 @@ export class AppComponent implements OnInit {
     } else {
       this.activeLink = '';
     }
-  }
-
-  onSongPlaying(isPlaying: boolean) {
-    this.isSongPlaying = isPlaying;
   }
 }
