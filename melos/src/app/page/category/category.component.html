@@ -1,11 +1,20 @@
-<div class="container">
-  <h2>Category</h2>
-<div id="category">
-    @for (category of categoryList; track $index) {
-    <app-category-card [category]="category" ></app-category-card>
-    }
+@if((isDetailLoading$ | async)){
+  <div class="container-loading">
+    <app-loading></app-loading>
+
+  </div>
+
+} @else {
+  <div class="container">
+    <h2>Category</h2>
+    <div id="category">
+      @for (category of categoryList; track $index) {
+        <app-category-card [category]="category" ></app-category-card>
+      }
 
 
-</div>
-</div>
+    </div>
+  </div>
 
+
+}

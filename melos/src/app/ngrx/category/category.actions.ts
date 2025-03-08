@@ -1,6 +1,5 @@
-
-import {createAction, props} from '@ngrx/store';
-import {CategoryModel} from '../../models/category.model';
+import { createAction, props } from '@ngrx/store';
+import { CategoryModel } from '../../models/category.model';
 
 // Lấy chi tiết danh mục
 export const getCategoryById = createAction(
@@ -48,5 +47,5 @@ export const createCategoryFailure = createAction(
 );
 
 export const clearCategoryDetail = createAction(
-    '[Category] Clear Category Detail'
+  '[Category] Clear Category Detail',
 );

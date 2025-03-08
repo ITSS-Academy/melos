@@ -9,7 +9,7 @@ import { SongModel } from '../../models/song.model';
 import { SongState } from '../../ngrx/song/song.state';
 import { Store } from '@ngrx/store';
 import * as SongActions from '../../ngrx/song/song.actions';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as PlayAction from '../../ngrx/play/play.actions';
 import { SongService } from '../../services/song/song.service';
 import { PlayState } from '../../ngrx/play/play.state';
@@ -68,14 +68,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       auth: AuthState;
     }>,
   ) {
-    this.songDetail$ = this.store.select('song', 'songDetail');
-    this.isPlaying$ = this.store.select('play', 'isPlaying');
-    this.mayLike$ = this.store.select('song', 'songCategories');
-    this.auth$ = this.store.select('auth', 'authData');
-    this.commentList$ = this.store.select('comment', 'commentList');
-  }
-
-  ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       const id = params['id'];
       if (id) {
@@ -84,9 +76,17 @@ export class DetailSongComponent implements OnInit, OnDestroy {
         this.store.dispatch(CommentActions.getCommentBySong({ songId: id }));
       }
     });
+    this.songDetail$ = this.store.select('song', 'songDetail');
+    this.isPlaying$ = this.store.select('play', 'isPlaying');
+    this.mayLike$ = this.store.select('song', 'songCategories');
+    this.auth$ = this.store.select('auth', 'authData');
+    this.commentList$ = this.store.select('comment', 'commentList');
+  }
+
+  ngOnInit() {
     this.subscriptions.push(
       this.songDetail$.subscribe((songDetail) => {
-        if (songDetail && songDetail.category_id) {
+        if (songDetail.id && songDetail.category_id) {
           this.songDetail = songDetail;
           console.log('Get song detail: ', songDetail);
           this.store.dispatch(
@@ -191,7 +191,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       );
     }
   }
-
 
   navigateToProfile(uid: string) {
     this.router.navigate(['/profile', uid]);
