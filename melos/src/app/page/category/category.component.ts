@@ -19,7 +19,7 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
 export class CategoryComponent implements OnInit, OnDestroy {
   categoryList: CategoryModel[] = [];
   categoryList$!: Observable<CategoryModel[]>;
-  isDetailLoading$!: Observable<boolean>;
+  isLoading$!: Observable<boolean>;
 
   subscriptions: Subscription[] = [];
   constructor(
@@ -29,7 +29,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     public CategoryService: CategoryService,
   ) {
     this.categoryList$ = store.select('category', 'categoryList');
-    this.isDetailLoading$ = store.select('category', 'isLoadingDetail');
+    this.isLoading$ = store.select('category', 'isLoading');
   }
 
   ngOnInit() {
