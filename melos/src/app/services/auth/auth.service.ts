@@ -31,4 +31,8 @@ export class AuthService {
       },
     });
   }
+
+  getAuthByUid(uid: string) {
+    return this.http.get(`http://localhost:3000/auth/user-id?uid=${uid}`);
+  }
 }
