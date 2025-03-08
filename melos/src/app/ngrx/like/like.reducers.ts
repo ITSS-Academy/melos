@@ -63,4 +63,34 @@ export const likeReducer = createReducer(
       isLoading: false,
     };
   }),
+
+
+  // Xử lý delete like
+  on(LikeActions.deleteLike, (state, { songId }) => {
+    console.log('Deleting like for song:', songId);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(LikeActions.deleteLikeSuccess, (state, { songId }) => {
+    console.log('Deleted like for song:', songId);
+    return {
+      ...state,
+      songIdLikes: state.songIdLikes.filter((id) => id !== songId),
+      isLoading: false,
+    };
+  }),
+
+  on(LikeActions.deleteLikeFailure, (state, { error }) => {
+    console.error('Delete like failed:', error);
+    return {
+      ...state,
+      error,
+      isLoading: false,
+    };
+  })
+
+
 );

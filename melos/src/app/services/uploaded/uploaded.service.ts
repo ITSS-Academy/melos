@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {SongModel} from '../../models/song.model';
+import { HttpClient } from '@angular/common/http';
+import { SongModel } from '../../models/song.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploadedService {
-
   constructor(private http: HttpClient) {}
 
   getUploadList(idToken: string, uid: string) {
@@ -14,7 +14,7 @@ export class UploadedService {
       Authorization: idToken,
     };
     return this.http.get<SongModel[]>(
-      `http://localhost:3000/songs/user-song?uid=${uid}`,
+      `${environment.apiUrl}songs/user-song?uid=${uid}`,
       {
         headers,
       },

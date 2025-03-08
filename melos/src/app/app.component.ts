@@ -34,7 +34,6 @@ export class AppComponent implements OnInit {
 
   activeLink = '';
   isSongPlaying = false;
-  auth$: Observable<any> | undefined;
   subscription: Subscription[] = [];
   authData: AuthModel | undefined;
 
@@ -43,11 +42,9 @@ export class AppComponent implements OnInit {
     private auth: Auth,
     private store: Store<{ auth: AuthState }>,
   ) {
-    this.auth$ = this.store.select('auth', 'auth');
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         const token = await user?.getIdToken();
-        this.store.dispatch(AuthActions.getAuth({ idToken: token }));
         console.log(token);
         this.authData = {
           idToken: token,
@@ -107,8 +104,12 @@ export class AppComponent implements OnInit {
     { icon: 'playlist_play', title: 'Playlist', route: 'playlist' },
     { icon: 'category', title: 'Category', route: 'category' },
     { icon: 'cloud_upload', title: 'Upload', route: 'upload' },
-    { icon: 'person', title: 'Profile', route: 'profile' },
   ];
+
+
+  menuItems2 = [
+    { icon: 'person', title: 'Profile', route: "profile" },
+  ]
 
   // Lấy route hiện tại
 
@@ -120,6 +121,12 @@ export class AppComponent implements OnInit {
   onMenuClick(route: string) {
     this.activeLink = route;
     this.router.navigate([route]); // Điều hướng
+  }
+
+  navigateToProfile() {
+    this.activeLink = 'profile';
+    this.router.navigate(['profile', this.authData?.uid]);
+
   }
 
   setActiveLink(): void {
@@ -136,7 +143,7 @@ export class AppComponent implements OnInit {
       this.activeLink = this.menuItems[3].route;
       console.log(this.activeLink);
     } else if (this.router.url.includes('/profile')) {
-      this.activeLink = this.menuItems[4].route;
+      this.activeLink = this.menuItems2[0].route;
       console.log(this.activeLink);
     } else {
       this.activeLink = '';

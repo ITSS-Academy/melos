@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
+
 export const likeSong = createAction(
   '[Like] Like Song',
   props<{ songId: string; uid: string; idToken: string }>(),
@@ -30,4 +31,21 @@ export const getSongIdLikedSuccess = createAction(
 export const getSongIdLikedFailure = createAction(
   '[Like] Get Song Id Liked Failure',
   props<{ error: any }>(),
+);
+
+//delete like
+
+export const deleteLike = createAction(
+  '[Like] Delete Like',
+  props<{ songId: string; uid: string; idToken: string }>()
+);
+
+export const deleteLikeSuccess = createAction(
+  '[Like] Delete Like Success',
+  props<{ songId: string }>()
+);
+
+export const deleteLikeFailure = createAction(
+  '[Like] Delete Like Failure',
+  props<{ error: any }>()
 );

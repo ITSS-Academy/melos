@@ -164,23 +164,36 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   }
 
   async likeSong(songId: string) {
-    if (songId && this.authData?.uid && this.authData?.idToken) {
-      console.log(songId);
-      this.store.dispatch(
-        LikeActions.likeSong({
-          songId: songId,
-          uid: this.authData?.uid,
-          idToken: this.authData?.idToken,
-        }),
-      );
-    } else {
+    if (!songId || !this.authData?.uid || !this.authData?.idToken) {
       this.snackbarService.showAlert(
         'Please login to like this song',
         'Close',
         3000,
         'right',
-        'top',
+        'top'
+      );
+      return;
+    }
+
+    if (this.isLike) {
+      this.store.dispatch(
+        LikeActions.deleteLike({
+          songId: songId,
+          uid: this.authData.uid,
+          idToken: this.authData.idToken,
+        })
+      );
+    } else {
+      this.store.dispatch(
+        LikeActions.likeSong({
+          songId: songId,
+          uid: this.authData.uid,
+          idToken: this.authData.idToken,
+        })
       );
     }
   }
+
+
+
 }

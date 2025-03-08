@@ -135,44 +135,73 @@ export const songReducer = createReducer(
         songCategories: songCategories,
         isLoading: false,
       };
-    }),
-    on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
-      console.log(type);
-      return {
-        ...state,
-        error: error,
-        isLoading: false,
-      };
-    }),
-    on(SongActions.clearStateSongCategory, (state,{type})=> {
-      console.log(type);
-      return {
-        ...state,
-        songCategories: [],
-      }
-    }),
-    on(SongActions.getSongQueue, (state, { type ,uid, idToken}) => {
-      console.log(uid);
-      console.log(type);
-      return {
-        ...state,
-        isLoading: true,
-      }
-    }),
-    on(SongActions.getSongQueueSuccess, (state, { songQueue, type }) => {
-        console.log(type);
-        return <SongState>{
-            ...state,
-            songQueue: songQueue,
-            isLoading: false,
-        };
-    }),
-    on(SongActions.getSongQueueFailure, (state, { error, type }) => {
-        console.log(type);
-        return {
-            ...state,
-            error: error,
-            isLoading: false,
-        };
-    }),
+    }
+  ),
+  on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+  on(SongActions.clearStateSongCategory, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songCategories: [],
+    };
+  }),
+
+  //get song liked
+
+  on(SongActions.getSongLiked, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(SongActions.getSongLikedSuccess, (state, { songListLiked, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songListLiked: songListLiked,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.getSongLikedFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+  on(SongActions.getSongQueue, (state, { type, uid, idToken }) => {
+    console.log(uid);
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+  on(SongActions.getSongQueueSuccess, (state, { songQueue, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songQueue: songQueue,
+      isLoading: false,
+    };
+  }),
+  on(SongActions.getSongQueueFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  })
 );

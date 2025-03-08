@@ -21,7 +21,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'profile',
+    path: 'profile/:id',
     loadChildren: () =>
       import('../app/page/profile/profile.routes').then(
         (m) => m.PROFILE_ROUTES,
@@ -41,6 +41,11 @@ export const routes: Routes = [
     path: 'playlist',
     loadChildren: () =>
       import('./page/playlist/playlist.routes').then((m) =>m.PLAYLIST_ROUTES),
+  },
+  {
+    path: 'playlist-detail/:id',
+    loadChildren: () =>
+      import('./page/playlist-detail/playlist-detail.routes').then((m) =>m.PLAYLIST_DETAIL),
   },
 {
     path:'detail/:id',

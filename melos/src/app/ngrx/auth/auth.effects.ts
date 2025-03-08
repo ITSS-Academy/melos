@@ -56,3 +56,20 @@ export const getAuth = createEffect(
   },
   { functional: true },
 );
+
+export const getAuthByUid = createEffect(
+  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+    return actions$.pipe(
+      ofType(AuthActions.getAuthByUid),
+      switchMap((action) => {
+        return authService
+          .getAuthByUid(action.uid)
+          .pipe(map((auth) => AuthActions.getAuthByUidSuccess({ auth })));
+      }),
+      catchError((error) => {
+        return of(AuthActions.getAuthByUidFailure({ error: error.message }));
+      }),
+    );
+  },
+  { functional: true },
+);

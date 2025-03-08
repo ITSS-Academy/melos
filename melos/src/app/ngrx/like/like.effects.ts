@@ -41,3 +41,23 @@ export const getSongIdLiked = createEffect(
   },
   { functional: true },
 );
+
+
+export const deleteSong = createEffect(
+  (actions$ = inject(Actions), likeService = inject(LikeService)) => {
+    return actions$.pipe(
+      ofType(LikeActions.deleteLike),
+      exhaustMap((action) =>
+        likeService.deleteLike(action.songId, action.uid, action.idToken).pipe(
+          map(() => {
+            console.log('Deleted songId:', action.songId);
+            return LikeActions.deleteLikeSuccess({ songId: action.songId });
+          }),
+          catchError((error) => of(LikeActions.deleteLikeFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
