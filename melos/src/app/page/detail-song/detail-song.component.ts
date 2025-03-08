@@ -14,6 +14,7 @@ import {ActivatedRoute} from "@angular/router";
 import * as PlayAction from "../../ngrx/play/play.actions";
 import {SongService} from "../../services/song/song.service";
 import {PlayState} from "../../ngrx/play/play.state";
+import {CategoryState} from "../../ngrx/category/category.state";
 @Component({
   selector: 'app-detail-song',
   standalone: true,
@@ -34,16 +35,20 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     songDetail!: SongModel;
     songDetail$!: Observable<SongModel>;
+    mayLike: SongModel[] = [];
+    mayLike$!: Observable<SongModel[]>;
     constructor(
         private songService: SongService,
         private activatedRoute: ActivatedRoute,
         private store: Store<{
             song: SongState;
             play: PlayState;
+            category: CategoryState;
         }>
     ) {
         this.songDetail$ = this.store.select('song', 'songDetail');
         this.isPlaying$ = this.store.select('play', 'isPlaying');
+        this.mayLike$ = this.store.select('song', 'songCategories');
     }
 
     ngOnInit() {
@@ -57,13 +62,20 @@ export class DetailSongComponent implements OnInit, OnDestroy {
         }),
         this.subscriptions.push(
             this.songDetail$.subscribe((songDetail) => {
-                if (songDetail) {
+                if (songDetail && songDetail.category_id) {
                     this.songDetail = songDetail;
                     console.log("Get song detail: ",songDetail);
+                    this.store.dispatch(SongActions.getSongCategories({ id: this.songDetail.category_id }));
                 }
             }),
             this.isPlaying$.subscribe((isPlaying) => {
                 this.isPlaying = isPlaying;
+            }),
+            this.mayLike$.subscribe((songLists) => {
+                if (songLists.length > 0) {
+                    this.mayLike = songLists;
+                    console.log(songLists);
+                }
             }),
 
         )
@@ -75,20 +87,20 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     }
     playSong() {
         if (this.isPlaying) {
-            if (this.songDetail!.id == this.songService.currentPlaySong!.id) {
+            if (this.songDetail?.id == this.songService.currentPlaySong?.id) {
                 this.store.dispatch(PlayAction.pause());
                 return;
             } else {
-                this.songService.setCurrentSong(this.songDetail!);
+                this.songService.setCurrentSong(this.songDetail);
                 this.store.dispatch(PlayAction.play());
                 return;
             }
         } else {
-            if (this.songDetail!.id == this.songService.currentPlaySong!.id) {
+            if (this.songDetail?.id == this.songService.currentPlaySong?.id) {
                 this.store.dispatch(PlayAction.play());
                 return;
             } else {
-                this.songService.setCurrentSong(this.songDetail!);
+                this.songService.setCurrentSong(this.songDetail);
                 this.store.dispatch(PlayAction.play());
                 return;
             }

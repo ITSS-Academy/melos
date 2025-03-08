@@ -118,13 +118,15 @@ export class PlaylistsController {
   }
 
   @Delete()
-  async deletePlaylist(@Body() data: any) {
+  async deletePlaylist(@Request() req: any) {
     try {
-      console.log('data', data);
-      if (!data.id) {
+      const { id, uid } = req.query;
+      if (!id) {
         throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
+      } else if (!uid) {
+        throw new HttpException('Uid is required', HttpStatus.BAD_REQUEST);
       }
-      return await this.playlistsService.deletePlaylist(data.id, data.uid);
+      return await this.playlistsService.deletePlaylist(id, uid);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
