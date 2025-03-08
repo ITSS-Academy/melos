@@ -21,6 +21,7 @@ export const logoutFailure = createAction(
   '[Auth] Logout Failure',
   props<{ error: any }>(),
 );
+export const clearState = createAction('[Auth] Clear State');
 
 //getAuth
 
@@ -35,5 +36,20 @@ export const getAuthSuccess = createAction(
 
 export const getAuthFailure = createAction(
   '[Auth] Get Auth Failure',
+  props<{ error: any }>(),
+);
+
+export const getAuthByUid = createAction(
+  '[Auth] Get Auth By Uid',
+  props<{ uid: string }>(),
+);
+
+export const getAuthByUidSuccess = createAction(
+  '[Auth] Get Auth By Uid Success',
+  props<{ auth: any }>(),
+);
+
+export const getAuthByUidFailure = createAction(
+  '[Auth] Get Auth By Uid Failure',
   props<{ error: any }>(),
 );

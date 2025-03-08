@@ -47,7 +47,7 @@ export class AppModule {
         { path: 'playlists', method: RequestMethod.GET },
         { path: 'history', method: RequestMethod.ALL },
         { path: 'queue', method: RequestMethod.ALL },
-        { path: 'like', method: RequestMethod.ALL },
+        { path: 'like', method: RequestMethod.POST },
         { path: 'comment', method: RequestMethod.POST },
       );
   }

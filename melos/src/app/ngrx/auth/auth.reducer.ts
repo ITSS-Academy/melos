@@ -91,4 +91,40 @@ export const authReducer = createReducer(
       error: error,
     };
   }),
+
+    on(AuthActions.getAuthByUid, (state, { type }) => {
+        console.log(type);
+        return <AuthState>{
+        ...state,
+        isLogging: true,
+        };
+    }),
+
+    on(AuthActions.getAuthByUidSuccess, (state, { auth, type }) => {
+        console.log(type);
+        return <AuthState>{
+        ...state,
+        auth: auth,
+        isLogging: false,
+        };
+    }),
+
+    on(AuthActions.getAuthByUidFailure, (state, { error, type }) => {
+        console.log(type);
+        return <AuthState>{
+        ...state,
+        isLogging: false,
+        error: error,
+        };
+    }),
+
+    on(AuthActions.clearState, (state, { type }) => {
+        console.log(type);
+        return <AuthState>{
+        authData: null,
+        isLogging: false,
+        error: null,
+        auth: null,
+        };
+    }),
 );
