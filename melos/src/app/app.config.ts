@@ -17,6 +17,8 @@ import { categoryReducer } from './ngrx/category/category.reducers';
 import * as CategoryEffects from './ngrx/category/category.effects';
 import { historyReducer } from './ngrx/history/history.reducer';
 import * as HistoryEffects from './ngrx/history/history.effects';
+import {playlistReducer} from './ngrx/playlist/playlist.reducers';
+import * as PlaylistEffects from './ngrx/playlist/playlist.effects';
 import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
 import { uploadReducer } from './ngrx/uploaded/uploaded.reducer';
 import { likeReducer } from './ngrx/like/like.reducers';
@@ -38,11 +40,13 @@ export const appConfig: ApplicationConfig = {
       play: playReducer,
       category: categoryReducer,
       history: historyReducer,
+      playlist: playlistReducer,
       upload: uploadReducer,
       like: likeReducer,
       search: searchReducer,
       comment: commentReducer,
     }),
+    provideEffects(SongEffects, AuthEffects, CategoryEffects, HistoryEffects, PlaylistEffects),
     provideEffects(
       SongEffects,
       AuthEffects,

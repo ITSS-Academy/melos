@@ -13,6 +13,7 @@
       aspect-ratio: 1/1;
       border-radius: 10%;
       object-fit: cover;
+      cursor: pointer;
     }
   }
   .group {
@@ -23,5 +24,30 @@
     .playlist-card-title {
       font-size: 15px;
     }
+    p{
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
   }
+
+}
+.custom-menu{
+    display: flex;
+    flex-direction: column;
+
+ }
+
+.mat-button{
+  border-radius: 20px;
+  width: 200px;
+  height: 60px;
+  background-color: var(--surfaceContainerHigh);
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 5px 5px;
+  color: var(--primary);
+  padding-left: 10px;
 }
