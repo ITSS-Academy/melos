@@ -12,6 +12,8 @@ import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as CategoryActions from './ngrx/category/category.actions';
 import * as LikeActions from './ngrx/like/like.actions';
+import * as QueueActions from './ngrx/queue/queue.actions';
+import * as SongActions from './ngrx/song/song.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -75,7 +77,6 @@ export class AppComponent implements OnInit {
         console.log(this.router.url);
       });
     this.store.dispatch(CategoryActions.getCategoryList());
-
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
 

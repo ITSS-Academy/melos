@@ -1,4 +1,4 @@
-    <div class="ns-card">
+    <div class="ns-card" [ngStyle]="{'background-color': isPlayingQueue() ? 'var(--onSecondaryFixed)' : ''}">
         <div class="ns-img-contain">
             <div class="play-btn">
                 <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="playSong()">
@@ -25,8 +25,14 @@
             <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
                 <mat-icon>playlist_add</mat-icon>
             </button>
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                <mat-icon>library_add</mat-icon>
-            </button>
+          @if (this.isQueue) {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="removeQueueSong()">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          } @else {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="addQueueSong()">
+                  <mat-icon>library_add</mat-icon>
+              </button>
+          }
         </div>
     </div>
