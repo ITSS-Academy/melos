@@ -1,8 +1,8 @@
-import * as PlaylistActions from './playlist.actions'
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {inject} from '@angular/core';
-import {catchError, exhaustMap, map, of} from 'rxjs';
-import {PlaylistService} from '../../services/playlist/playlist.service';
+import * as PlaylistActions from './playlist.actions';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { inject } from '@angular/core';
+import { catchError, exhaustMap, map, of } from 'rxjs';
+import { PlaylistService } from '../../services/playlist/playlist.service';
 
 export const getDetailPlaylist = createEffect(
   (actions$ = inject(Actions), playlistService = inject(PlaylistService)) => {
@@ -10,8 +10,12 @@ export const getDetailPlaylist = createEffect(
       ofType(PlaylistActions.getPlaylistById),
       exhaustMap((action) =>
         playlistService.getPlaylistDetail(action.id).pipe(
-          map((playlistDetail) => PlaylistActions.getPlaylistByIdSuccess({ playlistDetail })),
-          catchError((error) => of(PlaylistActions.getPlaylistByIdFailure({ error }))),
+          map((playlistDetail) =>
+            PlaylistActions.getPlaylistByIdSuccess({ playlistDetail }),
+          ),
+          catchError((error) =>
+            of(PlaylistActions.getPlaylistByIdFailure({ error })),
+          ),
         ),
       ),
     );
@@ -24,9 +28,13 @@ export const getListPlaylists = createEffect(
     return actions$.pipe(
       ofType(PlaylistActions.getPlaylistByUserId),
       exhaustMap((action) =>
-        playlistService.getPlaylistById(action.uid,action.idToken).pipe(
-          map((playlistList) => PlaylistActions.getPlaylistByUserIdSuccess({ playlistList })),
-          catchError((error) => of(PlaylistActions.getPlaylistUserIdFailure({ error }))),
+        playlistService.getPlaylistById(action.uid, action.idToken).pipe(
+          map((playlistList) =>
+            PlaylistActions.getPlaylistByUserIdSuccess({ playlistList }),
+          ),
+          catchError((error) =>
+            of(PlaylistActions.getPlaylistUserIdFailure({ error })),
+          ),
         ),
       ),
     );
@@ -41,8 +49,12 @@ export const createPlaylist = createEffect(
       ofType(PlaylistActions.createPlaylist),
       exhaustMap((action) =>
         playlistService.createPlaylist(action.playlist, action.idToken).pipe(
-          map((playlist) => PlaylistActions.createPlaylistSuccess({ playlist })),
-          catchError((error) => of(PlaylistActions.createPlaylistFailure({ error }))),
+          map((playlist) =>
+            PlaylistActions.createPlaylistSuccess({ playlist }),
+          ),
+          catchError((error) =>
+            of(PlaylistActions.createPlaylistFailure({ error })),
+          ),
         ),
       ),
     );
@@ -55,10 +67,16 @@ export const deleteDetailPlaylist = createEffect(
     return actions$.pipe(
       ofType(PlaylistActions.deletePlaylistById),
       exhaustMap((action) =>
-        playlistService.deletePlaylistById(action.id).pipe(
-          map((playlist) => PlaylistActions.deletePlaylistByIdSuccess({ playlist })),
-          catchError((error) => of(PlaylistActions.deletePlaylistByIdFailure({ error }))),
-        ),
+        playlistService
+          .deletePlaylistById(action.id, action.uid, action.idToken)
+          .pipe(
+            map((playlist) =>
+              PlaylistActions.deletePlaylistByIdSuccess({ playlist }),
+            ),
+            catchError((error) =>
+              of(PlaylistActions.deletePlaylistByIdFailure({ error })),
+            ),
+          ),
       ),
     );
   },
@@ -70,10 +88,16 @@ export const editDetailPlaylist = createEffect(
     return actions$.pipe(
       ofType(PlaylistActions.editPlaylistById),
       exhaustMap((action) =>
-        playlistService.editPlaylistById(action.id).pipe(
-          map((playlist) => PlaylistActions.editPlaylistByIdSuccess({ playlist })),
-          catchError((error) => of(PlaylistActions.editPlaylistByIdFailure({ error }))),
-        ),
+        playlistService
+          .updatePlaylistById(action.playlist, action.idToken)
+          .pipe(
+            map((playlist) =>
+              PlaylistActions.editPlaylistByIdSuccess({ playlist }),
+            ),
+            catchError((error) =>
+              of(PlaylistActions.editPlaylistByIdFailure({ error })),
+            ),
+          ),
       ),
     );
   },

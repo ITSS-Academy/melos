@@ -57,7 +57,7 @@ export const clearPlaylistDetail = createAction(
 //Delete Playlist
 export const deletePlaylistById = createAction(
   '[Playlist] Delete Playlist',
-  props<{ id: string }>(),
+  props<{ id: string; uid: string; idToken: string }>(),
 );
 export const deletePlaylistByIdSuccess = createAction(
   '[Playlist] Delete Playlist Success',
@@ -71,7 +71,10 @@ export const deletePlaylistByIdFailure = createAction(
 //Edit Playlist
 export const editPlaylistById = createAction(
   '[Playlist] Edit Playlist',
-  props<{ id: string }>(),
+  props<{
+    playlist: PlaylistModel;
+    idToken: string;
+  }>(),
 );
 export const editPlaylistByIdSuccess = createAction(
   '[Playlist] Edit Playlist Success',

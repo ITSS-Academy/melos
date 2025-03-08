@@ -54,11 +54,11 @@ export class PlaylistComponent implements OnInit {
     });
   }
   openDeletePlaylist(playlistId: string) {
-    this.store.dispatch(PlaylistActions.deletePlaylistById({ id: playlistId }));
-    console.log(playlistId);
+    //   this.store.dispatch(PlaylistActions.deletePlaylistById({ id: playlistId }));
+    //   console.log(playlistId);
   }
   openEditPlaylist(playlistId: string) {
-    this.store.dispatch(PlaylistActions.editPlaylistById({ id: playlistId }));
+    // this.store.dispatch(PlaylistActions.editPlaylistById({ id: playlistId }));
     console.log(playlistId);
   }
 
@@ -74,9 +74,9 @@ export class PlaylistComponent implements OnInit {
     );
     diabloDelete.afterClosed().subscribe((result) => {
       if (result) {
-        this.store.dispatch(
-          PlaylistActions.deletePlaylistById({ id: playlist.id }),
-        );
+        // this.store.dispatch(
+        //   PlaylistActions.deletePlaylistById({ id: playlist.id }),
+        // );
       }
     });
   }
