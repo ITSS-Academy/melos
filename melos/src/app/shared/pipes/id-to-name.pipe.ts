@@ -1,21 +1,21 @@
-// import { Pipe, PipeTransform } from '@angular/core';
-// import { ProfileService } from '../../services/profile/profile.services';
-// import { Observable } from 'rxjs';
-// import { ProfileModel } from '../../models/profile.models';
-// import { map } from 'rxjs/operators';
-//
-// @Pipe({
-//   name: 'idToName',
-//   standalone: true,
-// })
-// export class IdToNamePipe implements PipeTransform {
-//   constructor(private profileService: ProfileService) {}
-//
-//   transform(uid: string): Observable<string> {
-//     return this.profileService.getById(uid).pipe(
-//       map((profile: ProfileModel) => {
-//         return profile.userName;
-//       }),
-//     );
-//   }
-// }
+import { Pipe, PipeTransform } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthService } from '../../services/auth/auth.service';
+
+@Pipe({
+  name: 'idToName',
+  standalone: true,
+})
+export class IdToNamePipe implements PipeTransform {
+  constructor(private authService: AuthService) {}
+
+  transform(uid: string): Observable<string> {
+    return this.authService.getAuthByUid(uid).pipe(
+      map((auth: any) => {
+        const url = auth.name;
+        return url;
+      }),
+    );
+  }
+}

@@ -12,6 +12,7 @@ import { HistoryModule } from './history/history.module';
 import { QueueModule } from './queue/queue.module';
 import { LikeModule } from './like/like.module';
 import { SearchModule } from './search/search.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SearchModule } from './search/search.module';
     QueueModule,
     LikeModule,
     SearchModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -38,7 +40,6 @@ export class AppModule {
       .forRoutes(
         { path: 'songs', method: RequestMethod.POST },
         { path: 'songs', method: RequestMethod.DELETE },
-        { path: 'auth', method: RequestMethod.GET },
         { path: 'auth', method: RequestMethod.POST },
         { path: 'playlists', method: RequestMethod.POST },
         { path: 'playlists', method: RequestMethod.DELETE },
@@ -47,6 +48,7 @@ export class AppModule {
         { path: 'history', method: RequestMethod.ALL },
         { path: 'queue', method: RequestMethod.ALL },
         { path: 'like', method: RequestMethod.ALL },
+        { path: 'comment', method: RequestMethod.POST },
       );
   }
 }

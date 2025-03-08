@@ -23,6 +23,8 @@ import { likeReducer } from './ngrx/like/like.reducers';
 import * as LikeEffects from './ngrx/like/like.effects';
 import { searchReducer } from './ngrx/search/search.reducers';
 import * as SearchEffects from './ngrx/search/search.effects';
+import { commentReducer } from './ngrx/comment/comment.reducer';
+import * as CommentEffects from './ngrx/comment/comment.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,6 +40,7 @@ export const appConfig: ApplicationConfig = {
       upload: uploadReducer,
       like: likeReducer,
       search: searchReducer,
+      comment: commentReducer,
     }),
     provideEffects(
       SongEffects,
@@ -47,6 +50,7 @@ export const appConfig: ApplicationConfig = {
       UploadEffects,
       LikeEffects,
       SearchEffects,
+      CommentEffects,
     ),
     provideHttpClient(),
     provideFirebaseApp(() =>
