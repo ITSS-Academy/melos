@@ -12,6 +12,7 @@
   //bottom: 0;
   //z-index: 1;
   box-sizing: border-box;
+  user-select: none;
 }
 
 /* Song Info */
@@ -48,6 +49,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: pointer;
+}
+.song-title:hover {
+  text-decoration: underline;
 }
 .song-composer{
   color: var(--onSurfaceVariant);
@@ -218,4 +223,17 @@ button.mat-icon-button:hover {
 }
 #vol-mute-contain {
   display: none;
+}
+
+.loop-btn {
+  position: relative;
+  span {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 700;
+    top: 14.5px;
+    right: 17.5px;
+    color: var(--primaryFixedDim);
+  }
+
 }
