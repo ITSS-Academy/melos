@@ -58,7 +58,7 @@ export const appConfig: ApplicationConfig = {
       UploadEffects,
       LikeEffects,
       SearchEffects,
-        QueueEffects
+        QueueEffects,
       CommentEffects,
     ),
     provideHttpClient(),
