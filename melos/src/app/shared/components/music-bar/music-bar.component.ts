@@ -1,9 +1,9 @@
 import {
   Component,
   ElementRef,
-  EventEmitter, OnDestroy,
+  OnDestroy,
   OnInit,
-  Output, Renderer2,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 import Hls from 'hls.js';
@@ -17,13 +17,12 @@ import { SongState } from '../../../ngrx/song/song.state';
 import * as SongActions from '../../../ngrx/song/song.actions';
 import { PlayState } from '../../../ngrx/play/play.state';
 import * as PlayActions from '../../../ngrx/play/play.actions';
-import { play } from '../../../ngrx/play/play.actions';
 import { MusicTabComponent } from '../music-tab/music-tab.component';
-import * as CategoryActions from "../../../ngrx/category/category.actions";
-import {AuthModel} from "../../../models/auth.model";
-import {AuthState} from "../../../ngrx/auth/auth.state";
-import {RouterLink} from "@angular/router";
-import {NgIf, NgStyle} from "@angular/common";
+import { AuthModel } from '../../../models/auth.model';
+import { AuthState } from '../../../ngrx/auth/auth.state';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgStyle } from '@angular/common';
+import * as HistoryActions from '../../../ngrx/history/history.actions';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -41,7 +40,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   Queuesubscriptions: Subscription[] = [];
   saveVolume = this.volume;
-  uid!: string ;
+  uid!: string;
 
   songListsQueue: SongModel[] = [];
   songListsQueue$!: Observable<SongModel[]>;
@@ -66,7 +65,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       play: PlayState;
       auth: AuthState;
     }>,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) {
     this.songListsQueue$ = this.store.select('song', 'songQueue');
     this.play$ = this.store.select('play', 'isPlaying');
@@ -75,12 +74,12 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
-        this.auth$.subscribe((auth) => {
-          if (auth?.idToken && auth.uid) {
-            this.authData = auth;
-            this.uid = auth.uid;
-          }
-        }),
+      this.auth$.subscribe((auth) => {
+        if (auth?.idToken && auth.uid) {
+          this.authData = auth;
+          this.uid = auth.uid;
+        }
+      }),
       this.songService.currentSong$.subscribe((song) => {
         this.currentSong = song;
         if (song) {
@@ -97,20 +96,23 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           this.isPlaying = isPlaying;
         }
       }),
-        this.songListsQueue$.subscribe((songLists) => {
-            if (songLists.length > 0) {
-                this.songListsQueue = songLists;
-                console.log('Song List Queue: ',songLists);
-            }
-        })
+      this.songListsQueue$.subscribe((songLists) => {
+        if (songLists.length > 0) {
+          this.songListsQueue = songLists;
+          console.log('Song List Queue: ', songLists);
+        }
+      }),
     );
-    this.section = document.getElementById('next-song-section')
+    this.section = document.getElementById('next-song-section');
     this.updateChangeVolume();
   }
 
-  isInQueue(id: string) : boolean{
-    console.log('Check in queue: ', this.songListsQueue.some((song) => song.id == id));
-    return this.songListsQueue.some((song) => song.id === id)
+  isInQueue(id: string): boolean {
+    console.log(
+      'Check in queue: ',
+      this.songListsQueue.some((song) => song.id == id),
+    );
+    return this.songListsQueue.some((song) => song.id === id);
   }
 
   ngOnDestroy() {
@@ -118,19 +120,20 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   }
 
   clickGetQueue() {
-    this.store.dispatch(SongActions.getSongQueue({
-      uid: this.uid,
-      idToken: this.authData?.idToken ?? ''
-    }));
+    this.store.dispatch(
+      SongActions.getSongQueue({
+        uid: this.uid,
+        idToken: this.authData?.idToken ?? '',
+      }),
+    );
     this.Queuesubscriptions.push(
-        this.songListsQueue$.subscribe((songLists) => {
-
-          if (songLists.length > 0) {
-            this.songListsQueue = songLists;
-            console.log('Song List Queue: ',songLists);
-          }
-        }),
-    )
+      this.songListsQueue$.subscribe((songLists) => {
+        if (songLists.length > 0) {
+          this.songListsQueue = songLists;
+          console.log('Song List Queue: ', songLists);
+        }
+      }),
+    );
   }
 
   setupHls(): void {
@@ -171,7 +174,9 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   }
 
   playNextSong() {
-    const currentIndex = this.songListsQueue.findIndex(song => song.id === this.currentSong?.id);
+    const currentIndex = this.songListsQueue.findIndex(
+      (song) => song.id === this.currentSong?.id,
+    );
     const nextIndex = (currentIndex + 1) % this.songListsQueue.length;
     const nextSong = this.songListsQueue[nextIndex];
     if (nextSong) {
@@ -179,7 +184,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  loopClick () {
+  loopClick() {
     this.isLoop = !this.isLoop;
     if (this.isLoop) {
       console.log('Looping song');
@@ -190,13 +195,13 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  noLoopSong () {
+  noLoopSong() {
     if (this.audioPlayer.nativeElement.loop) {
       this.audioPlayer.nativeElement.loop = false;
     }
   }
 
-  loopSong () {
+  loopSong() {
     if (!this.audioPlayer.nativeElement.loop) {
       this.audioPlayer.nativeElement.loop = true;
     }
@@ -230,6 +235,14 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.store.dispatch(
         SongActions.updateSongViews({ id: this.currentSong.id }),
       );
+
+      this.store.dispatch(
+        HistoryActions.createHistory({
+          songId: this.currentSong.id,
+          uid: this.uid,
+          idToken: this.authData?.idToken ?? '',
+        }),
+      );
     }
   }
 
@@ -251,7 +264,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(unmuteBtn, 'display', 'flex');
       this.renderer.setStyle(muteBtn, 'display', 'none');
     }
-    this.updateChangeVolume()
+    this.updateChangeVolume();
   }
 
   updateChangeVolume() {
@@ -284,7 +297,9 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     if (this.overlayOpen) {
       this.overlayOff();
       this.overlayOpen = false;
-      this.Queuesubscriptions.forEach((subscription) => subscription.unsubscribe());
+      this.Queuesubscriptions.forEach((subscription) =>
+        subscription.unsubscribe(),
+      );
     } else {
       this.overlayOn();
       this.overlayOpen = true;
@@ -316,8 +331,8 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(unmuteBtn, 'display', 'none');
       this.renderer.setStyle(muteBtn, 'display', 'flex');
     }
-    console.log("mute")
-    this.updateChangeVolume()
+    console.log('mute');
+    this.updateChangeVolume();
   }
   clickUnmute() {
     const audio = this.audioPlayer.nativeElement;
@@ -329,7 +344,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(unmuteBtn, 'display', 'flex');
       this.renderer.setStyle(muteBtn, 'display', 'none');
     }
-    console.log("unmute")
-    this.updateChangeVolume()
+    console.log('unmute');
+    this.updateChangeVolume();
   }
 }

@@ -1,69 +1,76 @@
-<div class="container">
-  <app-loading *ngIf="isLoading$ | async"></app-loading>
+@if(isLoading$ |async){
+  <div class="container-loading">
+    <app-loading></app-loading>
 
-    <div class="home-rcmd-list" *ngIf="!(isLoading$ | async)">
-        <div class="sub-contain-list">
-            <div class="title-list">
-                <h6><b>Trending Songs</b></h6>
-            </div>
-            <div class="carousel">
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-1')">
-                    <mat-icon>arrow_back_ios</mat-icon>
-                </button>
-                <div class="song-list" id="song-list-1" >
-<!--                    <app-music-card *ngFor="let song of SongService.dummyData; let i = index" [song]="song"></app-music-card>-->
-                    @for (music of trendingSongs; track music.id){
-                      <app-music-card
-                        [song]="music"
-                      ></app-music-card>
-                    }
-                </div>
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-1')">
-                    <mat-icon>arrow_forward_ios</mat-icon>
-                </button>
-            </div>
+  </div>
+
+} @else {
+  <div class="container">
+    <div class="home-rcmd-list" >
+      <div class="sub-contain-list">
+        <div class="title-list">
+          <h6><b>Trending Songs</b></h6>
         </div>
-        <div class="sub-contain-list">
-            <div class="title-list">
-                <h6><b>New Releases</b></h6>
-            </div>
-          <div class="carousel">
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-2')">
-              <mat-icon>arrow_back_ios</mat-icon>
-            </button>
-            <div class="song-list" id="song-list-2" >
-              <!--                    <app-music-card *ngFor="let song of SongService.dummyData; let i = index" [song]="song"></app-music-card>-->
-              @for (music of songLists; track music.id){
-                <app-music-card
-                  [song]="music"
-                ></app-music-card>
-              }
-            </div>
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-2')">
-              <mat-icon>arrow_forward_ios</mat-icon>
-            </button>
+        <div class="carousel">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-1')">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+          <div class="song-list" id="song-list-1" >
+            <!--                    <app-music-card *ngFor="let song of SongService.dummyData; let i = index" [song]="song"></app-music-card>-->
+            @for (music of trendingSongs; track music.id){
+              <app-music-card
+                [song]="music"
+              ></app-music-card>
+            }
           </div>
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-1')">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
         </div>
-        <div class="sub-contain-list">
-            <div class="title-list">
-                <h6><b> Hot Ballad </b></h6>
-<!--                <span>Xem thêm ></span>-->
-            </div>
-            <div class="carousel">
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-3')">
-                    <mat-icon>arrow_back_ios</mat-icon>
-                </button>
-                <div class="song-list" id="song-list-3">
-                  @for (music of categorySongs; track music.id){
-                    <app-music-card
-                      [song]="music"
-                    ></app-music-card>
-                  }
-                </div>
-                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-3')">
-                    <mat-icon>arrow_forward_ios</mat-icon>
-                </button>
-            </div>
+      </div>
+      <div class="sub-contain-list">
+        <div class="title-list">
+          <h6><b>New Releases</b></h6>
         </div>
+        <div class="carousel">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-2')">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+          <div class="song-list" id="song-list-2" >
+            <!--                    <app-music-card *ngFor="let song of SongService.dummyData; let i = index" [song]="song"></app-music-card>-->
+            @for (music of songLists; track music.id){
+              <app-music-card
+                [song]="music"
+              ></app-music-card>
+            }
+          </div>
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-2')">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="sub-contain-list">
+        <div class="title-list">
+          <h6><b> Hot Ballad </b></h6>
+          <!--                <span>Xem thêm ></span>-->
+        </div>
+        <div class="carousel">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-left" (click)="toLeft('song-list-3')">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+          <div class="song-list" id="song-list-3">
+            @for (music of categorySongs; track music.id){
+              <app-music-card
+                [song]="music"
+              ></app-music-card>
+            }
+          </div>
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="to-right" (click)="toRight('song-list-3')">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+}

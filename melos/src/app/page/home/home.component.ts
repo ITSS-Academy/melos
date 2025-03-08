@@ -16,13 +16,7 @@ import { CategoryService } from '../../services/category/category.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    MusicCardComponent,
-    MaterialModule,
-    AsyncPipe,
-    LoadingComponent,
-    NgIf,
-  ],
+  imports: [MusicCardComponent, MaterialModule, AsyncPipe, LoadingComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

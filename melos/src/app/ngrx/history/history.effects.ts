@@ -26,3 +26,25 @@ export const getHistorySongList = createEffect(
   },
   { functional: true },
 );
+
+export const createHistory = createEffect(
+  (actions$ = inject(Actions), historyService = inject(HistoryService)) => {
+    return actions$.pipe(
+      ofType(HistoryActions.createHistory),
+      exhaustMap((action) =>
+        historyService
+          .createHistory(action.uid, action.songId, action.idToken)
+          .pipe(
+            map(() => {
+              console.log('Successfully created history');
+              return HistoryActions.createHistorySuccess();
+            }),
+            catchError((error) =>
+              of(HistoryActions.createHistoryFailure({ error })),
+            ),
+          ),
+      ),
+    );
+  },
+  { functional: true },
+);
