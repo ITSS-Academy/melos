@@ -21,6 +21,8 @@ import * as UploadEffects from './ngrx/uploaded/uploaded.effects';
 import { uploadReducer } from './ngrx/uploaded/uploaded.reducer';
 import { likeReducer } from './ngrx/like/like.reducers';
 import * as LikeEffects from './ngrx/like/like.effects';
+import { searchReducer } from './ngrx/search/search.reducers';
+import * as SearchEffects from './ngrx/search/search.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +37,7 @@ export const appConfig: ApplicationConfig = {
       history: historyReducer,
       upload: uploadReducer,
       like: likeReducer,
+      search: searchReducer,
     }),
     provideEffects(
       SongEffects,
@@ -43,6 +46,7 @@ export const appConfig: ApplicationConfig = {
       HistoryEffects,
       UploadEffects,
       LikeEffects,
+      SearchEffects,
     ),
     provideHttpClient(),
     provideFirebaseApp(() =>
