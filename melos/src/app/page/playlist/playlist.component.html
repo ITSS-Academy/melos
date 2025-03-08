@@ -7,7 +7,12 @@
   </div>
   <div id="playlist-main">
     <ng-container *ngIf="playlists$ | async as playlists; else noPlaylist">
-      <app-playlist-card *ngFor="let playlist of playlists" [playlist]="playlist"></app-playlist-card>
+      <app-playlist-card *ngFor="let playlist of playlists"
+                         [playlist]="playlist"
+                         (SelectedIdDelete)="openDeletePlaylist($event)"
+                         (SelectIdEdit)="openEditPlaylist($event)"
+
+      ></app-playlist-card>
     </ng-container>
 
     <ng-template #noPlaylist>

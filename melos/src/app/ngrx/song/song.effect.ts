@@ -35,22 +35,24 @@ export const getListSongs = createEffect(
 );
 
 export const getSongByCategory = createEffect(
-    (actions$ = inject(Actions), songService = inject(SongService)) => {
-        return actions$.pipe(
-            ofType(SongActions.getSongCategories),
-            exhaustMap((action) =>{
-                console.log(action.id);
-                return songService.getSongByCategory(action.id).pipe(
-                    map((songList) => SongActions.getSongCategoriesSuccess({ songCategories: songList })),
-                    catchError((error) => of(SongActions.getSongCategoriesFailure({ error }))),
-                );
-                }
-
-            ),
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.getSongCategories),
+      exhaustMap((action) => {
+        console.log(action.id);
+        return songService.getSongByCategory(action.id).pipe(
+          map((songList) =>
+            SongActions.getSongCategoriesSuccess({ songCategories: songList }),
+          ),
+          catchError((error) =>
+            of(SongActions.getSongCategoriesFailure({ error })),
+          ),
         );
-    },
-    { functional: true },
-)
+      }),
+    );
+  },
+  { functional: true },
+);
 
 export const createSong = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
@@ -67,7 +69,7 @@ export const createSong = createEffect(
   { functional: true },
 );
 
-//update views
+//upload views
 export const updateSongViews = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
     return actions$.pipe(

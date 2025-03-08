@@ -47,7 +47,7 @@ export const createSongFailure = createAction(
   props<{ error: any }>(),
 );
 
-//update views
+//upload views
 
 export const updateSongViews = createAction(
   '[Song] Update Song Views',
@@ -63,21 +63,37 @@ export const updateSongViewsFailure = createAction(
   props<{ error: any }>(),
 );
 
-
 //Song Categories
 export const getSongCategories = createAction(
-    '[Song] Get Song Categories',
-    props<{ id: string }>(),
+  '[Song] Get Song Categories',
+  props<{ id: string }>(),
 );
 export const getSongCategoriesSuccess = createAction(
-    '[Song] Get Song Categories Success',
-    props<{ songCategories: SongModel[] }>(),
+  '[Song] Get Song Categories Success',
+  props<{ songCategories: SongModel[] }>(),
 );
 export const getSongCategoriesFailure = createAction(
-    '[Song] Get Song Categories Failure',
-    props<{ error: any }>(),
+  '[Song] Get Song Categories Failure',
+  props<{ error: any }>(),
 );
 
-export  const  clearStateSongCategory = createAction(
-    '[Song] Clear State Song Category',
+export const clearStateSongCategory = createAction(
+  '[Song] Clear State Song Category',
+);
+
+//song liked
+
+export const getSongLiked = createAction(
+  '[Song] Get Song Liked',
+  props<{ uid: string; idToken: string }>(),
+);
+
+export const getSongLikedSuccess = createAction(
+  '[Song] Get Song Liked Success',
+  props<{ songListLiked: SongModel[] }>(),
+);
+
+export const getSongLikedFailure = createAction(
+  '[Song] Get Song Liked Failure',
+  props<{ error: any }>(),
 );

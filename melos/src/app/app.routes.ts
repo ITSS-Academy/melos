@@ -48,7 +48,7 @@ export const routes: Routes = [
       import('./page/playlist-detail/playlist-detail.routes').then((m) =>m.PLAYLIST_DETAIL),
   },
 {
-    path:'detail',
+    path:'detail/:id',
     loadChildren: () => import('../app/page/detail-song/detail-song.routes').then(m => m.DETAIL_SONG_ROUTES),
   },
 

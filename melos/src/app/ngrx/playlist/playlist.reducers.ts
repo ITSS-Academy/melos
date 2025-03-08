@@ -102,4 +102,55 @@ export const playlistReducer = createReducer(
     };
   }),
 
+
+  // Delete Playlist
+  on(PlaylistActions.deletePlaylistById, (state, { type }) => {
+    console.log(type);
+    return{
+      ...state,
+      isLoading: true
+    }
+  }),
+
+  on(PlaylistActions.deletePlaylistByIdSuccess, (state, { playlist, type}) =>{
+    return <PlaylistState>{
+      ...state,
+      playlistDetail: playlist,
+      isLoading: false,
+    }
+  }),
+  on(PlaylistActions.deletePlaylistByIdFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
+  // Edit Playlist
+  on(PlaylistActions.editPlaylistById, (state, { type }) => {
+    console.log(type);
+    return{
+      ...state,
+      isLoading: true
+    }
+  }),
+
+  on(PlaylistActions.editPlaylistByIdSuccess, (state, { playlist, type}) =>{
+    return <PlaylistState>{
+      ...state,
+      playlistDetail: playlist,
+      isLoading: false,
+    }
+  }),
+  on(PlaylistActions.editPlaylistByIdFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
 )

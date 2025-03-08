@@ -16,9 +16,17 @@ export class PlaylistService {
 
     return this.http.get<PlaylistModel[]>(`http://localhost:3000/playlists/user?uid=${uid}`,{headers})
   }
-  getPlaylistDetail(playlistID: string){
-    return this.http.get<PlaylistModel>(`http://localhost:3000/playlists?id=${playlistID}`
+  getPlaylistDetail(playlistId: string){
+    return this.http.get<PlaylistModel>(`http://localhost:3000/playlists/user/playlist?id=${playlistId}`
     )
+
+  }
+
+  deletePlaylistById(playlistId: string){
+    return this.http.delete<PlaylistModel>(`http://localhost:3000/playlists/user/playlist?id=${playlistId}`)
+  }
+  editPlaylistById(playlistId: string){
+    return this.http.delete<PlaylistModel>(`http://localhost:3000/playlists/user/playlist?id=${playlistId}`)
   }
 
 

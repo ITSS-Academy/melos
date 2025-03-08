@@ -44,7 +44,6 @@ export class SongsService {
     }
     return song as Song;
   }
-
   async getAudioDuration(buffer: Buffer): Promise<number> {
     return new Promise((resolve, reject) => {
       const tempFilePath = path.join(
@@ -53,10 +52,14 @@ export class SongsService {
       );
       fs.writeFileSync(tempFilePath, buffer);
 
-      const command = `"${ffmpegStatic}" -i "${tempFilePath}" 2>&1 | findstr "Duration"`;
+      // Kiểm tra hệ điều hành để dùng lệnh phù hợp
+      const isWindows = process.platform === 'win32';
+      const command = isWindows
+        ? `"${ffmpegStatic}" -i "${tempFilePath}" 2>&1 | findstr "Duration"`
+        : `"${ffmpegStatic}" -i "${tempFilePath}" 2>&1 | grep "Duration"`;
 
       exec(command, (error, stdout) => {
-        fs.unlinkSync(tempFilePath); // Xóa file sau khi xử lý
+        fs.unlinkSync(tempFilePath); // Xóa file tạm sau khi xử lý
 
         if (error) {
           console.error('Lỗi khi lấy duration:', error);
@@ -179,7 +182,7 @@ export class SongsService {
     const files = fs.readdirSync(hlsDir);
     const limiter = new Bottleneck({
       maxConcurrent: 50, // Tăng giới hạn đồng thời
-      minTime: 5, // Giảm thời gian giữa các request
+      minTime: 10, // Giảm thời gian giữa các request
     });
 
     const uploadPromises = files.map((file) =>

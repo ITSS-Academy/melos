@@ -1,11 +1,30 @@
 <div id="playlist-card">
   <div class="playlist-card-img">
-    <img [routerLink]=""  [src]=playlist.image_url alt="">
+    <img [routerLink]="['/playlist-detail/', playlist.id]"  [src]=playlist.image_url alt="">
   </div>
   <div class="group">
     <p class="playlist-card-title">{{playlist.name}}</p>
-    <span class="material-symbols-outlined">
+    <span [matMenuTriggerFor]="menu" class="material-symbols-outlined">
     more_vert
-  </span>
+    </span>
+
+    <mat-menu class="custom-menu" #menu="matMenu">
+      <button (click)="editPlaylist()" class="mat-button">
+
+            <span class="material-symbols-outlined">
+          edit
+          </span>
+           <span>Edit</span>
+
+      </button>
+      <button (click)="deletePlaylist()" class="mat-button">
+        <span class="material-symbols-outlined">
+          delete
+          </span>
+        <span>Delete</span>
+      </button>
+
+    </mat-menu>
+
   </div>
 </div>

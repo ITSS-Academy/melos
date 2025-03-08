@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   OnInit,
-  Output,
+  Output, Renderer2,
   ViewChild,
 } from '@angular/core';
 import Hls from 'hls.js';
@@ -18,12 +18,12 @@ import * as SongActions from '../../../ngrx/song/song.actions';
 import { PlayState } from '../../../ngrx/play/play.state';
 import * as PlayActions from '../../../ngrx/play/play.actions';
 import { play } from '../../../ngrx/play/play.actions';
-import {MusicTabComponent} from "../music-tab/music-tab.component";
+import { MusicTabComponent } from '../music-tab/music-tab.component';
 
 @Component({
   selector: 'app-music-bar',
   standalone: true,
-  imports: [MaterialModule,MusicTabComponent],
+  imports: [MaterialModule, MusicTabComponent],
   templateUrl: './music-bar.component.html',
   styleUrl: './music-bar.component.scss',
 })
@@ -35,6 +35,7 @@ export class MusicBarComponent implements OnInit {
   duration = 0;
   volume = 50;
   subscriptions: Subscription[] = [];
+  saveVolume = this.volume;
 
   hasUpdatedViews = false;
   play$!: Observable<boolean>;
@@ -42,13 +43,14 @@ export class MusicBarComponent implements OnInit {
   overlayOpen = false;
   @ViewChild('audioPlayer', { static: true })
   audioPlayer!: ElementRef<HTMLAudioElement>;
-
+  section: HTMLElement | null = null;
   constructor(
     private songService: SongService,
     private store: Store<{
       song: SongState;
       play: PlayState;
     }>,
+    private renderer: Renderer2
   ) {
     this.play$ = this.store.select('play', 'isPlaying');
   }
@@ -64,17 +66,15 @@ export class MusicBarComponent implements OnInit {
       }),
       this.play$.subscribe((isPlaying) => {
         if (isPlaying) {
-            this.audioPlayer.nativeElement.play();
+          this.audioPlayer.nativeElement.play();
           this.isPlaying = isPlaying;
-
-        }else {
-            this.audioPlayer.nativeElement.pause();
+        } else {
+          this.audioPlayer.nativeElement.pause();
           this.isPlaying = isPlaying;
-
         }
       }),
     );
-
+    this.section = document.getElementById('next-song-section')
     this.updateChangeVolume();
   }
 
@@ -104,7 +104,6 @@ export class MusicBarComponent implements OnInit {
         this.hasUpdatedViews = true;
         this.updateViews();
       }
-
     };
 
     // Cập nhật trạng thái play/pause
@@ -115,13 +114,14 @@ export class MusicBarComponent implements OnInit {
   //Cập nhật thanh có màu theo thời gian bài hát chạy
   updateProgressBar() {
     const progress = (this.currentTime / this.duration) * 100;
-    const progressBar = document.querySelector('.progress-bar') as HTMLInputElement;
+    const progressBar = document.querySelector(
+      '.progress-bar',
+    ) as HTMLInputElement;
     if (progressBar) {
       // progressBar.style.background = `linear-gradient(to right, #2196F3 ${progress}%, #ccc ${progress}%)`;
       progressBar.style.setProperty('--progress', `${progress}%`);
     }
   }
-
 
   togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
@@ -151,6 +151,15 @@ export class MusicBarComponent implements OnInit {
     const audio = this.audioPlayer.nativeElement;
     audio.volume = event.target.value / 100;
     this.volume = event.target.value;
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (this.volume <= 0) {
+      this.renderer.setStyle(muteBtn, 'display', 'flex');
+      this.renderer.setStyle(unmuteBtn, 'display', 'none');
+    } else {
+      this.renderer.setStyle(unmuteBtn, 'display', 'flex');
+      this.renderer.setStyle(muteBtn, 'display', 'none');
+    }
     this.updateChangeVolume()
   }
 
@@ -159,9 +168,9 @@ export class MusicBarComponent implements OnInit {
     if (volumeBar) {
       const volume = this.volume || 50; // Giả sử mặc định là 50%
       volumeBar.style.setProperty('--volume', `${volume}%`);
+      console.log('Volume:', volume);
     }
   }
-
 
   rewind() {
     this.audioPlayer.nativeElement.currentTime -= 10;
@@ -191,15 +200,43 @@ export class MusicBarComponent implements OnInit {
   }
 
   overlayOn() {
-    let section = document.getElementById('next-song-section')
-    if (section) {
-      section.style.display = "block"
+    if (this.section) {
+      this.renderer.setStyle(this.section, 'display', 'block');
     }
   }
   overlayOff() {
-    let section = document.getElementById('next-song-section')
-    if (section) {
-      section.style.display = "none"
+    if (this.section) {
+      this.renderer.setStyle(this.section, 'display', 'none');
     }
+  }
+
+  //Mute and Unmute song
+
+  clickMute() {
+    this.saveVolume = this.volume;
+    const audio = this.audioPlayer.nativeElement;
+    audio.volume = 0;
+    this.volume = 0.1;
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (unmuteBtn || muteBtn) {
+      this.renderer.setStyle(unmuteBtn, 'display', 'none');
+      this.renderer.setStyle(muteBtn, 'display', 'flex');
+    }
+    console.log("mute")
+    this.updateChangeVolume()
+  }
+  clickUnmute() {
+    const audio = this.audioPlayer.nativeElement;
+    this.volume = this.saveVolume;
+    audio.volume = this.volume / 100;
+    let unmuteBtn = document.getElementById('vol-unmute-contain');
+    let muteBtn = document.getElementById('vol-mute-contain');
+    if (muteBtn || unmuteBtn) {
+      this.renderer.setStyle(unmuteBtn, 'display', 'flex');
+      this.renderer.setStyle(muteBtn, 'display', 'none');
+    }
+    console.log("unmute")
+    this.updateChangeVolume()
   }
 }

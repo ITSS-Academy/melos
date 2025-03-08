@@ -46,6 +46,7 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
 import {map, startWith} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {DialogLoginComponent} from '../../shared/components/dialog-login/dialog-login.component';
 
 @Component({
   selector: 'app-upload',
@@ -68,6 +69,7 @@ import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/mate
     LoadingComponent,
     MatAutocompleteModule,
     AsyncPipe,
+    DialogLoginComponent,
 
   ],
   templateUrl: './upload.component.html',
@@ -114,7 +116,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select('song', 'isLoading');
     this.category$ = this.store.select('category', 'categoryList'); // Lấy danh sách thể loại từ Store
 
-    this.store.dispatch(CategoryActions.getCategoryList());
   }
 
   ngOnInit() {
@@ -128,7 +129,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.category$.subscribe((categories) => {
         if (categories.length > 0) {
           this.cateGoryList = categories;
-          console.log('categories:', this.cateGoryList);
+          // console.log('categories:', this.cateGoryList);
         }
 
       })
@@ -219,7 +220,11 @@ export class UploadComponent implements OnInit, OnDestroy {
       'audio/aiff',
       'audio/x-aiff',
       'audio/x-alac',
+      'audio/mp3',
     ];
+
+    // (GB -> MB -> KB -> Bytes)
+    const maxFileSize = 4 *1024 *1024 *1024;
 
     if (!allowedTypes.includes(file.type)) {
       alert(
@@ -229,37 +234,45 @@ export class UploadComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (file.size> maxFileSize) {
+      alert('File is too large! Maximum allowed size is 4GB.');
+      input.value = ''; // Reset input file
+      return;
+    }
+
     this.selectedFile = file;
     this.fileUploadForm.patchValue({ audioFile: file });
     this.fileUploadForm.get('audioFile')?.updateValueAndValidity();
 
-    // Reset input file để chọn lại file khác
-    input.value = '';
+    // // Reset input file để chọn lại file khác
+    // input.value = '';
   }
 
   // Chọn ảnh bìa
-  // onImageSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     const file = input.files[0];
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       this.selectedImage = reader.result as string;
-  //     };
-  //     reader.readAsDataURL(file);
-  //     // this.fileUploadForm.patchValue({ coverImage: file });
-  //     this.trackInforForm.patchValue({ coverImage: file });
-  //
-  //   }
-  // }
 
   onImageSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      const file = input.files[0];
-      this.selectedImage = URL.createObjectURL(file);
-      this.trackInforForm.patchValue({ coverImage: file });
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const maxFileImg = 3 *1024*1024;
+    const allowedTypes = [ 'image/jpeg', 'image/png' ];
+
+
+    if (!allowedTypes.includes(file.type)) {
+      alert('Chỉ chấp nhận ảnh JPG hoặc PNG.');
+      input.value = '';
+      return;
     }
+
+    if (file.size > maxFileImg) {
+      alert('The image file is too large! Please select an image with a maximum size of 3MB.');
+      input.value = ''; // Reset input file
+      return;
+    }
+
+    this.selectedImage = URL.createObjectURL(file);
+    this.trackInforForm.patchValue({ coverImage: file });
   }
 
   // Reset form

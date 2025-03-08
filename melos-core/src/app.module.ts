@@ -9,6 +9,8 @@ import { CategoryModule } from './category/category.module';
 import { AuthMiddleware } from './auth/firebase-auth.middleware';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { HistoryModule } from './history/history.module';
+import { QueueModule } from './queue/queue.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { HistoryModule } from './history/history.module';
     CategoryModule,
     PlaylistsModule,
     HistoryModule,
+    QueueModule,
+    LikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -39,6 +43,8 @@ export class AppModule {
         { path: 'playlists', method: RequestMethod.PUT },
         { path: 'playlists', method: RequestMethod.GET },
         { path: 'history', method: RequestMethod.ALL },
+        { path: 'queue', method: RequestMethod.ALL },
+        { path: 'like', method: RequestMethod.ALL },
       );
   }
 }

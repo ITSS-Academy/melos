@@ -1,1 +1,12 @@
-<p>history works!</p>
+<div class="history-container">
+    <app-loading *ngIf="isLoading$ | async"></app-loading>
+
+    <div class="list-music" *ngIf="!(isLoading$ | async)">
+        @for (song of historySongList; track song.id){
+        <app-music-tab [song]="song"></app-music-tab>
+        }
+    </div>
+
+
+
+</div>

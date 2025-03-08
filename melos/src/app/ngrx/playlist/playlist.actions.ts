@@ -53,3 +53,32 @@ export const clearPlaylistDetail = createAction(
   '[Playlist] Clear Playlist Detail'
 );
 
+//Delete Playlist
+export const deletePlaylistById = createAction(
+  '[Playlist] Delete Playlist',
+  props<{ id: string }>(),
+);
+export const deletePlaylistByIdSuccess = createAction(
+  '[Playlist] Delete Playlist Success',
+  props<{playlist: PlaylistModel}>()
+
+);
+export const deletePlaylistByIdFailure = createAction(
+  '[Playlist] Delete Playlist Failure',
+  props<{error: any}>()
+)
+
+//Edit Playlist
+export const editPlaylistById = createAction(
+  '[Playlist] Edit Playlist',
+  props<{ id: string }>(),
+);
+export const editPlaylistByIdSuccess = createAction(
+  '[Playlist] Edit Playlist Success',
+  props<{playlist: PlaylistModel}>()
+
+);
+export const editPlaylistByIdFailure = createAction(
+  '[Playlist] Edit Playlist Failure',
+  props<{error: any}>()
+)

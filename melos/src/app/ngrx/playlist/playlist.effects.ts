@@ -49,3 +49,33 @@ export const createPlaylist = createEffect(
   },
   { functional: true },
 );
+
+export const deleteDetailPlaylist = createEffect(
+  (actions$ = inject(Actions), playlistService = inject(PlaylistService)) => {
+    return actions$.pipe(
+      ofType(PlaylistActions.deletePlaylistById),
+      exhaustMap((action) =>
+        playlistService.deletePlaylistById(action.id).pipe(
+          map((playlist) => PlaylistActions.deletePlaylistByIdSuccess({ playlist })),
+          catchError((error) => of(PlaylistActions.deletePlaylistByIdFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const editDetailPlaylist = createEffect(
+  (actions$ = inject(Actions), playlistService = inject(PlaylistService)) => {
+    return actions$.pipe(
+      ofType(PlaylistActions.editPlaylistById),
+      exhaustMap((action) =>
+        playlistService.editPlaylistById(action.id).pipe(
+          map((playlist) => PlaylistActions.editPlaylistByIdSuccess({ playlist })),
+          catchError((error) => of(PlaylistActions.editPlaylistByIdFailure({ error }))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);

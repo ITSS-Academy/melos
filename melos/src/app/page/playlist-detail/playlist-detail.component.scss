@@ -33,6 +33,17 @@
       font-size: 32px;
       font-weight: 300;
     }
+    .function{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      font-size: 16px;
+      color: var(--onSurfaceVariant);
+      span{
+        cursor: pointer;
+      }
+    }
   }
 
   .container-right{
@@ -45,7 +56,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
-
 
     }
   }

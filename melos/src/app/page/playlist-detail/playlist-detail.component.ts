@@ -1,56 +1,78 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {Store} from '@ngrx/store';
+import * as PlaylistActions from '../../ngrx/playlist/playlist.actions'
+import { Observable} from 'rxjs';
+import {PlaylistModel} from '../../models/playlist.model';
+import {PlaylistState} from '../../ngrx/playlist/playlist.state';
+import {AsyncPipe} from '@angular/common';
+import {MaterialModule} from '../../shared/material.module';
+import {
+  DialogCreateNewPlaylistComponent
+} from '../../shared/components/dialog-create-new-playlist/dialog-create-new-playlist.component';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  DialogDeletePlaylistComponent
+} from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
-  imports: [],
+  imports: [
+    AsyncPipe
+  ],
   templateUrl: './playlist-detail.component.html',
   styleUrl: './playlist-detail.component.scss'
 })
-export class PlaylistDetailComponent {
-  currentMusic!: any;
-  constructor(private activatedRoute: ActivatedRoute) {
-    const id = this.activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.currentMusic = this.viewDetail(id);
-    }
+export class PlaylistDetailComponent implements OnInit {
+
+  playlistDetail$!: Observable<PlaylistModel | null>
+  playlistDetail!: PlaylistModel | null
+
+
+  constructor(
+    private openDialogDelete: MatDialog,
+    private store : Store<{playlist: PlaylistState}>,
+    private activeRoute : ActivatedRoute,
+
+  ) {
+
   }
 
-  viewDetail(id: string) {
-    const parsedId = parseInt(id, 10);
-    return this.playlists.find((playlist) => playlist.id === parsedId);
+  ngOnInit() {
+    this.playlistDetail$ = this.store.select('playlist','playlistDetail')
+    console.log('hiên thị infor',this.playlistDetail$)
+
+    this.activeRoute.params.subscribe((params) => {
+      const id = params['id']
+      console.log('id cua playlist',id)
+
+      this.store.dispatch(PlaylistActions.getPlaylistById({id: id}))
+    })
   }
+  // openDialogCreatNewList(){
+  //   this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
+  //     width: '40vw',
+  //     maxWidth:'none',
+  //     data: {message: 'noi dung'}
+  //   })
+  // }
 
-  playlists = [
-    {
-      id: 1,
-      name: 'Radio',
-      img: 'https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/avatars/5/5/6/8/5568d11517ab8e384132d7f1c9e9434e.jpg',
-      comment: '',
-      tag: '',
-      category: 'Anison',
-      singer_name: '',
-    },
-    {
-      id: 2,
-      name: 'Taylor Swift',
-      img: 'https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png',
-      comment: '',
-      tag: '',
-      category: 'Country music',
-      singer_name: 'Taylor Swift',
-    },
-    {
-      id: 3,
+  openDialogEditList(){
 
-      name: 'Your playlist',
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQat97yEF4kAwu3VAg-y8CxpP4GUGAvZEIMOye1RQ7ICXElVlz_drAm8_xga1fNXHvr0GA&usqp=CAU',
-      comment: '',
-      tag: '',
-      category: 'Country music',
-      singer_name: 'Taylor Swift',
-    },
-  ];
+  }
+  // this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
+  //   width: '40vw',
+  //   maxWidth:'none',
+  //   data: {message: 'noi dung'}
+  // })
+  openDialogDeletePlaylist(){
+    this.openDialogDelete.open(DialogDeletePlaylistComponent,{
+
+      width: '30vw',
+      maxWidth: 'none',
+      data: {message: 'Would you like to delete this playlist'}
+    })
+  }
 
 }

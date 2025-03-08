@@ -1,9 +1,18 @@
 <div id="playlist-detail">
   <div class="container-left">
     <div class="selected-playlist">
-      <img [src]=currentMusic.img alt="">
+      <img  [src]="(playlistDetail$ | async)?.image_url" [alt]="(playlistDetail$ | async)?.name">>
     </div>
-    <h2>{{currentMusic.name}}</h2>
+    <h2>{{(playlistDetail$ | async)?.name}}</h2>
+    <div class="function">
+      <span class="material-symbols-outlined">
+        border_color
+      </span>
+      <span (click)="openDialogDeletePlaylist()" class="material-symbols-outlined">
+        delete
+      </span>
+    </div>
+
   </div>
   <div class="container-right">
     <div class="list_music">
