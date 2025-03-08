@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {SongModel} from '../../models/song.model';
+import { SongModel } from '../../models/song.model';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +31,14 @@ export class LikeService {
     );
   }
 
+  deleteLike(songId: string, uid: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
 
+    return this.http.delete<any>(
+      `http://localhost:3000/like/delete-like?uid=${uid}&song_id=${songId}`,
+      { headers },
+    );
+  }
 }
