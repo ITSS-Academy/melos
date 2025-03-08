@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommentModel } from '../../models/comment.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class CommentService {
 
   getCommentBySong(songId: string) {
     return this.http.get<CommentModel[]>(
-      `http://localhost:3000/comment/song-comment?song_id=${songId}`,
+      `${environment.apiUrl}comment/song-comment?song_id=${songId}`,
     );
   }
 
@@ -25,7 +26,7 @@ export class CommentService {
       content: comment.content,
     };
 
-    return this.http.post<CommentModel>(`http://localhost:3000/comment`, body, {
+    return this.http.post<CommentModel>(`${environment.apiUrl}comment`, body, {
       headers,
     });
   }
