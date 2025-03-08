@@ -1,40 +1,44 @@
-import {PlaylistState} from './playlist.state';
-import {PlaylistModel} from '../../models/playlist.model';
-import {createReducer, on} from '@ngrx/store';
+import { PlaylistState } from './playlist.state';
+import { PlaylistModel } from '../../models/playlist.model';
+import { createReducer, on } from '@ngrx/store';
 
-import * as PlaylistActions from './playlist.actions'
+import * as PlaylistActions from './playlist.actions';
 
 export const initialPlaylistState: PlaylistState = {
   playlistDetail: <PlaylistModel>{},
   playlistList: <PlaylistModel[]>[],
   isLoading: false,
+  isLoadingDetail: false,
   error: null,
-}
+};
 
 export const playlistReducer = createReducer(
   initialPlaylistState,
 
   on(PlaylistActions.getPlaylistById, (state, { type }) => {
     console.log(type);
-    return{
+    return {
       ...state,
-      isLoading: true
-    }
+      isLoadingDetail: true,
+    };
   }),
 
-  on(PlaylistActions.getPlaylistByIdSuccess, (state, { playlistDetail, type}) =>{
-    return <PlaylistState>{
-      ...state,
-      playlistDetail: playlistDetail,
-      isLoading: false,
-    }
-  }),
+  on(
+    PlaylistActions.getPlaylistByIdSuccess,
+    (state, { playlistDetail, type }) => {
+      return <PlaylistState>{
+        ...state,
+        playlistDetail: playlistDetail,
+        isLoadingDetail: false,
+      };
+    },
+  ),
   on(PlaylistActions.getPlaylistByIdFailure, (state, { error, type }) => {
     console.log(type);
     return {
       ...state,
       error: error,
-      isLoading: false,
+      isLoadingDetail: false,
     };
   }),
 
@@ -48,14 +52,17 @@ export const playlistReducer = createReducer(
     };
   }),
 
-  on(PlaylistActions.getPlaylistByUserIdSuccess, (state, { playlistList, type }) => {
-    console.log(type);
-    return <PlaylistState>{
-      ...state,
-      playlistList: playlistList,
-      isLoading: false,
-    };
-  }),
+  on(
+    PlaylistActions.getPlaylistByUserIdSuccess,
+    (state, { playlistList, type }) => {
+      console.log(type);
+      return <PlaylistState>{
+        ...state,
+        playlistList: playlistList,
+        isLoading: false,
+      };
+    },
+  ),
 
   on(PlaylistActions.getPlaylistUserIdFailure, (state, { error, type }) => {
     console.log(type);
@@ -94,7 +101,7 @@ export const playlistReducer = createReducer(
       isLoading: false,
     };
   }),
-  on(PlaylistActions.clearPlaylistDetail, (state,{type}) => {
+  on(PlaylistActions.clearPlaylistDetail, (state, { type }) => {
     console.log(type);
     return {
       ...state,
@@ -102,22 +109,21 @@ export const playlistReducer = createReducer(
     };
   }),
 
-
   // Delete Playlist
   on(PlaylistActions.deletePlaylistById, (state, { type }) => {
     console.log(type);
-    return{
+    return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }),
 
-  on(PlaylistActions.deletePlaylistByIdSuccess, (state, { playlist, type}) =>{
+  on(PlaylistActions.deletePlaylistByIdSuccess, (state, { playlist, type }) => {
     return <PlaylistState>{
       ...state,
       playlistDetail: playlist,
       isLoading: false,
-    }
+    };
   }),
   on(PlaylistActions.deletePlaylistByIdFailure, (state, { error, type }) => {
     console.log(type);
@@ -131,18 +137,18 @@ export const playlistReducer = createReducer(
   // Edit Playlist
   on(PlaylistActions.editPlaylistById, (state, { type }) => {
     console.log(type);
-    return{
+    return {
       ...state,
-      isLoading: true
-    }
+      isLoading: true,
+    };
   }),
 
-  on(PlaylistActions.editPlaylistByIdSuccess, (state, { playlist, type}) =>{
+  on(PlaylistActions.editPlaylistByIdSuccess, (state, { playlist, type }) => {
     return <PlaylistState>{
       ...state,
       playlistDetail: playlist,
       isLoading: false,
-    }
+    };
   }),
   on(PlaylistActions.editPlaylistByIdFailure, (state, { error, type }) => {
     console.log(type);
@@ -153,4 +159,11 @@ export const playlistReducer = createReducer(
     };
   }),
 
-)
+  on(PlaylistActions.clearStatePlaylistDetail, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      playlistDetail: <PlaylistModel>{},
+    };
+  }),
+);

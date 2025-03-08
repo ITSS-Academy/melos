@@ -1,7 +1,5 @@
-import {createAction, props} from '@ngrx/store';
-import {PlaylistModel} from '../../models/playlist.model';
-
-
+import { createAction, props } from '@ngrx/store';
+import { PlaylistModel } from '../../models/playlist.model';
 
 export const getPlaylistById = createAction(
   '[Playlist] Get PlayList Detail',
@@ -9,18 +7,21 @@ export const getPlaylistById = createAction(
 );
 export const getPlaylistByIdSuccess = createAction(
   '[Playlist]  Get Playlist Detail Success',
-  props<{ playlistDetail: PlaylistModel }>()
-)
+  props<{ playlistDetail: PlaylistModel }>(),
+);
 export const getPlaylistByIdFailure = createAction(
   '[Playlist] Get PlayList Failure',
-  props<{error: any}>()
-)
+  props<{ error: any }>(),
+);
 
+export const clearStatePlaylistDetail = createAction(
+  '[Playlist] Clear State Playlist Detail',
+);
 
 // lấy List danh mục
 export const getPlaylistByUserId = createAction(
   '[Playlist] Get Playlist List',
-  props<{ uid: string; idToken: string }>()
+  props<{ uid: string; idToken: string }>(),
 );
 
 export const getPlaylistByUserIdSuccess = createAction(
@@ -50,7 +51,7 @@ export const createPlaylistFailure = createAction(
 );
 
 export const clearPlaylistDetail = createAction(
-  '[Playlist] Clear Playlist Detail'
+  '[Playlist] Clear Playlist Detail',
 );
 
 //Delete Playlist
@@ -60,13 +61,12 @@ export const deletePlaylistById = createAction(
 );
 export const deletePlaylistByIdSuccess = createAction(
   '[Playlist] Delete Playlist Success',
-  props<{playlist: PlaylistModel}>()
-
+  props<{ playlist: PlaylistModel }>(),
 );
 export const deletePlaylistByIdFailure = createAction(
   '[Playlist] Delete Playlist Failure',
-  props<{error: any}>()
-)
+  props<{ error: any }>(),
+);
 
 //Edit Playlist
 export const editPlaylistById = createAction(
@@ -75,10 +75,9 @@ export const editPlaylistById = createAction(
 );
 export const editPlaylistByIdSuccess = createAction(
   '[Playlist] Edit Playlist Success',
-  props<{playlist: PlaylistModel}>()
-
+  props<{ playlist: PlaylistModel }>(),
 );
 export const editPlaylistByIdFailure = createAction(
   '[Playlist] Edit Playlist Failure',
-  props<{error: any}>()
-)
+  props<{ error: any }>(),
+);
