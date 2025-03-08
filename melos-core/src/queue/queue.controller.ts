@@ -56,9 +56,10 @@ export class QueueController {
   }
 
   @Delete('delete-song-queues')
-  removeSongFromQueue(@Body() data: { uid: string; songId: string }) {
+  removeSongFromQueue(@Request() req: any) {
     try {
-      return this.queueService.removeSongFromQueue(data.uid, data.songId);
+      const { uid, songId } = req.query;
+      return this.queueService.removeSongFromQueue(uid, songId);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
