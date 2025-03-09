@@ -13,9 +13,18 @@ export class QueueService {
     const headers = {
       Authorization: idToken
     };
-    const formData = new FormData();
-    formData.append('uid', queue.uid);
-    formData.append('song_id', queue.song_id);
-    return this.http.post<QueueModel>('http://localhost:3000/queue/add_to_queue',formData, {headers});
+    const body = {
+        uid: queue.uid,
+        songId: queue.song_id
+    }
+    console.log(headers);
+    return this.http.post<QueueModel>('http://localhost:3000/queue/create-song-queues',body, {headers});
+  }
+
+  removeQueueSong(queue: QueueModel, idToken: string) {
+    const headers = {
+      Authorization: idToken
+    };
+    return this.http.delete<QueueModel>('http://localhost:3000/queue/delete-song-queues?uid='+queue.uid+"&songId="+queue.song_id ,{headers});
   }
 }

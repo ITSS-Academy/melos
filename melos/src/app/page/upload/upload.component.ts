@@ -1,26 +1,21 @@
 import {
   Component,
   ElementRef,
-  inject,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import {
-  FormBuilder,
   Validators,
   FormsModule,
   ReactiveFormsModule,
   FormGroup,
   FormControl,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
+
 import { CommonModule } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
 import { SongModel } from '../../models/song.model';
@@ -29,48 +24,27 @@ import { AuthState } from '../../ngrx/auth/auth.state';
 import { Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import * as SongActions from '../../ngrx/song/song.actions';
-
-import {
-  ProgressSpinnerMode,
-  MatProgressSpinnerModule,
-} from '@angular/material/progress-spinner';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 import { SongState } from '../../ngrx/song/song.state';
 import { CategoryModel } from '../../models/category.model';
 import { CategoryState } from '../../ngrx/category/category.state';
-
-import * as CategoryActions from '../../ngrx/category/category.actions';
-import {map, startWith} from 'rxjs/operators';
-import {AsyncPipe} from '@angular/common';
-import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {DialogLoginComponent} from '../../shared/components/dialog-login/dialog-login.component';
+import { map, startWith } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { DialogLoginComponent } from '../../shared/components/dialog-login/dialog-login.component';
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
   imports: [
-    MatButtonModule,
-    MatStepperModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIcon,
-    MatIconModule,
-    MatSelectModule,
     CommonModule,
-    MatProgressSpinnerModule,
-    MatSliderModule,
-    MatRadioModule,
-    MatCardModule,
     LoadingComponent,
-    MatAutocompleteModule,
     AsyncPipe,
     DialogLoginComponent,
-
+    MaterialModule,
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
@@ -87,11 +61,9 @@ export class UploadComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
-  categoryIdTemp:string = '';
+  categoryIdTemp: string = '';
   selectedFile: File | null = null;
   selectedImage: string | null = null;
-
-
 
   fileUploadForm = new FormGroup({
     audioFile: new FormControl<File | null>(null, Validators.required),
@@ -101,6 +73,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     coverImage: new FormControl<File | null>(null, Validators.required),
     title: new FormControl('', Validators.required),
     artist: new FormControl('', Validators.required),
+    category_name: new FormControl('', Validators.required),
     category_id: new FormControl('', Validators.required),
     description: new FormControl(''),
   });
@@ -115,7 +88,6 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.auth$ = this.store.select('auth', 'authData');
     this.isLoading$ = this.store.select('song', 'isLoading');
     this.category$ = this.store.select('category', 'categoryList'); // Lấy danh sách thể loại từ Store
-
   }
 
   ngOnInit() {
@@ -129,10 +101,18 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.category$.subscribe((categories) => {
         if (categories.length > 0) {
           this.cateGoryList = categories;
+          this.trackInforForm.controls['category_id'].updateValueAndValidity();
+          this.trackInforForm.controls['category_name'].setValidators([
+            Validators.required,
+            this.matchListValidator(this.cateGoryList, 'category_id'),
+          ]);
+          this.trackInforForm.controls[
+            'category_name'
+          ].updateValueAndValidity();
+
           // console.log('categories:', this.cateGoryList);
         }
-
-      })
+      }),
     );
 
     this.fileUploadForm.valueChanges.subscribe(() =>
@@ -142,9 +122,11 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.checkFormCompletion(),
     );
 
-    this.category$ = this.trackInforForm.controls['category_id'].valueChanges.pipe(
+    this.category$ = this.trackInforForm.controls[
+      'category_name'
+    ].valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value ? value.toString() : ''))
+      map((value) => this._filter(value ? value.toString() : '')),
     );
   }
 
@@ -156,25 +138,25 @@ export class UploadComponent implements OnInit, OnDestroy {
     const filterValue = value.trim().toLowerCase();
 
     // Nếu value rỗng, trả về toàn bộ danh sách thay vì lọc
-    return filterValue ? this.cateGoryList.filter(option =>
-      option.name?.toLowerCase().includes(filterValue)
-    ) : this.cateGoryList;
+    return filterValue
+      ? this.cateGoryList.filter((option) =>
+          option.name?.toLowerCase().includes(filterValue),
+        )
+      : this.cateGoryList;
   }
 
   onCategorySelected(event: MatAutocompleteSelectedEvent) {
     const selectedName = event.option.value; // Giá trị name
-    const selectedCategory = this.cateGoryList.find(cat => cat.name === selectedName); // Tìm category
+    const selectedCategory = this.cateGoryList.find(
+      (cat) => cat.name === selectedName,
+    ); // Tìm category
     if (selectedCategory) {
-     this.categoryIdTemp = selectedCategory.id
+      this.trackInforForm.patchValue({
+        category_id: selectedCategory.id,
+        category_name: selectedCategory.name,
+      });
     }
   }
-
-
-
-
-
-
-
 
   confirmForm() {
     this.formData = {
@@ -182,7 +164,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       image_url: this.trackInforForm.value.coverImage ?? '',
       title: this.trackInforForm.value.title ?? '',
       performer: this.trackInforForm.value.artist ?? '',
-      category_id: this.categoryIdTemp,
+      category_id: this.trackInforForm.value.category_id ?? '',
       composer: this.trackInforForm.value.description ?? '',
       views: 0,
       uuid: this.authData?.uid ?? '',
@@ -224,7 +206,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     ];
 
     // (GB -> MB -> KB -> Bytes)
-    const maxFileSize = 4 *1024 *1024 *1024;
+    const maxFileSize = 4 * 1024 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
       alert(
@@ -234,7 +216,7 @@ export class UploadComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (file.size> maxFileSize) {
+    if (file.size > maxFileSize) {
       alert('File is too large! Maximum allowed size is 4GB.');
       input.value = ''; // Reset input file
       return;
@@ -255,9 +237,8 @@ export class UploadComponent implements OnInit, OnDestroy {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-    const maxFileImg = 3 *1024*1024;
-    const allowedTypes = [ 'image/jpeg', 'image/png' ];
-
+    const maxFileImg = 3 * 1024 * 1024;
+    const allowedTypes = ['image/jpeg', 'image/png'];
 
     if (!allowedTypes.includes(file.type)) {
       alert('Chỉ chấp nhận ảnh JPG hoặc PNG.');
@@ -266,7 +247,9 @@ export class UploadComponent implements OnInit, OnDestroy {
     }
 
     if (file.size > maxFileImg) {
-      alert('The image file is too large! Please select an image with a maximum size of 3MB.');
+      alert(
+        'The image file is too large! Please select an image with a maximum size of 3MB.',
+      );
       input.value = ''; // Reset input file
       return;
     }
@@ -333,10 +316,21 @@ export class UploadComponent implements OnInit, OnDestroy {
         title: this.trackInforForm.value.title,
         artist: this.trackInforForm.value.artist,
         // other: this.trackInforForm.value.other,
-        category: this.trackInforForm.value.category_id,
+        category: this.trackInforForm.value.category_name,
+        category_id: this.trackInforForm.value.category_id,
         description: this.trackInforForm.value.description,
       });
     }
   }
 
+  matchListValidator(list: any[], idControlName: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const match = list.some((item) => item.name === value);
+      if (!match) {
+        (this.trackInforForm.get(idControlName) as FormControl).setValue('');
+      }
+      return match ? null : { matchList: true };
+    };
+  }
 }

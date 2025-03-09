@@ -17,3 +17,18 @@ export const addToSongQueueFailure = createAction(
     '[Queue] Add Song Queue Failure',
     props<{ error: any }>(),
 )
+
+export const removeSongQueue = createAction(
+    '[Queue] Remove Song Queue',
+    props<{ queue: QueueModel; idToken: string  }>(),
+)
+
+export const removeSongQueueSuccess = createAction(
+    '[Queue] Remove Song Queue Success',
+    props<{ queue: QueueModel }>(),
+)
+
+export const removeSongQueueFailure = createAction(
+    '[Queue] Remove Song Queue Failure',
+    props<{ error: any }>(),
+)

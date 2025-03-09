@@ -1,6 +1,6 @@
-import {CategoryState} from './category.state';
-import {CategoryModel} from '../../models/category.model';
-import {createReducer, on} from '@ngrx/store';
+import { CategoryState } from './category.state';
+import { CategoryModel } from '../../models/category.model';
+import { createReducer, on } from '@ngrx/store';
 
 import * as CategoryActions from './category.actions';
 
@@ -8,6 +8,7 @@ export const initialCategoryState: CategoryState = {
   categoryDetail: <CategoryModel>{},
   categoryList: <CategoryModel[]>[],
   isLoading: false,
+  isLoadingDetail: false,
   error: null,
 };
 
@@ -19,25 +20,28 @@ export const categoryReducer = createReducer(
     console.log(type);
     return {
       ...state,
-      isLoading: true,
+      isLoadingDetail: true,
     };
   }),
 
-  on(CategoryActions.getCategoryByIdSuccess, (state, { categoryDetail, type }) => {
-    console.log(type);
-    return <CategoryState>{
-      ...state,
-      categoryDetail: categoryDetail,
-      isLoading: false,
-    };
-  }),
+  on(
+    CategoryActions.getCategoryByIdSuccess,
+    (state, { categoryDetail, type }) => {
+      console.log(type);
+      return <CategoryState>{
+        ...state,
+        categoryDetail: categoryDetail,
+        isLoadingDetail: false,
+      };
+    },
+  ),
 
   on(CategoryActions.getCategoryByIdFailure, (state, { error, type }) => {
     console.log(type);
     return {
       ...state,
       error: error,
-      isLoading: false,
+      isLoadingDetail: false,
     };
   }),
 
@@ -50,14 +54,17 @@ export const categoryReducer = createReducer(
     };
   }),
 
-  on(CategoryActions.getCategoryListSuccess, (state, { categoryList, type }) => {
-    console.log(type);
-    return <CategoryState>{
-      ...state,
-      categoryList: categoryList,
-      isLoading: false,
-    };
-  }),
+  on(
+    CategoryActions.getCategoryListSuccess,
+    (state, { categoryList, type }) => {
+      console.log(type);
+      return <CategoryState>{
+        ...state,
+        categoryList: categoryList,
+        isLoading: false,
+      };
+    },
+  ),
 
   on(CategoryActions.getCategoryListFailure, (state, { error, type }) => {
     console.log(type);
@@ -96,11 +103,11 @@ export const categoryReducer = createReducer(
       isLoading: false,
     };
   }),
-    on(CategoryActions.clearCategoryDetail, (state,{type}) => {
-      console.log(type);
-      return {
-        ...state,
-        categoryDetail: <CategoryModel>{},
-      };
-    }),
-)
+  on(CategoryActions.clearCategoryDetail, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      categoryDetail: <CategoryModel>{},
+    };
+  }),
+);

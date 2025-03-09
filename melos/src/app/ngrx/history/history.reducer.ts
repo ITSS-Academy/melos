@@ -40,4 +40,26 @@ export const historyReducer = createReducer(
       isLoading: false,
     };
   }),
+
+  on(historyActions.createHistory, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+    };
+  }),
+
+  on(historyActions.createHistorySuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+    };
+  }),
+
+  on(historyActions.createHistoryFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+    };
+  }),
 );

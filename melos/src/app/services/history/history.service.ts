@@ -21,4 +21,17 @@ export class HistoryService {
       },
     );
   }
+
+  createHistory(uid: string, songId: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+    // create with body
+    const body = {
+      uid: uid,
+      songId: songId,
+    };
+
+    return this.http.post(`${environment.apiUrl}history`, body, { headers });
+  }
 }

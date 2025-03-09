@@ -12,6 +12,8 @@ import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as CategoryActions from './ngrx/category/category.actions';
 import * as LikeActions from './ngrx/like/like.actions';
+import * as QueueActions from './ngrx/queue/queue.actions';
+import * as SongActions from './ngrx/song/song.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -72,26 +74,8 @@ export class AppComponent implements OnInit {
         console.log(this.router.url);
       });
     this.store.dispatch(CategoryActions.getCategoryList());
-
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
-
-    // if (this.auth$) {
-    //   this.auth$.subscribe((auth) => {
-    //     if (auth?.uid) {
-    //       console.log(auth);
-    //       this.authData = {
-    //         ...this.authData,
-    //         photoURL: auth.picture,
-    //         idToken: this.authData!.idToken,
-    //         uid: auth.uid,
-    //         displayName: auth.displayName,
-    //         email: auth.email,
-    //       };
-    //
-    //     }
-    //   });
-    // }
 
     this.subscription.push();
   }
@@ -105,10 +89,7 @@ export class AppComponent implements OnInit {
     { icon: 'cloud_upload', title: 'Upload', route: 'upload' },
   ];
 
-
-  menuItems2 = [
-    { icon: 'person', title: 'Profile', route: "profile" },
-  ]
+  menuItems2 = [{ icon: 'person', title: 'Profile', route: 'profile' }];
 
   // Lấy route hiện tại
 
@@ -125,7 +106,6 @@ export class AppComponent implements OnInit {
   navigateToProfile() {
     this.activeLink = 'profile';
     this.router.navigate(['profile', this.authData?.uid]);
-
   }
 
   setActiveLink(): void {
@@ -147,9 +127,5 @@ export class AppComponent implements OnInit {
     } else {
       this.activeLink = '';
     }
-  }
-
-  onSongPlaying(isPlaying: boolean) {
-    this.isSongPlaying = isPlaying;
   }
 }

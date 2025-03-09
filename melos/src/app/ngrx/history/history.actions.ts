@@ -15,3 +15,17 @@ export const GetHistorySongListFailure = createAction(
   '[History] Get History Song List Failure',
   props<{ error: any }>(),
 );
+
+export const createHistory = createAction(
+  '[History] Create History',
+  props<{ uid: string; songId: string; idToken: string }>(),
+);
+
+export const createHistorySuccess = createAction(
+  '[History] Create History Success',
+);
+
+export const createHistoryFailure = createAction(
+  '[History] Create History Failure',
+  props<{ error: any }>(),
+);
