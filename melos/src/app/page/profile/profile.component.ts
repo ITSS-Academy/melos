@@ -57,7 +57,7 @@ orderAuth$!: Observable<any>;
         console.log('params-------------------', params['id']);
         const id = params['id'];
         if (id){
-          this.orderAuth = id;
+          this.orderAuth = id.toString();
         }
       }),
 
@@ -65,6 +65,7 @@ orderAuth$!: Observable<any>;
         if (auth?.uid) {
           this.authData = auth;
           console.log('authData History', this.authData);
+
           if(this.authData.uid != this.orderAuth) {
             this.store.dispatch(
               HistoryActions.getHistorySongList({
@@ -76,8 +77,6 @@ orderAuth$!: Observable<any>;
         }
       }),
     );
-
-
   }
 
   ngOnDestroy() {
