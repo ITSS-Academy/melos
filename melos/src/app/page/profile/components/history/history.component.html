@@ -6,7 +6,10 @@
   <div class="history-container">
     <div class="list-music">
       @for (song of historySongList; track $index){
-        <app-music-tab [song]="song"></app-music-tab>
+        <app-music-tab
+          [song]="song"
+          [isLike]="likeList.includes(song.id)"
+        ></app-music-tab>
       }
     </div>
   </div>
