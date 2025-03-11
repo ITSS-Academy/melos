@@ -17,18 +17,26 @@ import { LikeState } from '../../../ngrx/like/like.state';
 import { AuthState } from '../../../ngrx/auth/auth.state';
 import { AuthModel } from '../../../models/auth.model';
 import * as LikeActions from '../../../ngrx/like/like.actions';
-import {AsyncPipe, NgStyle} from '@angular/common';
+import { AsyncPipe, NgStyle } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SnackbarService } from '../../../services/snackbar/snackbar.service';
-import {QueueModel} from "../../../models/queue.model";
-import * as QueueActions from "../../../ngrx/queue/queue.actions";
-import {QueueState} from "../../../ngrx/queue/queue.state";
-import * as SongActions from "../../../ngrx/song/song.actions";
+import { QueueModel } from '../../../models/queue.model';
+import * as QueueActions from '../../../ngrx/queue/queue.actions';
+import { QueueState } from '../../../ngrx/queue/queue.state';
+import * as SongActions from '../../../ngrx/song/song.actions';
 import { LocalstoreSongService } from '../../../services/localstore-song/localstore.song.service';
+import * as CommentActions from '../../../ngrx/comment/comment.actions';
+import { PlaylistState } from '../../../ngrx/playlist/playlist.state';
+import { PlaylistModel } from '../../../models/playlist.model';
+import * as PlaylistActions from '../../../ngrx/playlist/playlist.actions';
+import { FormsModule } from '@angular/forms';
+import { DialogEditPlaylistComponent } from '../dialog-edit-playlist/dialog-edit-playlist.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogAddSongPlaylistComponent } from '../dialog-add-song-playlist/dialog-add-song-playlist.component';
 @Component({
   selector: 'app-music-tab',
   standalone: true,
-  imports: [MaterialModule, RouterLink, NgStyle],
+  imports: [MaterialModule, RouterLink, NgStyle, FormsModule],
   templateUrl: './music-tab.component.html',
   styleUrl: './music-tab.component.scss',
 })
@@ -39,24 +47,33 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
   likeList$!: Observable<string[]>;
   // isLoadingLike$!: Observable<boolean>;
-  uid!: string ;
+  uid!: string;
 
-  addQueue$!: Observable<QueueModel| null>;
+  addQueue$!: Observable<QueueModel | null>;
   addQueue!: QueueModel | null;
 
-  removeQueue$!: Observable<QueueModel| null>;
+  removeQueue$!: Observable<QueueModel | null>;
   removeQueue!: QueueModel | null;
+
+  isOverlayOpen = false;
+
+  playlist!: PlaylistModel[] | null;
+  playlist$!: Observable<PlaylistModel[] | null>;
+  private subscriptionPlaylist: Subscription[] = [];
 
   private subscription: Subscription[] = [];
   constructor(
     private songService: SongService,
     private snackbarService: SnackbarService,
+    private openDialogAddSong: MatDialog,
+
     private store: Store<{
       song: SongState;
       play: PlayState;
       like: LikeState;
       auth: AuthState;
       queue: QueueState;
+      playlist: PlaylistState;
     }>,
     private localStoreSongService: LocalstoreSongService,
   ) {
@@ -66,6 +83,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
     this.auth$ = this.store.select('auth', 'authData');
     this.addQueue$ = this.store.select('queue', 'songsQueue');
     this.removeQueue$ = this.store.select('queue', 'songsQueue');
+    this.playlist$ = this.store.select('playlist', 'playlistList');
   }
   ngOnInit() {
     this.subscription.push(
@@ -78,12 +96,12 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           this.uid = authData.uid;
         }
       }),
-        this.addQueue$.subscribe((queueSong) => {
-          this.addQueue = queueSong;
-        }),
-        this.removeQueue$.subscribe((queueSong) => {
-          this.removeQueue = queueSong;
-        }),
+      this.addQueue$.subscribe((queueSong) => {
+        this.addQueue = queueSong;
+      }),
+      this.removeQueue$.subscribe((queueSong) => {
+        this.removeQueue = queueSong;
+      }),
     );
   }
 
@@ -96,7 +114,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   @Input() isQueue?: boolean;
 
   isPlayingQueue() {
-    return this.song?.id == this.songService.currentPlaySong?.id
+    return this.song?.id == this.songService.currentPlaySong?.id;
   }
 
   isPlayingSong() {
@@ -104,6 +122,21 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       this.isPlaying && this.song?.id == this.songService.currentPlaySong?.id
     );
   }
+
+  clickOpenOverLay() {
+    const dialogRef = this.openDialogAddSong.open(
+      DialogAddSongPlaylistComponent,
+      {
+        width: 'fit-content',
+        maxWidth: 'none',
+        data: {
+          songId: this.song?.id,
+          auth: this.authData,
+        },
+      },
+    );
+  }
+
   playSong() {
     if (this.isPlaying) {
       if (this.song?.id == this.songService.currentPlaySong?.id) {
@@ -126,6 +159,10 @@ export class MusicTabComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeCmt() {
+    this.store.dispatch(CommentActions.clearStateComment());
+  }
+
   formatTime(time: number): string {
     if (isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);
@@ -137,33 +174,41 @@ export class MusicTabComponent implements OnInit, OnDestroy {
 
   async addQueueSong() {
     if (this.song) {
-      this.store.dispatch(QueueActions.addToSongQueue({
-        idToken: this.authData?.idToken ?? '',
-        queue: {
+      this.store.dispatch(
+        QueueActions.addToSongQueue({
+          idToken: this.authData?.idToken ?? '',
+          queue: {
             uid: this.uid,
             song_id: this.song.id,
-            },
-        }));
-      this.store.dispatch(SongActions.getSongQueue({
-        uid: this.uid,
-        idToken: this.authData?.idToken ?? ''
-      }));
+          },
+        }),
+      );
+      this.store.dispatch(
+        SongActions.getSongQueue({
+          uid: this.uid,
+          idToken: this.authData?.idToken ?? '',
+        }),
+      );
     }
   }
   async removeQueueSong() {
     if (this.song) {
       this.store.dispatch(
-          QueueActions.removeSongQueue({
-            idToken: this.authData?.idToken ?? '',
-            queue : {
-              song_id: this.song.id,
-              uid: this.uid,
-            }
-          }))};
-    this.store.dispatch(SongActions.getSongQueue({
-      uid: this.uid,
-      idToken: this.authData?.idToken ?? ''
-    }));
+        QueueActions.removeSongQueue({
+          idToken: this.authData?.idToken ?? '',
+          queue: {
+            song_id: this.song.id,
+            uid: this.uid,
+          },
+        }),
+      );
+    }
+    this.store.dispatch(
+      SongActions.getSongQueue({
+        uid: this.uid,
+        idToken: this.authData?.idToken ?? '',
+      }),
+    );
   }
 
   async likeSong(songId: string) {
@@ -173,7 +218,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
         'Close',
         3000,
         'right',
-        'top'
+        'top',
       );
       return;
     }
@@ -184,7 +229,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           songId: songId,
           uid: this.authData.uid,
           idToken: this.authData.idToken,
-        })
+        }),
       );
     } else {
       this.store.dispatch(
@@ -192,11 +237,10 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           songId: songId,
           uid: this.authData.uid,
           idToken: this.authData.idToken,
-        })
+        }),
       );
     }
   }
 
-
-
+  protected readonly close = close;
 }

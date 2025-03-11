@@ -41,6 +41,7 @@ export class PlaylistsController {
   @Post('update-songList')
   async updateSongList(@Body() data: any) {
     try {
+      console.log(data);
       if (!data.id) {
         throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
       }

@@ -59,12 +59,13 @@
     h1 {
       font-weight: 800;
       padding: 0 5px;
+      margin: 0;
       width: 100%;
       text-shadow:
-              -2px -2px 0 rgba(0, 0, 0, 0.5),
-              2px -2px 0 rgba(0, 0, 0, 0.5),
-              -2px 2px 0 rgba(0, 0, 0, 0.5),
-              2px 2px 0 rgba(0, 0, 0, 0.5);
+              -2px -2px 0 rgba(0, 0, 0, 0.37),
+              2px -2px 0 rgba(0, 0, 0, 0.37),
+              -2px 2px 0 rgba(0, 0, 0, 0.37),
+              2px 2px 0 rgba(0, 0, 0, 0.37);
       overflow: hidden;
       display: -webkit-box;
       text-overflow: ellipsis;
@@ -79,10 +80,10 @@
       font-weight: 700;
       height: 60px;
       text-shadow:
-              -1px -1px 0 rgba(0, 0, 0, 0.5),
-              1px -1px 0 rgba(0, 0, 0, 0.5),
-              -1px 1px 0 rgba(0, 0, 0, 0.5),
-              1px 1px 0 rgba(0, 0, 0, 0.5);
+              -2px -2px 0 rgba(0, 0, 0, 0.37),
+              2px -2px 0 rgba(0, 0, 0, 0.37),
+              -2px 2px 0 rgba(0, 0, 0, 0.37),
+              2px 2px 0 rgba(0, 0, 0, 0.37);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

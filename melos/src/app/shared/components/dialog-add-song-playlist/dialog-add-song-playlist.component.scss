@@ -1,0 +1,78 @@
+.play-lst-contain {
+  user-select: none;
+  border: var(--surfaceContainer) 2px solid;
+  width: 30vw;
+  height: 60vh;
+  //background-color: var(--surface);
+  padding: 20px;
+  border-radius: 24px;
+  .title-ctn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    h3 {
+      width: fit-content;
+      margin: 0;
+    }
+  }
+}
+
+.playlist-section::-webkit-scrollbar {
+  display: none;
+}
+
+.playlist-section {
+  overflow-y: scroll;
+  height: 100%;
+  gap: 20px;
+}
+
+.playlist-card {
+  display: flex;
+  .playlist-card-img {
+    height: 80px;
+    width: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  .sub-ctn {
+    width: 80%;
+    max-width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10px;
+    .playlist-card-info {
+      max-width: 80%;
+      width: 80%;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      span {
+        font-size: 24px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      p {
+        font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: var(--onSurfaceVariant);
+      }
+    }
+    .check-box-ctn {
+      width: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

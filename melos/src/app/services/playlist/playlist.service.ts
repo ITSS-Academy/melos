@@ -44,11 +44,20 @@ export class PlaylistService {
     };
 
     const formData = new FormData();
-    formData.append('uid', playlist.uid);
-    formData.append('id', playlist.id);
-    formData.append('name', playlist.name);
-    formData.append('file', playlist.image_url);
-    console.log('🚀 Gửi request API với:', idToken, playlist); // ✅ Debug request
+
+    if (playlist.image_url instanceof File) {
+      formData.append('uid', playlist.uid);
+      formData.append('id', playlist.id);
+      formData.append('name', playlist.name);
+      formData.append('file', playlist.image_url);
+      formData.append('description', playlist.description);
+    } else {
+      formData.append('uid', playlist.uid);
+      formData.append('id', playlist.id);
+      formData.append('name', playlist.name);
+      formData.append('description', playlist.description);
+    }
+
     return this.http.put<PlaylistModel>(
       `${environment.apiUrl}playlists/update-playlist`,
       formData,
@@ -93,7 +102,7 @@ export class PlaylistService {
       Authorization: idToken,
     };
     const body = {
-      playlistId: playlistId,
+      id: playlistId,
       songId: songId,
       uid: uid,
     };
