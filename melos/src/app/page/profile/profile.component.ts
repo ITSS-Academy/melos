@@ -58,6 +58,7 @@ orderAuth$!: Observable<any>;
         const id = params['id'];
         if (id){
           this.orderAuth = id.toString();
+          console.log(this.orderAuth);
         }
       }),
 
