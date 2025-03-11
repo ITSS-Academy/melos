@@ -7,4 +7,5 @@ export interface SongState {
   error: any;
   songCategories: SongModel[];
   songQueue: SongModel[];
+  songPlaylist: SongModel[]
 }

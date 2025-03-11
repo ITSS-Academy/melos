@@ -11,6 +11,7 @@ export const initialSongState: SongState = {
   songCategories: <SongModel[]>[],
   songListLiked: <SongModel[]>[],
   songQueue: <SongModel[]>[],
+  songPlaylist:<SongModel[]>[],
 };
 
 export const songReducer = createReducer(

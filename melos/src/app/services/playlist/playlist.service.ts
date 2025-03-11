@@ -49,7 +49,7 @@ export class PlaylistService {
     formData.append('id', playlist.id);
     formData.append('name', playlist.name);
     formData.append('file', playlist.image_url);
-
+    console.log("🚀 Gửi request API với:", idToken, playlist); // ✅ Debug request
     return this.http.put<PlaylistModel>(
       `${environment.apiUrl}playlists/update-playlist`,
       formData,

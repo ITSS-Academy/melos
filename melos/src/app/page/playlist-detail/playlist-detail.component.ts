@@ -68,7 +68,8 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       width: '30vw',
       maxWidth: 'none',
       data: {
-        message: 'Would you like to delete this playlist?',
+        description: this.playlistDetail?.description,
+        img: this.playlistDetail?.image_url,
         name: this.playlistDetail?.name || 'Unknown Playlist'
       },
     });

@@ -1,40 +1,38 @@
 <div class="container-playlist">
-  <form  >
-
-    <h2 >Create New Playlist</h2>
+  <form [formGroup]="form" (ngSubmit)="savePlaylist()">
+    <h2>Edit Playlist</h2>
     <div class="dialog-playlist">
       <div class="left-dialog">
         <label for="fileInput" class="upload-label">
           <div id="uploadDiv">
-            <span class="material-symbols-outlined" >add_photo_alternate</span>
-            <img  src="" alt="Uploaded Image" class="preview-img">
+            @if (!imgPath && !form.get('image_url')?.value) {
+              <span class="material-symbols-outlined">add_photo_alternate</span>
+            } @else {
+              <img [src]="imgPath || form.get('image_url')?.value" alt="Uploaded Image" class="preview-img">
+            }
           </div>
         </label>
-        <!-- Input upload ảnh -->
-        <input type="file" id="fileInput" accept="image/*" >
+        <input type="file" id="fileInput" accept="image/*" (change)="uploadImg($event)">
       </div>
+
       <div class="right-dialog">
-
         <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
-          <mat-label class="mat-label">Your Playlist Name</mat-label>
-          <input formControlName="name"  matInput>
+          <mat-label>Your Playlist Name</mat-label>
+          <input formControlName="name" matInput>
         </mat-form-field>
 
-
-        <mat-form-field appearance="outline" [floatLabel]="'always'" subscriptSizing="dynamic" >
-          <mat-label class="mat-label">Your Playlist Description</mat-label >
-          <textarea formControlName="description"  matInput rows="10"></textarea>
+        <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+          <mat-label>Your Playlist Description</mat-label>
+          <textarea formControlName="description" matInput rows="5"></textarea>
         </mat-form-field>
-
       </div>
     </div>
 
     <mat-dialog-actions class="dialog-actions" align="end">
-
-      <button  mat-flat-button mat-dialog-close color="var(--onSecondaryContainer)" class="flat-button">Cancel</button>
-      <button  mat-flat-button mat-dialog-close class="commit">Commit</button>
+      <button mat-flat-button mat-dialog-close class="flat-button">Cancel</button>
+      <button mat-flat-button color="primary" class="commit" type="submit" [disabled]="form.invalid">
+        Commit
+      </button>
     </mat-dialog-actions>
-
-
   </form>
 </div>
