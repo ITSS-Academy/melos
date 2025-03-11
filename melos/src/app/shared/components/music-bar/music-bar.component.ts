@@ -106,6 +106,12 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    const savedSong = this.localStoreSongService.getSong();
+    if (savedSong) {
+      this.songService.setCurrentSong(savedSong);
+    }
+
     this.section = document.getElementById('next-song-section');
     this.updateChangeVolume();
   }
