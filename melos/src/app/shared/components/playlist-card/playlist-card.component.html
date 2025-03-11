@@ -4,27 +4,7 @@
   </div>
   <div class="group">
     <p class="playlist-card-title">{{playlist.name}}</p>
-    <span [matMenuTriggerFor]="menu" class="material-symbols-outlined">
-    more_vert
-    </span>
-
-    <mat-menu class="custom-menu" #menu="matMenu">
-      <button (click)="editPlaylist()" class="mat-button">
-
-            <span class="material-symbols-outlined">
-          edit
-          </span>
-           <span>Edit</span>
-
-      </button>
-      <button (click)="deletePlaylist()" class="mat-button">
-        <span class="material-symbols-outlined">
-          delete
-          </span>
-        <span>Delete</span>
-      </button>
-
-    </mat-menu>
+    <p class="num-of-track">{{playlist.songs_id.length}} tracks</p>
 
   </div>
 </div>

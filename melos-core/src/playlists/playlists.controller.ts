@@ -26,7 +26,6 @@ export class PlaylistsController {
     @Body() data: Partial<any>,
   ) {
     try {
-      console.log('data', data);
       data.songs_id = [];
 
       if (!file) {
@@ -42,7 +41,6 @@ export class PlaylistsController {
   @Post('update-songList')
   async updateSongList(@Body() data: any) {
     try {
-      console.log('data', data);
       if (!data.id) {
         throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
       }
@@ -68,7 +66,6 @@ export class PlaylistsController {
     @Body() data: Partial<any>,
   ) {
     try {
-      console.log('data', data);
       data.songs_id = [];
 
       if (!file) {
@@ -96,7 +93,6 @@ export class PlaylistsController {
   async getPlaylistSong(@Request() req: any) {
     try {
       const { id } = req.query;
-      console.log('req', id);
 
       return await this.playlistsService.getSongByPlaylistId(id);
     } catch (e) {
@@ -107,7 +103,6 @@ export class PlaylistsController {
   @Put('pin')
   async pinPlaylist(@Body() data: any) {
     try {
-      console.log('data', data);
       if (!data.id) {
         throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
       }
@@ -157,7 +152,6 @@ export class PlaylistsController {
   async getPlayListsByUserId(@Request() req: any) {
     try {
       const { uid } = req.query;
-      console.log('uid', uid);
       return await this.playlistsService.getPlayListsByUserId(uid);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
@@ -178,7 +172,6 @@ export class PlaylistsController {
   async getListSongsIdByUid(@Request() req: any) {
     try {
       const { uid } = req.query;
-      console.log('uid list', uid);
       return await this.playlistsService.getListSongsIdAllPlaylists(uid);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);

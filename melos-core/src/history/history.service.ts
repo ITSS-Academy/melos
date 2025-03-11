@@ -8,17 +8,15 @@ export class HistoryService {
   async createHistory(uid: string, songId: string) {
     const { data, error } = await this.supabaseProvider
       .getClient()
-      .from('histories')
-      .insert({
-        uid,
-        song_id: songId,
-      });
+      .rpc('upsert_history', { p_uid: uid, p_song_id: songId });
 
     if (error) {
       throw new Error(error.message);
     }
 
-    return data;
+    const historyUser = await this.getHistoriesByUid(uid);
+
+    return historyUser;
   }
 
   async getHistoriesByUid(uid: string): Promise<History[]> {

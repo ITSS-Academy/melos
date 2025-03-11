@@ -70,9 +70,7 @@ export const deleteDetailPlaylist = createEffect(
         playlistService
           .deletePlaylistById(action.id, action.uid, action.idToken)
           .pipe(
-            map((playlist) =>
-              PlaylistActions.deletePlaylistByIdSuccess({ playlist }),
-            ),
+            map(() => PlaylistActions.deletePlaylistByIdSuccess()),
             catchError((error) =>
               of(PlaylistActions.deletePlaylistByIdFailure({ error })),
             ),
@@ -96,6 +94,30 @@ export const editDetailPlaylist = createEffect(
             ),
             catchError((error) =>
               of(PlaylistActions.editPlaylistByIdFailure({ error })),
+            ),
+          ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const addSongToPlaylist = createEffect(
+  (actions$ = inject(Actions), playlistService = inject(PlaylistService)) => {
+    return actions$.pipe(
+      ofType(PlaylistActions.addSongToPlaylist),
+      exhaustMap((action) =>
+        playlistService
+          .addSongToPlaylist(
+            action.playlistId,
+            action.songId,
+            action.uid,
+            action.idToken,
+          )
+          .pipe(
+            map(() => PlaylistActions.addSongToPlaylistSuccess()),
+            catchError((error) =>
+              of(PlaylistActions.addSongToPlaylistFailure({ error })),
             ),
           ),
       ),

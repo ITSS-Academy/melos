@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../../../ngrx/auth/auth.state';
 import { HistoryState } from '../../../../ngrx/history/history.state';
@@ -7,19 +7,14 @@ import { AuthModel } from '../../../../models/auth.model';
 import { SongModel } from '../../../../models/song.model';
 import * as HistoryActions from '../../../../ngrx/history/history.actions';
 import { CommonModule } from '@angular/common';
-import {DialogLoginComponent} from '../../../../shared/components/dialog-login/dialog-login.component';
-import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
-import {LoadingComponent} from '../../../../shared/components/loading/loading.component';
+import { DialogLoginComponent } from '../../../../shared/components/dialog-login/dialog-login.component';
+import { MusicTabComponent } from '../../../../shared/components/music-tab/music-tab.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [
-    CommonModule,
-    DialogLoginComponent,
-    MusicTabComponent,
-    LoadingComponent,
-  ],
+  imports: [CommonModule, MusicTabComponent, LoadingComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
 })
@@ -30,7 +25,6 @@ export class HistoryComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
   historySongList: SongModel[] = [];
   isLoading$!: Observable<boolean>;
-
 
   constructor(
     private store: Store<{
@@ -58,16 +52,20 @@ export class HistoryComponent implements OnInit, OnDestroy {
         }
       }),
 
-
       this.historySongList$.subscribe((historySongList) => {
-        console.log('[History Component] Received historySongList:', historySongList);
+        console.log(
+          '[History Component] Received historySongList:',
+          historySongList,
+        );
         if (historySongList.length > 0) {
           this.historySongList = historySongList;
-          console.log('[History Component] Updated historySongList:', this.historySongList);
+          console.log(
+            '[History Component] Updated historySongList:',
+            this.historySongList,
+          );
         }
       }),
     );
-
 
     if (this.authData) {
     }
