@@ -98,6 +98,10 @@ export const getSongLikedFailure = createAction(
   props<{ error: any }>(),
 );
 
+export const clearStateSongLiked = createAction(
+  '[Song] Clear State Song Liked',
+);
+
 export const getSongQueue = createAction(
   '[Song] Get Song Queue',
   props<{ uid: string; idToken: string }>(),

@@ -7,9 +7,12 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { debounceTime, Observable, Subject, Subscription } from 'rxjs';
 import { AuthModel } from '../../../models/auth.model';
 import * as AuthActions from '../../../ngrx/auth/auth.actions';
-import { RouterLink } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { ShareModule } from '../../share.module';
 import * as SearchActions from '../../../ngrx/search/search.actions';
+import * as HistoryActions from '../../../ngrx/history/history.actions';
+import * as UploadedActions from '../../../ngrx/uploaded/uploaded.actions';
+import * as SongActions from '../../../ngrx/song/song.actions';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -24,6 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchSubject = new Subject<string>();
 
   constructor(
+    private router: Router,
     private store: Store<{
       auth: AuthState;
     }>,
@@ -67,6 +71,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   async logout() {
     this.store.dispatch(AuthActions.logout());
     this.authData = null;
+    this.store.dispatch(SongActions.clearStateSongLiked());
+    this.store.dispatch(HistoryActions.clearState());
+    this.store.dispatch(UploadedActions.clearState());
+    this.router.navigate(['/']);
+
   }
   onValueChange(event: Event) {
     const inputElement = event.target as HTMLInputElement;

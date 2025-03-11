@@ -66,4 +66,12 @@ export const historyReducer = createReducer(
       error: error,
     };
   }),
+
+  on(historyActions.clearState, (state, {type}) => {
+    return{
+      historySongList: <SongModel[]>[],
+      isLoading: false,
+      error: null,
+    }
+  })
 );

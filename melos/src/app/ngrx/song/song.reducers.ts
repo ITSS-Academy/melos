@@ -181,6 +181,15 @@ export const songReducer = createReducer(
       isLoading: false,
     };
   }),
+
+  on(SongActions.clearStateSongLiked, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songListLiked: [],
+    };
+  }),
+
   on(SongActions.getSongQueue, (state, { type, uid, idToken }) => {
     console.log(uid);
     console.log(type);
