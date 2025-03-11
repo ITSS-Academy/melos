@@ -86,6 +86,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         this.currentSong = song;
         if (song) {
           this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
+          this.hasUpdatedViews = false;
           this.setupHls();
         }
       }),
@@ -156,9 +157,9 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           this.playNextSong();
         }
       }
-      if (this.currentTime >= 10 && !this.hasUpdatedViews) {
-        this.hasUpdatedViews = true;
+      if (Math.floor(this.currentTime) === 10 && !this.hasUpdatedViews) {
         this.updateViews();
+        this.hasUpdatedViews = true;
       }
     };
 
