@@ -1,0 +1,29 @@
+<div class="overlay-bkg" (click)="clickCloseOverLay()" [ngStyle]="isOverlayOpen ? {'display': 'flex'} : {'display': 'none'}">
+  <div class="play-lst-contain" (click)="$event.stopPropagation()">
+    <div class="title-ctn">
+      <h3>Playlist</h3>
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickCloseOverLay()" >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="playlist-section">
+      @for (playlist of playlist; track playlist.id) {
+        <div class="playlist-card">
+          <div class="playlist-card-img">
+            <img [src]="playlist.image_url" alt="">
+          </div>
+          <div class="sub-ctn">
+            <div class="playlist-card-info">
+              <span class="name-playlist">{{playlist.name}}</span>
+              <p class="content-playlist">{{playlist.description}}</p>
+            </div>
+            <div class="check-box-ctn">
+              <mat-checkbox ></mat-checkbox>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
