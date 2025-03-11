@@ -24,6 +24,7 @@ import {QueueModel} from "../../../models/queue.model";
 import * as QueueActions from "../../../ngrx/queue/queue.actions";
 import {QueueState} from "../../../ngrx/queue/queue.state";
 import * as SongActions from "../../../ngrx/song/song.actions";
+import { LocalstoreSongService } from '../../../services/localstore-song/localstore.song.service';
 @Component({
   selector: 'app-music-tab',
   standalone: true,
@@ -57,6 +58,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       auth: AuthState;
       queue: QueueState;
     }>,
+    private localStoreSongService: LocalstoreSongService,
   ) {
     this.isPlaying$ = this.store.select('play', 'isPlaying');
     this.likeList$ = this.store.select('like', 'songIdLikes');
@@ -123,6 +125,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   formatTime(time: number): string {
     if (isNaN(time)) return '0:00';
     const minutes = Math.floor(time / 60);

@@ -23,6 +23,7 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { RouterLink } from '@angular/router';
 import { NgIf, NgStyle } from '@angular/common';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
+import {LocalstoreSongService} from "../../../services/localstore-song/localstore.song.service";
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -66,6 +67,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       auth: AuthState;
     }>,
     private renderer: Renderer2,
+    private localStoreSongService: LocalstoreSongService,
   ) {
     this.songListsQueue$ = this.store.select('song', 'songQueue');
     this.play$ = this.store.select('play', 'isPlaying');
