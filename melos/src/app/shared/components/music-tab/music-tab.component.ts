@@ -127,7 +127,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
     const dialogRef = this.openDialogAddSong.open(
       DialogAddSongPlaylistComponent,
       {
-        width: '30vw',
+        width: 'fit-content',
         maxWidth: 'none',
         data: {
           songId: this.song?.id,

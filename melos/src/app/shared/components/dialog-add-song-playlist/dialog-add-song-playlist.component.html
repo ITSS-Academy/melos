@@ -1,11 +1,13 @@
-<div class="overlay-bkg" (click)="clickCloseOverLay()" [ngStyle]="isOverlayOpen ? {'display': 'flex'} : {'display': 'none'}">
-  <div class="play-lst-contain" (click)="$event.stopPropagation()">
-    <div class="title-ctn">
-      <h3>Playlist</h3>
-      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickCloseOverLay()" >
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
+<!--<div class="overlay-bkg"  >-->
+<!--  <div class="play-lst-contain" (click)="$event.stopPropagation()">-->
+
+
+<!--  </div>-->
+<!--</div>-->
+
+<div class="play-lst-contain">
+  <h3 mat-dialog-title>Playlist</h3>
+  <mat-dialog-content class="mat-typography">
     <div class="playlist-section">
       @for (playlist of playlist; track playlist.id) {
         <div class="playlist-card">
@@ -17,13 +19,28 @@
               <span class="name-playlist">{{playlist.name}}</span>
               <p class="content-playlist">{{playlist.description}}</p>
             </div>
-            <div class="check-box-ctn">
-              <mat-checkbox ></mat-checkbox>
-            </div>
+            @if (!isSongInPlaylist(playlist)){
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="addSongToPlaylist(playlist.id)" >
+                <mat-icon>add</mat-icon>
+              </button>
+            } @else {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" >
+                <mat-icon>check</mat-icon>
+              </button>
+
+
+            }
           </div>
         </div>
       }
 
     </div>
-  </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+  </mat-dialog-actions>
 </div>
+
+
+

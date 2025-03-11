@@ -6,5 +6,6 @@ export interface PlaylistState {
   isLoading: boolean;
   isLoadingDetail: boolean;
   isDeletedSuccess: boolean;
+  isAddSongSuccess: boolean;
   error: any;
 }

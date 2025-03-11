@@ -10,6 +10,7 @@ export const initialPlaylistState: PlaylistState = {
   isLoading: false,
   isLoadingDetail: false,
   isDeletedSuccess: false,
+  isAddSongSuccess: false,
   error: null,
 };
 
@@ -110,6 +111,7 @@ export const playlistReducer = createReducer(
       isLoading: false,
       isLoadingDetail: false,
       isDeletedSuccess: false,
+      isAddSongSuccess: false,
       error: null,
     };
   }),

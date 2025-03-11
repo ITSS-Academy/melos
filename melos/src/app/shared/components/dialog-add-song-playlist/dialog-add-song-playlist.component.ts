@@ -19,6 +19,7 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
   playlist$!: Observable<PlaylistModel[]>;
   playlist: PlaylistModel[] = [];
   subscription: Subscription[] = [];
+  isAddSongSuccess$!: Observable<boolean>;
 
   constructor(
     private store: Store<{
@@ -26,7 +27,7 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
     }>,
   ) {
     this.playlist$ = this.store.select('playlist', 'playlistList');
-    console.log('dialog add song playlist', this.data);
+    this.isAddSongSuccess$ = this.store.select('playlist', 'isAddSongSuccess');
   }
   ngOnInit() {
     this.store.dispatch(
@@ -37,12 +38,42 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
     );
     this.subscription.push(
       this.playlist$.subscribe((playlist: PlaylistModel[]) => {
-        if (playlist.length > 0) {
+        if (playlist.length > 0 || playlist != this.playlist) {
           this.playlist = playlist;
+          console.log(this.playlist);
+        }
+      }),
+      this.isAddSongSuccess$.subscribe((isAddSongSuccess) => {
+        if (isAddSongSuccess) {
+          this.store.dispatch(
+            PlaylistAction.getPlaylistByUserId({
+              uid: this.data.auth.uid,
+              idToken: this.data.auth.idToken,
+            }),
+          );
         }
       }),
     );
   }
 
-  ngOnDestroy() {}
+  isSongInPlaylist(playlist: PlaylistModel): boolean {
+    return playlist.songs_id.includes(this.data.songId);
+  }
+
+  addSongToPlaylist(playlistId: string) {
+    if (playlistId) {
+      this.store.dispatch(
+        PlaylistAction.addSongToPlaylist({
+          playlistId: playlistId,
+          songId: this.data.songId,
+          idToken: this.data.auth.idToken,
+          uid: this.data.auth.uid,
+        }),
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+  }
 }
