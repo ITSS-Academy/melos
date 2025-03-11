@@ -23,6 +23,7 @@ export const createHistory = createAction(
 
 export const createHistorySuccess = createAction(
   '[History] Create History Success',
+  props<{ historySongList: SongModel[] }>(),
 );
 
 export const createHistoryFailure = createAction(

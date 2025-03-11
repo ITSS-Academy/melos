@@ -21,7 +21,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px
+  gap: 10px;
+  cursor: pointer;
 }
 
 .song-thumbnail {
@@ -49,10 +50,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  cursor: pointer;
-}
-.song-title:hover {
-  text-decoration: underline;
 }
 .song-composer{
   color: var(--onSurfaceVariant);

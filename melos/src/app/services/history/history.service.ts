@@ -32,6 +32,8 @@ export class HistoryService {
       songId: songId,
     };
 
-    return this.http.post(`${environment.apiUrl}history`, body, { headers });
+    return this.http.post<SongModel[]>(`${environment.apiUrl}history`, body, {
+      headers,
+    });
   }
 }

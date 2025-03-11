@@ -23,6 +23,8 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { RouterLink } from '@angular/router';
 import { NgIf, NgStyle } from '@angular/common';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
+import {LocalstoreSongService} from "../../../services/localstore-song/localstore.song.service";
+import {getSongById} from "../../../ngrx/song/song.actions";
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -66,6 +68,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       auth: AuthState;
     }>,
     private renderer: Renderer2,
+    private localStoreSongService: LocalstoreSongService,
   ) {
     this.songListsQueue$ = this.store.select('song', 'songQueue');
     this.play$ = this.store.select('play', 'isPlaying');
@@ -84,6 +87,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         this.currentSong = song;
         if (song) {
           this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
+          this.hasUpdatedViews = false;
           this.setupHls();
         }
       }),
@@ -103,16 +107,14 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    const savedSong = this.localStoreSongService.getSong();
+    if (savedSong && SongActions.getSongById({id : savedSong.id})) {
+      this.songService.setCurrentSong(savedSong);
+    }
+
     this.section = document.getElementById('next-song-section');
     this.updateChangeVolume();
-  }
-
-  isInQueue(id: string): boolean {
-    console.log(
-      'Check in queue: ',
-      this.songListsQueue.some((song) => song.id == id),
-    );
-    return this.songListsQueue.some((song) => song.id === id);
   }
 
   ngOnDestroy() {
@@ -162,9 +164,9 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           this.playNextSong();
         }
       }
-      if (this.currentTime >= 10 && !this.hasUpdatedViews) {
-        this.hasUpdatedViews = true;
+      if (Math.floor(this.currentTime) === 10 && !this.hasUpdatedViews) {
         this.updateViews();
+        this.hasUpdatedViews = true;
       }
     };
 

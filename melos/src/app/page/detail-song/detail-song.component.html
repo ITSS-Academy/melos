@@ -5,6 +5,10 @@
       <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()">
         <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
       </button>
+        <div class="song-title">
+            <h1 class="name-song">{{songDetail.title}}</h1>
+            <span class="name-singer">{{songDetail.composer}}</span>
+        </div>
       <div class="img-contain">
         <img [src]=songDetail.image_url alt="">
       </div>
@@ -26,6 +30,9 @@
       <div class="cmt-contain">
         <h6><b>Comments</b></h6>
         <div class="cmt-section">
+            @if (commentList.length == 0) {
+              <p class="no-cmt-yet">There are no comments yet. :(</p>
+            }
        @for(comment of commentList; track comment.id) {
          <div class="cmt-card">
            <div class="avt-cmt">
