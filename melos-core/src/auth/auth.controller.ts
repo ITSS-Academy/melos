@@ -7,7 +7,6 @@ export class AuthController {
   @Get()
   async verifyToken(@Headers('authorization') idToken: string) {
     const user = await this.authService.verifyToken(idToken);
-    console.log(user);
     return user;
   }
 

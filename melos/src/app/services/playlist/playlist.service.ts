@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PlaylistModel } from '../../models/playlist.model';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { SongModel } from '../../models/song.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,8 +30,9 @@ export class PlaylistService {
     const headers = {
       Authorization: idToken,
     };
-    return this.http.delete<PlaylistModel>(
-      `${environment.apiUrl}playlists/user/playlist?id=${playlistId} &uid=${uid}`,
+    console.log(`${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`);
+    return this.http.delete(
+      `${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`,
       {
         headers,
       },
@@ -42,10 +44,19 @@ export class PlaylistService {
     };
 
     const formData = new FormData();
-    formData.append('uid', playlist.uid);
-    formData.append('id', playlist.id);
-    formData.append('name', playlist.name);
-    formData.append('file', playlist.image_url);
+
+    if (playlist.image_url instanceof File) {
+      formData.append('uid', playlist.uid);
+      formData.append('id', playlist.id);
+      formData.append('name', playlist.name);
+      formData.append('file', playlist.image_url);
+      formData.append('description', playlist.description);
+    } else {
+      formData.append('uid', playlist.uid);
+      formData.append('id', playlist.id);
+      formData.append('name', playlist.name);
+      formData.append('description', playlist.description);
+    }
 
     return this.http.put<PlaylistModel>(
       `${environment.apiUrl}playlists/update-playlist`,
@@ -75,6 +86,29 @@ export class PlaylistService {
     return this.http.post<PlaylistModel>(
       `${environment.apiUrl}playlists`,
       formData,
+      {
+        headers,
+      },
+    );
+  }
+
+  addSongToPlaylist(
+    playlistId: string,
+    songId: string,
+    uid: string,
+    idToken: string,
+  ) {
+    const headers = {
+      Authorization: idToken,
+    };
+    const body = {
+      playlistId: playlistId,
+      songId: songId,
+      uid: uid,
+    };
+    return this.http.post<PlaylistModel>(
+      `${environment.apiUrl}playlists/update-songList`,
+      body,
       {
         headers,
       },

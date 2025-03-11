@@ -1,7 +1,7 @@
-import {QueueModel} from "../../models/queue.model";
-import {SongModel} from "../../models/song.model";
+import { QueueModel } from '../../models/queue.model';
 export interface QueueState {
-    songsQueue: QueueModel;
-    error: any;
-    isLoading: boolean;
+  songsQueue: QueueModel;
+  error: any;
+  isLoading: boolean;
+  isCreateSuccess: boolean;
 }

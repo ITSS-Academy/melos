@@ -40,6 +40,16 @@ export class SongService {
     );
   }
 
+  getSongByPlaylist(playlistId: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+    return this.http.get<SongModel[]>(
+      `${environment.apiUrl}playlists/playlist-song?id=${playlistId}`,
+      { headers },
+    );
+  }
+
   createSong(song: SongModel, idToken: string) {
     //with header Authorization
     const headers = {
@@ -74,6 +84,26 @@ export class SongService {
     };
     return this.http.get<SongModel[]>(
       `${environment.apiUrl}like/get-song-liked-by-uid?uid=${uid}`,
+      { headers },
+    );
+  }
+
+  removeSongFromPlaylist(
+    playlistId: string,
+    songId: string,
+    uid: string,
+    idToken: string,
+  ) {
+    console.log('playlistId', playlistId);
+    console.log('songId', songId);
+    console.log('uid', uid);
+    console.log('idToken', idToken);
+    const headers = {
+      Authorization: idToken,
+    };
+
+    return this.http.delete<SongModel[]>(
+      `${environment.apiUrl}playlists/song?id=${playlistId}&songId=${songId}&uid=${uid}`,
       { headers },
     );
   }

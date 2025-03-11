@@ -32,7 +32,6 @@ export class SongsService {
   // Tạo bài hát mới
   async createSong(data: Partial<Song>): Promise<Song> {
     data.views = 0;
-    console.log('data', data);
 
     const { data: song, error } = await this.supabaseProvider
       .getClient()
@@ -168,7 +167,6 @@ export class SongsService {
     } finally {
       if (fs.existsSync(tempInputPath)) {
         fs.unlinkSync(tempInputPath);
-        console.log('Temp input file deleted.');
       }
     }
   }
@@ -227,7 +225,6 @@ export class SongsService {
       }
     });
 
-    console.log('All files processed successfully');
     return `upload/${id}/output.m3u8`;
   }
 
@@ -261,7 +258,6 @@ export class SongsService {
     let timeStamp = new Date().getTime().toString();
     //put try catch
     try {
-      console.log('Uploading image...');
       return new Promise((resolve, reject) => {
         const file_path = `upload/${id}/${timeStamp}`;
         this.supabaseProvider
@@ -282,7 +278,6 @@ export class SongsService {
               );
             } else {
               let iamgeUrl = this.getPublicHlsUrl('songs', file_path);
-              console.log('Image uploaded successfully.');
               resolve(iamgeUrl);
             }
           });
@@ -350,22 +345,6 @@ export class SongsService {
     return songs;
   }
 
-  // async getSongByPlaylistId(id: string): Promise<Song[]> {
-  //   log('getSongByPlaylistId', id);
-  //   //call rpc
-  //   const { data, error } = await this.supabaseProvider
-  //     .getClient()
-  //     .rpc('get_songs_with_playlist', { playlist_id: id });
-
-  //   if (error) {
-  //     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
-  //   }
-
-  //   console.log('data', data);
-
-  //   return data;
-  // }
-
   async getSongByCategoryId(id: string): Promise<Song[]> {
     const { data, error } = await this.supabaseProvider
       .getClient()
@@ -376,8 +355,6 @@ export class SongsService {
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    console.log('data', data);
 
     return data;
   }
@@ -396,8 +373,6 @@ export class SongsService {
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    console.log('data', data);
   }
 
   async getSongByUserId(uid: string): Promise<Song[]> {
@@ -410,8 +385,6 @@ export class SongsService {
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-    console.log('data', data);
 
     return data;
   }

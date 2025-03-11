@@ -1,30 +1,70 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {QueueModel} from "../../models/queue.model";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { QueueModel } from '../../models/queue.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QueueService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   addQueueSong(queue: QueueModel, idToken: string) {
     const headers = {
-      Authorization: idToken
+      Authorization: idToken,
     };
     const body = {
-        uid: queue.uid,
-        songId: queue.song_id
-    }
+      uid: queue.uid,
+      songId: queue.song_id,
+    };
     console.log(headers);
-    return this.http.post<QueueModel>('http://localhost:3000/queue/create-song-queues',body, {headers});
+    return this.http.post<QueueModel>(
+      'http://localhost:3000/queue/create-song-queues',
+      body,
+      { headers },
+    );
   }
 
   removeQueueSong(queue: QueueModel, idToken: string) {
     const headers = {
-      Authorization: idToken
+      Authorization: idToken,
     };
-    return this.http.delete<QueueModel>('http://localhost:3000/queue/delete-song-queues?uid='+queue.uid+"&songId="+queue.song_id ,{headers});
+    return this.http.delete<QueueModel>(
+      'http://localhost:3000/queue/delete-song-queues?uid=' +
+        queue.uid +
+        '&songId=' +
+        queue.song_id,
+      { headers },
+    );
+  }
+
+  createQueueWithPlaylist(playlistId: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+    const body = {
+      playlistId: playlistId,
+    };
+
+    return this.http.post('http://localhost:3000/queue/playlist-queues', body, {
+      headers,
+    });
+  }
+
+  createQueueWithPlaylistRandom(playlistId: string, idToken: string) {
+    const headers = {
+      Authorization: idToken,
+    };
+
+    const body = {
+      playlistId: playlistId,
+    };
+
+    return this.http.post(
+      'http://localhost:3000/queue/playlist-queues-random',
+      body,
+      {
+        headers,
+      },
+    );
   }
 }

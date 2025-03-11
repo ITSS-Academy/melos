@@ -35,8 +35,6 @@ export class SongsController {
     @Query('pageSize') pageSize: string,
   ): Promise<Song[]> {
     try {
-      console.log('pageNumber', page);
-      console.log('pageSizeNumber', pageSize);
       const pageNumber = Number(page);
       const pageSizeNumber = Number(pageSize);
 
@@ -76,8 +74,6 @@ export class SongsController {
       uuid: string;
     },
   ) {
-    // console.log("file",file);
-
     if (!files || files.length !== 2) {
       throw new HttpException(
         'Both music and image files are required!',
@@ -86,8 +82,7 @@ export class SongsController {
     }
 
     const [musicFile, imageFile] = files;
-    console.log('music', musicFile);
-    console.log('image', imageFile);
+
     if (!musicFile.mimetype.includes('audio')) {
       throw new HttpException(
         'Invalid music file type',
@@ -124,7 +119,6 @@ export class SongsController {
         songId,
         imageFile,
       );
-      console.log('hlsUrl', imageUrl);
 
       const songData: Partial<Song> = {
         id: songId,
@@ -142,7 +136,6 @@ export class SongsController {
       const newSong = await this.songsService.createSong(songData);
       this.songsService.cleanTempDirectory(hlsDir);
 
-      console.log('newSong', newSong);
       return <typeof songData>{
         id: songId,
         title: body.title,
@@ -160,18 +153,6 @@ export class SongsController {
     }
   }
 
-  // @Get('playlist-song')
-  // async getPlaylistSong(@Request() req: any) {
-  //   try {
-  //     const { id } = req.query;
-  //     console.log('req', id);
-
-  //     return await this.songsService.getSongByPlaylistId(id);
-  //   } catch (e) {
-  //     throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
-  //   }
-  // }
-
   @Put('update-views')
   async updateViews(@Request() req: any) {
     try {
@@ -186,7 +167,6 @@ export class SongsController {
   async getUserSong(@Request() req: any) {
     try {
       const { uid } = req.query;
-      console.log('req', uid);
 
       return await this.songsService.getSongByUserId(uid);
     } catch (e) {
@@ -198,7 +178,6 @@ export class SongsController {
   async getCategorySong(@Request() req: any) {
     try {
       const { id } = req.query;
-      console.log('req', id);
 
       return await this.songsService.getSongByCategoryId(id);
     } catch (e) {

@@ -2,6 +2,7 @@ import { SongState } from './song.state';
 import { SongModel } from '../../models/song.model';
 import { createReducer, on } from '@ngrx/store';
 import * as SongActions from './song.actions';
+import { clearStateSongPlaylist } from './song.actions';
 
 export const initialSongState: SongState = {
   songDetail: <SongModel>{},
@@ -11,6 +12,7 @@ export const initialSongState: SongState = {
   songCategories: <SongModel[]>[],
   songListLiked: <SongModel[]>[],
   songQueue: <SongModel[]>[],
+  songPlaylist: <SongModel[]>[],
 };
 
 export const songReducer = createReducer(
@@ -135,7 +137,7 @@ export const songReducer = createReducer(
         songCategories: songCategories,
         isLoading: false,
       };
-    }
+    },
   ),
   on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
     console.log(type);
@@ -203,5 +205,72 @@ export const songReducer = createReducer(
       error: error,
       isLoading: false,
     };
-  })
+  }),
+
+  //get song by playlist id
+
+  on(SongActions.getSongByPlaylist, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(SongActions.getSongByPlaylistSuccess, (state, { songPlaylist, type }) => {
+    console.log(type);
+    return <SongState>{
+      ...state,
+      songPlaylist: songPlaylist,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.getSongByPlaylistFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
+  //delete song from playlist
+
+  on(SongActions.deleteSongFromPlaylist, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }),
+
+  on(
+    SongActions.deleteSongFromPlaylistSuccess,
+    (state, { type, songPlaylist }) => {
+      console.log(type);
+      return {
+        ...state,
+        isLoading: false,
+        songPlaylist: songPlaylist,
+      };
+    },
+  ),
+
+  on(SongActions.deleteSongFromPlaylistFailure, (state, { error, type }) => {
+    console.log(type);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+    };
+  }),
+
+  on(SongActions.clearStateSongPlaylist, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songPlaylist: [],
+    };
+  }),
 );

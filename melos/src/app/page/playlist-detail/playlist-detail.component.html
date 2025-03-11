@@ -1,15 +1,16 @@
 @if((isPlaylistDetailLoading$| async)){
     <app-loading></app-loading>
-}@else{
+}@else {
   <div id="playlist-detail">
     <div class="container-left">
       <div class="selected-playlist">
-        <img  [src]="playlistDetail.image_url" alt="" loading="lazy">
+        <img  *ngIf="playlistDetail.image_url" [src]="playlistDetail.image_url" alt="" loading="lazy">
       </div>
-      <h2>{{playlistDetail.name}}</h2>
+      <p class="playlist-name"  *ngIf=" playlistDetail.name"  >{{playlistDetail.name}}</p>
+      <p class="num-of-track" *ngIf=" playlistDetail.songs_id.length >= 0 " >{{playlistDetail.songs_id.length}} track</p>
       <div class="function">
-        <button mat-icon-button  >
-          <mat-icon class="material-symbols-outlined">border_color</mat-icon>
+        <button mat-icon-button (click)="editDialogDeletePlaylist()" >
+          <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
         </button>
 
         <button mat-icon-button (click)="openDialogDeletePlaylist()" >
@@ -18,10 +19,24 @@
 
       </div>
 
+      <div class="action-song">
+        <button mat-icon-button (click)="playSongInPlaylist()" >
+          <mat-icon class="material-symbols-outlined" >play_arrow</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="playSongInPlaylistRandom()" >
+          <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
+        </button>
+      </div>
     </div>
     <div class="container-right">
       <div class="list_music">
-
+        @for (song of this.songPlaylist; track song.id){
+          <app-music-tab
+          [song]="song"
+          >
+          </app-music-tab>
+        }
       </div>
     </div>
   </div>

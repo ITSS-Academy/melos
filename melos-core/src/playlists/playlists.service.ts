@@ -29,7 +29,6 @@ export class PlaylistsService {
       );
     }
 
-    console.log('playlistsData', playlistsData);
     return playlistsData;
   }
 
@@ -208,11 +207,9 @@ export class PlaylistsService {
       );
     }
 
-    console.log('playlist id', id);
     //remove folder with playlist id in storage
     if (playlist.image_url) {
       const filePath = playlist.image_url.split('/').slice(8).join('/');
-      console.log('filePath', filePath);
       const { data: deleteData, error: deleteError } =
         await this.supabaseProvider
           .getClient()
@@ -317,7 +314,6 @@ export class PlaylistsService {
 
     if (playlist.image_url) {
       const filePath = playlist.image_url.split('/').slice(8).join('/');
-      console.log('filePath', filePath);
       const { data: deleteData, error: deleteError } =
         await this.supabaseProvider
           .getClient()
@@ -353,8 +349,6 @@ export class PlaylistsService {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
-    console.log('data', data);
-
     return data;
   }
 
@@ -372,7 +366,6 @@ export class PlaylistsService {
       );
     }
 
-    console.log('playlist', playlist);
     let isPined = !playlist.is_pined;
 
     const { data: playlistData, error: playlistError } =

@@ -81,8 +81,6 @@ export const clearStateSongCategory = createAction(
   '[Song] Clear State Song Category',
 );
 
-
-
 //song liked
 
 export const getSongLiked = createAction(
@@ -100,16 +98,53 @@ export const getSongLikedFailure = createAction(
   props<{ error: any }>(),
 );
 
-
 export const getSongQueue = createAction(
-    '[Song] Get Song Queue',
-    props<{ uid: string; idToken: string }>(),
+  '[Song] Get Song Queue',
+  props<{ uid: string; idToken: string }>(),
 );
 export const getSongQueueSuccess = createAction(
-    '[Song] Get Song Queue Success',
-    props<{ songQueue: SongModel[] }>(),
+  '[Song] Get Song Queue Success',
+  props<{ songQueue: SongModel[] }>(),
 );
 export const getSongQueueFailure = createAction(
-    '[Song] Get Song Queue Failure',
-    props<{ error: any }>(),
+  '[Song] Get Song Queue Failure',
+  props<{ error: any }>(),
+);
+
+//get song by playlist id
+
+export const getSongByPlaylist = createAction(
+  '[Song] Get Song By Playlist',
+  props<{ playlistId: string; idToken: string }>(),
+);
+
+export const getSongByPlaylistSuccess = createAction(
+  '[Song] Get Song By Playlist Success',
+  props<{ songPlaylist: SongModel[] }>(),
+);
+
+export const getSongByPlaylistFailure = createAction(
+  '[Song] Get Song By Playlist Failure',
+  props<{ error: any }>(),
+);
+
+//delete song from playlist
+
+export const deleteSongFromPlaylist = createAction(
+  '[Song] Delete Song From Playlist',
+  props<{ playlistId: string; songId: string; uid: string; idToken: string }>(),
+);
+
+export const deleteSongFromPlaylistSuccess = createAction(
+  '[Song] Delete Song From Playlist Success',
+  props<{ songPlaylist: SongModel[] }>(),
+);
+
+export const deleteSongFromPlaylistFailure = createAction(
+  '[Song] Delete Song From Playlist Failure',
+  props<{ error: any }>(),
+);
+
+export const clearStateSongPlaylist = createAction(
+  '[Song] Clear State Song Playlist',
 );

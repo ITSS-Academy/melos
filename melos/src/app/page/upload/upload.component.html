@@ -46,6 +46,7 @@
     <!--    track ìnformation-->
 
 
+
     <mat-step [stepControl]="trackInforForm" [completed]="trackInforForm.valid" linear>
       <form [formGroup]="trackInforForm" class="form-upload">
         <ng-template matStepLabel>Track Information</ng-template>
@@ -74,26 +75,17 @@
 
           <div class="infor-upload">
 
+
             <mat-form-field appearance="outline" >
               <mat-label>Song title</mat-label>
-              <input matInput formControlName="title" placeholder="Enter song title..." required>
+              <textarea matInput formControlName="title" placeholder="Enter song title..."  required></textarea>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" >
               <mat-label>Artist Name</mat-label>
-              <input matInput formControlName="artist" placeholder="Last name, First name" required>
+              <textarea matInput formControlName="artist" placeholder="Last name, First name" required></textarea>
             </mat-form-field>
 
-<!--            <mat-form-field appearance="outline">-->
-<!--              <mat-label>Other</mat-label>-->
-<!--              <mat-select formControlName="category_id" required>-->
-
-<!--                <mat-option *ngFor="let category of category$ | async" [value]="category.id">-->
-<!--                  {{category.name}}-->
-<!--                </mat-option>-->
-
-<!--              </mat-select>-->
-<!--            </mat-form-field>-->
 
             <mat-form-field class="example-full-width" appearance="outline">
               <mat-label>Category music</mat-label>
@@ -111,12 +103,11 @@
               </mat-autocomplete>
             </mat-form-field>
 
-
-
             <mat-form-field appearance="outline">
               <mat-label>Add a description</mat-label>
-              <input matInput formControlName="description" placeholder="Last name, First name">
+              <textarea input matInput formControlName="description" placeholder="Write something about this..."></textarea>
             </mat-form-field>
+
 
           </div>
 

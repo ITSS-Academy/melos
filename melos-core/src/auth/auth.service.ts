@@ -15,8 +15,6 @@ export class AuthService {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       const { uid, email, name, picture } = decodedToken;
 
-      console.log('-----------------', decodedToken);
-
       const { data, error, count } = await this.supabaseProvider
         .getClient()
         .from('auth')

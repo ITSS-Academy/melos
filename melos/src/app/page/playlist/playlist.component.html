@@ -9,7 +9,7 @@
     <ng-container *ngIf="playlists$ | async as playlists; else noPlaylist">
       <app-playlist-card *ngFor="let playlist of playlists"
                          [playlist]="playlist"
-                         (SelectedIdDelete)="openDeletePlaylist($event)"
+
                          (SelectIdEdit)="openEditPlaylist($event)"
 
       ></app-playlist-card>
