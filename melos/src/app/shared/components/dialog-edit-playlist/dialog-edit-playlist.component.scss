@@ -1,0 +1,155 @@
+.container-playlist{
+  width: 100%;
+  height: 100%;
+  background-color: var(--scrim);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  h2{
+    color: var(--onSurfaceVariant);
+    font-size: 24px;
+  }
+
+  .dialog-playlist{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    align-items: center;
+    gap: 20px;
+
+
+    .left-dialog{
+      width: 50%;
+      aspect-ratio: 1/1;
+      background-color: var(--surfaceContainerLow);
+
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    #uploadDiv{
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+
+      border-radius: 40px;
+      overflow: hidden;
+      span{
+
+        font-size: 100px;
+        color: var(--onSurfaceVariant);
+
+      }
+
+    }
+    #fileInput{
+
+      display: none;
+    }
+
+
+    .right-dialog{
+      width: 50%;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+
+    }
+  }
+  group-btn{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dialog-actions {
+    display: flex;
+    padding: 20px 0;
+    justify-content: space-between;
+
+  }
+  .full-width {
+    width: 100%;
+  }
+
+  textarea {
+    resize: none;
+    height: 100%;
+  }
+  .flat-button{
+    background-color: var(--secondaryContainer);
+    color: var(--onSecondaryContainer);
+  }
+  .commit{
+    color: var(--surface);
+    &:disabled{
+      background-color: var(--onSurfaceVariant); /* Màu xám nhạt */
+      color: var(--scrim); /* Chữ màu đen */
+      cursor: not-allowed; /* Đổi con trỏ chuột thành "not-allowed" */
+      opacity: 0.6; /* Làm mờ nhẹ */
+    }
+  }
+
+  .mat-label{
+    padding: 0 2px;
+    color: var(--onSurfaceVariant);
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  mat-form-field{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+
+  }
+
+  textarea {
+    resize: none;
+    height: 100%;
+  }
+  .flat-button{
+    background-color: var(--secondaryContainer);
+    color: var(--onSecondaryContainer);
+  }
+
+  .mat-label{
+    color: var(--onSurfaceVariant);
+    padding: 0 2px;
+  }
+
+  .upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+
+  #uploadDiv {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+}

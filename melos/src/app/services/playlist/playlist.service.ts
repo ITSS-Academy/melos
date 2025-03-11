@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PlaylistModel } from '../../models/playlist.model';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,11 +30,13 @@ export class PlaylistService {
     const headers = {
       Authorization: idToken,
     };
+    console.log(`${environment.apiUrl}playlists/user/playlist?id=${playlistId}&uid=${uid}`)
     return this.http.delete<PlaylistModel>(
-      `${environment.apiUrl}playlists/user/playlist?id=${playlistId} &uid=${uid}`,
+      `${environment.apiUrl}playlists/user/playlist?id=${playlistId}&uid=${uid}`,
       {
         headers,
       },
+
     );
   }
   updatePlaylistById(playlist: PlaylistModel, idToken: string) {

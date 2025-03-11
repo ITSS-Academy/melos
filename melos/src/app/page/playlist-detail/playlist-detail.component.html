@@ -9,7 +9,7 @@
       <h2>{{playlistDetail.name}}</h2>
       <div class="function">
         <button mat-icon-button  >
-          <mat-icon class="material-symbols-outlined">border_color</mat-icon>
+          <mat-icon class="material-symbols-outlined" (click)="editDialogDeletePlaylist()">border_color</mat-icon>
         </button>
 
         <button mat-icon-button (click)="openDialogDeletePlaylist()" >
