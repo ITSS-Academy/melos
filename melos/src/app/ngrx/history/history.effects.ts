@@ -35,9 +35,11 @@ export const createHistory = createEffect(
         historyService
           .createHistory(action.uid, action.songId, action.idToken)
           .pipe(
-            map(() => {
+            map((historySongList) => {
               console.log('Successfully created history');
-              return HistoryActions.createHistorySuccess();
+              return HistoryActions.createHistorySuccess({
+                historySongList: historySongList,
+              });
             }),
             catchError((error) =>
               of(HistoryActions.createHistoryFailure({ error })),
