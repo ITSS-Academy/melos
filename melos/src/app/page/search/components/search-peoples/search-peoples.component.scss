@@ -1,5 +1,17 @@
 .container-search-peoples{
   background-color: var(--surface);
-  padding: 24px;
+  padding: 0  24px 24px 24px;
   border-radius: 0 0 16px 16px;
+}
+.list-users{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+.no-results{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
