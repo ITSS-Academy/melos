@@ -30,3 +30,7 @@ export const getCommentBySongFail = createAction(
   '[Comment] Get Comment By Song Fail',
   props<{ error: any }>(),
 );
+
+export const clearStateComment = createAction(
+    '[Comment] Clear State Comment',
+);

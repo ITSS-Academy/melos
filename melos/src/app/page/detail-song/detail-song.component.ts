@@ -113,9 +113,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       }),
 
       this.commentList$.subscribe((commentList) => {
-        if (commentList.length > 0) {
-          this.commentList = commentList;
-        }
+        this.commentList = commentList;
       }),
     );
   }
@@ -151,6 +149,8 @@ export class DetailSongComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.store.dispatch(CommentActions.clearStateComment());
+    this.store.dispatch(SongActions.clearStateSongCategory());
   }
 
   onImageError(event: Event) {

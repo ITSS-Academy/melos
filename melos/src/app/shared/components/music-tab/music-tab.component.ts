@@ -25,10 +25,15 @@ import * as QueueActions from "../../../ngrx/queue/queue.actions";
 import {QueueState} from "../../../ngrx/queue/queue.state";
 import * as SongActions from "../../../ngrx/song/song.actions";
 import { LocalstoreSongService } from '../../../services/localstore-song/localstore.song.service';
+import * as CommentActions from "../../../ngrx/comment/comment.actions";
+import {PlaylistState} from "../../../ngrx/playlist/playlist.state";
+import {PlaylistModel} from "../../../models/playlist.model";
+import * as PlaylistActions from "../../../ngrx/playlist/playlist.actions";
+import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-music-tab',
   standalone: true,
-  imports: [MaterialModule, RouterLink, NgStyle],
+  imports: [MaterialModule, RouterLink, NgStyle, FormsModule],
   templateUrl: './music-tab.component.html',
   styleUrl: './music-tab.component.scss',
 })
@@ -47,6 +52,13 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   removeQueue$!: Observable<QueueModel| null>;
   removeQueue!: QueueModel | null;
 
+  isOverlayOpen = false;
+
+  playlist!: PlaylistModel[] | null;
+  playlist$!: Observable<PlaylistModel[]| null>;
+  private subscriptionPlaylist: Subscription[] = [];
+
+
   private subscription: Subscription[] = [];
   constructor(
     private songService: SongService,
@@ -57,6 +69,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       like: LikeState;
       auth: AuthState;
       queue: QueueState;
+      playlist: PlaylistState;
     }>,
     private localStoreSongService: LocalstoreSongService,
   ) {
@@ -66,6 +79,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
     this.auth$ = this.store.select('auth', 'authData');
     this.addQueue$ = this.store.select('queue', 'songsQueue');
     this.removeQueue$ = this.store.select('queue', 'songsQueue');
+    this.playlist$ = this.store.select('playlist', 'playlistList');
   }
   ngOnInit() {
     this.subscription.push(
@@ -104,6 +118,25 @@ export class MusicTabComponent implements OnInit, OnDestroy {
       this.isPlaying && this.song?.id == this.songService.currentPlaySong?.id
     );
   }
+
+  clickCloseOverLay() {
+    this.isOverlayOpen = false
+    this.subscriptionPlaylist.forEach((sub) => sub.unsubscribe());
+  }
+
+  clickOpenOverLay() {
+    if (this.uid && this.authData?.idToken){
+      this.store.dispatch(PlaylistActions.getPlaylistByUserId({ uid: this.uid, idToken: this.authData.idToken }));
+    }
+    this.isOverlayOpen = true
+    this.subscriptionPlaylist.push(
+        this.playlist$.subscribe((playlist) => {
+            this.playlist = playlist;
+        })
+    )
+    console.log(this.playlist);
+  }
+
   playSong() {
     if (this.isPlaying) {
       if (this.song?.id == this.songService.currentPlaySong?.id) {
@@ -124,6 +157,10 @@ export class MusicTabComponent implements OnInit, OnDestroy {
         return;
       }
     }
+  }
+
+  removeCmt() {
+    this.store.dispatch(CommentActions.clearStateComment());
   }
 
   formatTime(time: number): string {
@@ -198,5 +235,5 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   }
 
 
-
+  protected readonly close = close;
 }
