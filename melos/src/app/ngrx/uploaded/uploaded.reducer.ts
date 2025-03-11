@@ -40,4 +40,16 @@ export const uploadReducer = createReducer(
       isLoading: false,
     };
   }),
+
+  on(uploadActions.clearState, (state, {type}) => {
+    console.log(type);
+    return{
+      uploadSongList: <SongModel[]>[],
+      isLoading: false,
+      error: null,
+    }
+  })
+
 );
+
+
