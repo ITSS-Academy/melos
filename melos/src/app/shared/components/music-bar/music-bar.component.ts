@@ -25,6 +25,7 @@ import { NgIf, NgStyle } from '@angular/common';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
 import {LocalstoreSongService} from "../../../services/localstore-song/localstore.song.service";
 import {getSongById} from "../../../ngrx/song/song.actions";
+import * as PlayAction from "../../../ngrx/play/play.actions";
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -112,7 +113,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     if (savedSong && SongActions.getSongById({id : savedSong.id})) {
       this.songService.setCurrentSong(savedSong);
     }
-
     this.section = document.getElementById('next-song-section');
     this.updateChangeVolume();
   }
