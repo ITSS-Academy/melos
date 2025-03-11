@@ -144,3 +144,7 @@ export const deleteSongFromPlaylistFailure = createAction(
   '[Song] Delete Song From Playlist Failure',
   props<{ error: any }>(),
 );
+
+export const clearStateSongPlaylist = createAction(
+  '[Song] Clear State Song Playlist',
+);

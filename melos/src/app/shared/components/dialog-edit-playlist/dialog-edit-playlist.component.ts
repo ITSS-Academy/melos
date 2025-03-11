@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,6 +11,7 @@ import {
   MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
+  MatDialogRef,
 } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -21,6 +22,7 @@ import { Store } from '@ngrx/store';
 import { AuthState } from '../../../ngrx/auth/auth.state';
 import * as PlaylistActions from '../../../ngrx/playlist/playlist.actions';
 import { PlaylistModel } from '../../../models/playlist.model';
+import { SnackbarService } from '../../../services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-dialog-edit-playlist',
@@ -44,12 +46,13 @@ export class DialogEditPlaylistComponent implements OnInit {
   auth$!: Observable<AuthModel | null>;
   subscription: Subscription[] = [];
   authData: AuthModel | null | undefined;
+  data = inject(MAT_DIALOG_DATA);
+  dialogRef = inject(MatDialogRef<DialogEditPlaylistComponent>);
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { name: string; img: string; description: string },
     private store: Store<{ auth: AuthState }>,
+    private snackBarService: SnackbarService,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
   }
@@ -64,8 +67,8 @@ export class DialogEditPlaylistComponent implements OnInit {
     );
 
     this.form = this.fb.group({
-      uid: [''],
-      id: [''],
+      uid: this.data.playlist.uid,
+      id: this.data.playlist.id,
       file: [null],
       image_url: [''],
       name: ['', Validators.required],
@@ -90,19 +93,23 @@ export class DialogEditPlaylistComponent implements OnInit {
     const fileExtension = file.name.split('.').pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
-      alert('Chỉ hỗ trợ các định dạng JPG, JPEG, PNG, GIF, hoặc WEBP!');
+      this.snackBarService.showAlert('Only accept image file', 'close');
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Kích thước ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 5MB.');
+      this.snackBarService.showAlert(
+        //max size 5MB with english
+        'File size exceeds 5MB',
+        'close',
+      );
       return;
     }
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.imgPath = e.target.result;
-      this.form.patchValue({ image_url: this.imgPath });
+      this.form.patchValue({ image_url: file });
     };
     reader.readAsDataURL(file);
   }
@@ -119,8 +126,12 @@ export class DialogEditPlaylistComponent implements OnInit {
           }),
         );
       }
+      this.dialogRef.close(true);
     } else {
-      alert('Vui lòng nhập đầy đủ thông tin!');
+      this.snackBarService.showAlert(
+        'Please fill in all required fields',
+        'close',
+      );
     }
   }
 }

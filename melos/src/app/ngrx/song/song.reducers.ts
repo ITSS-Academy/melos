@@ -2,6 +2,7 @@ import { SongState } from './song.state';
 import { SongModel } from '../../models/song.model';
 import { createReducer, on } from '@ngrx/store';
 import * as SongActions from './song.actions';
+import { clearStateSongPlaylist } from './song.actions';
 
 export const initialSongState: SongState = {
   songDetail: <SongModel>{},
@@ -136,7 +137,7 @@ export const songReducer = createReducer(
         songCategories: songCategories,
         isLoading: false,
       };
-    }
+    },
   ),
   on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
     console.log(type);
@@ -253,7 +254,7 @@ export const songReducer = createReducer(
         isLoading: false,
         songPlaylist: songPlaylist,
       };
-    }
+    },
   ),
 
   on(SongActions.deleteSongFromPlaylistFailure, (state, { error, type }) => {
@@ -263,5 +264,13 @@ export const songReducer = createReducer(
       error: error,
       isLoading: false,
     };
-  })
+  }),
+
+  on(SongActions.clearStateSongPlaylist, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songPlaylist: [],
+    };
+  }),
 );

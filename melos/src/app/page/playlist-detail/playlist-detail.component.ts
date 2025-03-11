@@ -9,7 +9,7 @@ import { MaterialModule } from '../../shared/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
@@ -18,11 +18,18 @@ import { SongModel } from '../../models/song.model';
 import { Location } from '@angular/common';
 import { DialogEditPlaylistComponent } from '../../shared/components/dialog-edit-playlist/dialog-edit-playlist.component';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
-
+import * as QueueActions from '../../ngrx/queue/queue.actions';
+import { SnackbarService } from '../../services/snackbar/snackbar.service';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
-  imports: [MaterialModule, LoadingComponent, AsyncPipe, MusicTabComponent],
+  imports: [
+    MaterialModule,
+    LoadingComponent,
+    AsyncPipe,
+    MusicTabComponent,
+    NgIf,
+  ],
   templateUrl: './playlist-detail.component.html',
   styleUrl: './playlist-detail.component.scss',
 })
@@ -40,6 +47,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   constructor(
     private location: Location,
     private openDialogDelete: MatDialog,
+    private snackBarService: SnackbarService,
     private store: Store<{
       playlist: PlaylistState;
       auth: AuthState;
@@ -78,7 +86,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       }),
 
       this.playlistDetail$.subscribe((playlistDetail) => {
-        if (playlistDetail?.id) {
+        if (playlistDetail.id) {
           this.playlistDetail = playlistDetail;
           console.log(playlistDetail);
         }
@@ -96,6 +104,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PlaylistActions.clearStatePlaylistDetail());
+    this.store.dispatch(SongActions.clearStateSongPlaylist());
   }
   editDialogDeletePlaylist() {
     const dialogRef = this.openDialogDelete.open(DialogEditPlaylistComponent, {
@@ -105,6 +114,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         description: this.playlistDetail?.description,
         img: this.playlistDetail?.image_url,
         name: this.playlistDetail?.name || 'Unknown Playlist',
+        playlist: this.playlistDetail,
       },
     });
   }
@@ -122,5 +132,37 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         },
       },
     );
+  }
+
+  playSongInPlaylist() {
+    if (this.authData.idToken && this.playlistDetail.id) {
+      this.store.dispatch(
+        QueueActions.createQueueWithPlaylist({
+          playlistId: this.playlistDetail.id,
+          idToken: this.authData.idToken,
+        }),
+      );
+    } else {
+      this.snackBarService.showAlert(
+        'Please login to play this playlist',
+        'Close',
+      );
+    }
+  }
+
+  playSongInPlaylistRandom() {
+    if (this.authData.idToken && this.playlistDetail.id) {
+      this.store.dispatch(
+        QueueActions.createQueueWithPlaylistRandom({
+          playlistId: this.playlistDetail.id,
+          idToken: this.authData.idToken,
+        }),
+      );
+    } else {
+      this.snackBarService.showAlert(
+        'Please login to play this playlist',
+        'Close',
+      );
+    }
   }
 }
