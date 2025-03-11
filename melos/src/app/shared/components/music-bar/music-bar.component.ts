@@ -107,14 +107,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     this.updateChangeVolume();
   }
 
-  isInQueue(id: string): boolean {
-    console.log(
-      'Check in queue: ',
-      this.songListsQueue.some((song) => song.id == id),
-    );
-    return this.songListsQueue.some((song) => song.id === id);
-  }
-
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }

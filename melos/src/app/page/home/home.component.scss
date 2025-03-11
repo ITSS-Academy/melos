@@ -27,28 +27,50 @@
       display: block;
     }
   }
+  .carousel:hover {
+    .to-left {
+      display: flex;
+    }
+    .to-right {
+      display: flex;
+    }
+  }
   .carousel {
     position: relative;
     width: 100%;
     .to-left {
+      display: flex;
       position: absolute;
-      transform: translateY(-50%);
+      transform: translateY(-80%);
       left: 0;
       top: 50%;
       background-color: rgba(255, 255, 255, 0.73);
       color: var(--scrim);
       pointer-events: auto;
       z-index: 1000;
+      justify-content: center;
+        align-items: center;
+      border: black 2px solid;
+      mat-icon {
+        width: 15px;
+      }
     }
     .to-right {
+      display: flex;
       position: absolute;
-      transform: translateY(-50%);
+      transform: translateY(-80%);
       right: 0;
       top: 50%;
       background-color: rgba(255, 255, 255, 0.73);
       color: var(--scrim);
       pointer-events: auto;
       z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      border: black 2px solid;
+      mat-icon {
+        width: 24px;
+      }
     }
     .song-list {
       scroll-behavior: smooth;

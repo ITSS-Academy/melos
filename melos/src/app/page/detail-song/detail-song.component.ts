@@ -190,6 +190,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
         }),
       );
     }
+    inputElement.value = '';
   }
 
   navigateToProfile(uid: string) {
