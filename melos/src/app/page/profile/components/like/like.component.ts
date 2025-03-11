@@ -10,6 +10,7 @@ import {LoadingComponent} from '../../../../shared/components/loading/loading.co
 import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
 import * as SongActions from '../../../../ngrx/song/song.actions';
 import {ActivatedRoute} from '@angular/router';
+import {LikeState} from '../../../../ngrx/like/like.state';
 
 
 @Component({
@@ -31,23 +32,24 @@ export class LikeComponent implements OnInit {
   authData: AuthModel | null = null;
   songListLiked: SongModel[] = [];
   isLoading$!: Observable<boolean>;
-orderAuth: any;
+  orderAuth: any;
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
 
 
   constructor(
     private activateRoute: ActivatedRoute,
 
     private store: Store<{
-
                  auth: AuthState;
                  song: SongState;
-
-               }>,
+                 like: LikeState;
+    }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
     this.songListLiked$ = this.store.select('song', 'songListLiked');
     this.isLoading$ = this.store.select('song', 'isLoading');
-
+    this.likeList$ = this.store.select('like', 'songIdLikes');
   }
 
 
@@ -70,7 +72,13 @@ orderAuth: any;
         }
       }),
 
-
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+          console.log(likeLists);
+        }
+      }),
 
       this.songListLiked$.subscribe((songListLiked) => {
         console.log('songListLiked', songListLiked);

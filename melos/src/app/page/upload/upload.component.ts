@@ -33,6 +33,9 @@ import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DialogLoginComponent } from '../../shared/components/dialog-login/dialog-login.component';
 import { MaterialModule } from '../../shared/material.module';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 @Component({
   selector: 'app-upload',
@@ -45,6 +48,8 @@ import { MaterialModule } from '../../shared/material.module';
     AsyncPipe,
     DialogLoginComponent,
     MaterialModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',

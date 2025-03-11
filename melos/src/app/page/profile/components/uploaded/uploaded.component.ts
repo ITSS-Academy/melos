@@ -11,6 +11,7 @@ import {LoadingComponent} from '../../../../shared/components/loading/loading.co
 import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
 import {SongState} from '../../../../ngrx/song/song.state';
 import  * as SongActions from '../../../../ngrx/song/song.actions';
+import {LikeState} from '../../../../ngrx/like/like.state';
 
 @Component({
   selector: 'app-uploaded',
@@ -32,18 +33,22 @@ export class UploadedComponent implements OnInit, OnDestroy {
   uploadSongList: SongModel[] = [];
   isLoading$!: Observable<boolean>;
   songsList$!: Observable<SongModel[]>;
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
 
   constructor(
     private store: Store<{
       auth: AuthState;
       upload: UploadState;
       songs: SongState;
+      like: LikeState;
     }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
     this.isLoading$ = this.store.select('upload', 'isLoading');
     this.songsList$ = this.store.select('songs', 'songList');
     this.uploadSongList$ = this.store.select('upload', 'uploadSongList');
+    this.likeList$ = this.store.select('like', 'songIdLikes');
 
   }
 
@@ -60,6 +65,14 @@ export class UploadedComponent implements OnInit, OnDestroy {
               idToken: this.authData.idToken ?? '',
             }),
           );
+        }
+      }),
+
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+          console.log(likeLists);
         }
       }),
 

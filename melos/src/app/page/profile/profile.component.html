@@ -12,15 +12,21 @@
         <div class="container-profile">
 
           <mat-tab-group>
-            <mat-tab label="History">
-            <app-history></app-history>
-            </mat-tab>
-            <mat-tab label="Upload">
-            <app-uploaded></app-uploaded>
-            </mat-tab>
-            <mat-tab label="Like">
-            <app-like></app-like>
-            </mat-tab>
+            @if (authData?.uid === orderAuth) {
+              <mat-tab label="History">
+                <app-history></app-history>
+              </mat-tab>
+              <mat-tab label="Upload">
+                <app-uploaded></app-uploaded>
+              </mat-tab>
+              <mat-tab label="Like">
+                <app-like></app-like>
+              </mat-tab>
+            } @else {
+              <mat-tab label="Like">
+                <app-like></app-like>
+              </mat-tab>
+            }
           </mat-tab-group>
         </div>
       </div>

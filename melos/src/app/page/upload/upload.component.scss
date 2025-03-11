@@ -217,3 +217,15 @@ app-dialog-login {
   overflow: hidden;
   display: block;
 }
+
+
+
+.infor-upload textarea {
+  max-height: 20px;
+}
+textarea {
+  resize: none !important;
+}
+
+.infor-upload mat-form-field:nth-child(4) textarea { min-height: 120px; }
+

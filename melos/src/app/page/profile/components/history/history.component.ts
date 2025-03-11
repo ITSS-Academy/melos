@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { DialogLoginComponent } from '../../../../shared/components/dialog-login/dialog-login.component';
 import { MusicTabComponent } from '../../../../shared/components/music-tab/music-tab.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import {LikeState} from '../../../../ngrx/like/like.state';
 
 @Component({
   selector: 'app-history',
@@ -25,16 +26,20 @@ export class HistoryComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
   historySongList: SongModel[] = [];
   isLoading$!: Observable<boolean>;
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
 
   constructor(
     private store: Store<{
       auth: AuthState;
       history: HistoryState;
+      like: LikeState;
     }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
     this.historySongList$ = this.store.select('history', 'historySongList');
     this.isLoading$ = this.store.select('history', 'isLoading');
+    this.likeList$ = this.store.select('like', 'songIdLikes');
   }
 
   ngOnInit() {
@@ -51,6 +56,15 @@ export class HistoryComponent implements OnInit, OnDestroy {
           );
         }
       }),
+
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+          console.log(likeLists);
+        }
+      }),
+
 
       this.historySongList$.subscribe((historySongList) => {
         console.log(

@@ -3,7 +3,10 @@
 
   <div class="list-music" >
     @for (song of songListLiked$ | async; track song.id) {
-      <app-music-tab [song]="song"></app-music-tab>
+      <app-music-tab
+        [song]="song"
+        [isLike]="likeList.includes(song.id)"
+      ></app-music-tab>
     }
   </div>
 

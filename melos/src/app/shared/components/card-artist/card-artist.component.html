@@ -1,14 +1,14 @@
 <div class="container-artist">
 
-
-  <div class="card">
-    @for (item of song; track $index){
-      <div class="card-artist">
-        <img class="img-artist" [src]=" item.image_url ">
-        <p>  {{item.composer}} </p>
-      </div>
-    }
+<div class="card">
+  <div class="card-artist">
+    <img class="img-artist" [src]="auth.picture">
+    <p>{{auth.name}}  </p>
+<!--    <p>{{auth.email}}</p>-->
   </div>
+
+</div>
+
 
 
 
