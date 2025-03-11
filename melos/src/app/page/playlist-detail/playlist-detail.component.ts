@@ -20,6 +20,7 @@ import { DialogEditPlaylistComponent } from '../../shared/components/dialog-edit
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
 import * as QueueActions from '../../ngrx/queue/queue.actions';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
@@ -35,7 +36,7 @@ import { SnackbarService } from '../../services/snackbar/snackbar.service';
 })
 export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistDetail$!: Observable<PlaylistModel>;
-  playlistDetail!: PlaylistModel;
+  playlistDetail: PlaylistModel = {} as PlaylistModel;
   subscription: Subscription[] = [];
   isPlaylistDetailLoading$!: Observable<boolean>;
   auth$!: Observable<AuthModel | null>;

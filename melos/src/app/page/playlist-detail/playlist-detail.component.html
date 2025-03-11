@@ -4,10 +4,10 @@
   <div id="playlist-detail">
     <div class="container-left">
       <div class="selected-playlist">
-        <img  *ngIf="playlistDetail.image_url" [src]="playlistDetail.image_url" alt="" loading="lazy">
+        <img *ngIf="playlistDetail.image_url" [src]="playlistDetail?.image_url" alt="" loading="lazy">
       </div>
       <p class="playlist-name"  *ngIf=" playlistDetail.name"  >{{playlistDetail.name}}</p>
-      <p class="num-of-track" *ngIf=" playlistDetail.songs_id.length >= 0 " >{{playlistDetail.songs_id.length}} track</p>
+      <p class="num-of-track" *ngIf="(playlistDetail$| async)?.songs_id" >{{playlistDetail.songs_id.length}} track</p>
       <div class="function">
         <button mat-icon-button (click)="editDialogDeletePlaylist()" >
           <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
