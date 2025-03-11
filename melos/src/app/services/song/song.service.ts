@@ -4,13 +4,15 @@ import { SongModel } from '../../models/song.model';
 import { BehaviorSubject } from 'rxjs';
 import { idToken } from '@angular/fire/auth';
 import { environment } from '../../../environments/environment';
+import {LocalstoreSongService} from "../localstore-song/localstore.song.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class SongService {
   public currentPlaySong: any;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private localStoreSongService: LocalstoreSongService) {}
 
   getSongDetail(songId: string) {
     return this.http.get<SongModel>(`${environment.apiUrl}songs?id=${songId}`);
@@ -112,5 +114,6 @@ export class SongService {
   setCurrentSong(song: SongModel) {
     this.currentPlaySong = song;
     this.currentSongSubject.next(song);
+    this.localStoreSongService.saveSong(song);
   }
 }
