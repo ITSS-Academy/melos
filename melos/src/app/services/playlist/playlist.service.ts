@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PlaylistModel } from '../../models/playlist.model';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { SongModel } from '../../models/song.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -75,6 +76,29 @@ export class PlaylistService {
     return this.http.post<PlaylistModel>(
       `${environment.apiUrl}playlists`,
       formData,
+      {
+        headers,
+      },
+    );
+  }
+
+  addSongToPlaylist(
+    playlistId: string,
+    songId: string,
+    uid: string,
+    idToken: string,
+  ) {
+    const headers = {
+      Authorization: idToken,
+    };
+    const body = {
+      playlistId: playlistId,
+      songId: songId,
+      uid: uid,
+    };
+    return this.http.post<PlaylistModel>(
+      `${environment.apiUrl}playlists/update-songList`,
+      body,
       {
         headers,
       },

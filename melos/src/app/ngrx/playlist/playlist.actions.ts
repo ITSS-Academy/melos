@@ -84,3 +84,18 @@ export const editPlaylistByIdFailure = createAction(
   '[Playlist] Edit Playlist Failure',
   props<{ error: any }>(),
 );
+
+//add song to playlist
+export const addSongToPlaylist = createAction(
+  '[Playlist] Add Song To Playlist',
+  props<{ playlistId: string; songId: string; uid: string; idToken: string }>(),
+);
+
+export const addSongToPlaylistSuccess = createAction(
+  '[Playlist] Add Song To Playlist Success',
+);
+
+export const addSongToPlaylistFailure = createAction(
+  '[Playlist] Add Song To Playlist Failure',
+  props<{ error: any }>(),
+);

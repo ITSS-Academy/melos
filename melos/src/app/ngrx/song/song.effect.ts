@@ -55,25 +55,22 @@ export const getSongByCategory = createEffect(
 );
 
 export const getSongQueue = createEffect(
-    (actions$ = inject(Actions), songService = inject(SongService)) => {
-        return actions$.pipe(
-            ofType(SongActions.getSongQueue),
-            exhaustMap((action) => {
-                console.log(action.uid);
-                return songService.getSongQueue(action.uid, action.idToken).pipe(
-                    map((songList) =>
-                        SongActions.getSongQueueSuccess({ songQueue: songList }),
-                    ),
-                    catchError((error) =>
-                        of(SongActions.getSongQueueFailure({ error })),
-                    ),
-                );
-            }),
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.getSongQueue),
+      exhaustMap((action) => {
+        console.log(action.uid);
+        return songService.getSongQueue(action.uid, action.idToken).pipe(
+          map((songList) =>
+            SongActions.getSongQueueSuccess({ songQueue: songList }),
+          ),
+          catchError((error) => of(SongActions.getSongQueueFailure({ error }))),
         );
-    },
-    { functional: true },
+      }),
+    );
+  },
+  { functional: true },
 );
-
 
 export const createSong = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
@@ -106,8 +103,6 @@ export const updateSongViews = createEffect(
   { functional: true },
 );
 
-
-
 //get song like
 export const getSongLike = createEffect(
   (actions$ = inject(Actions), songService = inject(SongService)) => {
@@ -121,6 +116,56 @@ export const getSongLike = createEffect(
           }),
           catchError((error) => of(SongActions.getSongLikedFailure({ error }))),
         ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+//get song from playlist
+export const getSongByPlaylist = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.getSongByPlaylist),
+      exhaustMap((action) =>
+        songService.getSongByPlaylist(action.playlistId, action.idToken).pipe(
+          map((songList) =>
+            SongActions.getSongByPlaylistSuccess({ songPlaylist: songList }),
+          ),
+          catchError((error) =>
+            of(SongActions.getSongByPlaylistFailure({ error })),
+          ),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+//delete Song from playlist
+
+export const deleteSongFromPlaylist = createEffect(
+  (actions$ = inject(Actions), songService = inject(SongService)) => {
+    return actions$.pipe(
+      ofType(SongActions.deleteSongFromPlaylist),
+      exhaustMap((action) =>
+        songService
+          .removeSongFromPlaylist(
+            action.playlistId,
+            action.songId,
+            action.uid,
+            action.idToken,
+          )
+          .pipe(
+            map((songPlaylist) =>
+              SongActions.deleteSongFromPlaylistSuccess({
+                songPlaylist: songPlaylist,
+              }),
+            ),
+            catchError((error) =>
+              of(SongActions.deleteSongFromPlaylistFailure({ error })),
+            ),
+          ),
       ),
     );
   },

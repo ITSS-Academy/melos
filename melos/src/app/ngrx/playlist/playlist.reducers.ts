@@ -166,4 +166,34 @@ export const playlistReducer = createReducer(
       playlistDetail: <PlaylistModel>{},
     };
   }),
+
+  //add song to playlist
+  on(PlaylistActions.addSongToPlaylist, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLoading: true,
+      isAddSongSuccess: false,
+    };
+  }),
+
+  on(PlaylistActions.addSongToPlaylistSuccess, (state, { type }) => {
+    console.log(type);
+    return <PlaylistState>{
+      ...state,
+      isLoading: false,
+      isAddSongSuccess: true,
+    };
+  }),
+
+  on(PlaylistActions.addSongToPlaylistFailure, (state, { error, type }) => {
+    console.log(type);
+    console.log(error);
+    return {
+      ...state,
+      error: error,
+      isLoading: false,
+      isAddSongSuccess: false,
+    };
+  }),
 );

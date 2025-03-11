@@ -10,6 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 import { AsyncPipe } from '@angular/common';
+import * as SongActions from '../../ngrx/song/song.actions';
+import { AuthState } from '../../ngrx/auth/auth.state';
+import { AuthModel } from '../../models/auth.model';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -23,10 +26,16 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistDetail!: PlaylistModel;
   subscription: Subscription[] = [];
   isPlaylistDetailLoading$!: Observable<boolean>;
+  auth$!: Observable<AuthModel | null>;
+  authData!: AuthModel;
+  playlistId!: string;
 
   constructor(
     private openDialogDelete: MatDialog,
-    private store: Store<{ playlist: PlaylistState }>,
+    private store: Store<{
+      playlist: PlaylistState;
+      auth: AuthState;
+    }>,
     private activeRoute: ActivatedRoute,
   ) {
     this.playlistDetail$ = this.store.select('playlist', 'playlistDetail');
@@ -34,16 +43,30 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       'playlist',
       'isLoadingDetail',
     );
+    this.auth$ = this.store.select('auth', 'authData');
   }
 
   ngOnInit() {
     this.subscription.push(
       this.activeRoute.params.subscribe((params) => {
-        const id = params['id'];
-        console.log('id cua playlist', id);
-
-        this.store.dispatch(PlaylistActions.getPlaylistById({ id: id }));
+        this.playlistId = params['id'];
       }),
+
+      this.auth$.subscribe((auth) => {
+        if (auth?.uid) {
+          this.authData = auth;
+          this.store.dispatch(
+            PlaylistActions.getPlaylistById({ id: this.playlistId }),
+          );
+          this.store.dispatch(
+            SongActions.getSongByPlaylist({
+              playlistId: this.playlistId,
+              idToken: this.authData.idToken || '',
+            }),
+          );
+        }
+      }),
+
       this.playlistDetail$.subscribe((playlistDetail) => {
         if (playlistDetail?.id) {
           this.playlistDetail = playlistDetail;

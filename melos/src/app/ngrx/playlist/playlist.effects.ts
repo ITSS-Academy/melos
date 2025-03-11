@@ -103,3 +103,27 @@ export const editDetailPlaylist = createEffect(
   },
   { functional: true },
 );
+
+export const addSongToPlaylist = createEffect(
+  (actions$ = inject(Actions), playlistService = inject(PlaylistService)) => {
+    return actions$.pipe(
+      ofType(PlaylistActions.addSongToPlaylist),
+      exhaustMap((action) =>
+        playlistService
+          .addSongToPlaylist(
+            action.playlistId,
+            action.songId,
+            action.uid,
+            action.idToken,
+          )
+          .pipe(
+            map(() => PlaylistActions.addSongToPlaylistSuccess()),
+            catchError((error) =>
+              of(PlaylistActions.addSongToPlaylistFailure({ error })),
+            ),
+          ),
+      ),
+    );
+  },
+  { functional: true },
+);
