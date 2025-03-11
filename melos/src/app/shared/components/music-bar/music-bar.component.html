@@ -1,15 +1,21 @@
 <div class="music-player">
   <!-- Song Info -->
-  <div class="song-info">
-    <img src="{{ currentSong?.image_url || 'https://avatar.iran.liara.run/public/48' }}" alt="Song Thumbnail" class="song-thumbnail" />
+  <div class="song-info" [routerLink]="['/detail', currentSong?.id]" *ngIf="currentSong?.id;  else noLink">
+    <img src="{{ currentSong?.image_url}}" alt="Song Thumbnail" class="song-thumbnail" />
     <div class="text">
-      <p class="song-title" *ngIf="currentSong?.id;  else noLink" [routerLink]="['/detail', currentSong?.id]">{{ currentSong?.title || 'No Song Playing' }}</p>
-        <ng-template #noLink>
-            <p class="song-title">{{ currentSong?.title || 'No Song Playing' }}</p>
-        </ng-template>
-      <p class="song-composer">{{ currentSong?.composer || 'Unknown Artist' }}</p>
+      <p class="song-title"  >{{ currentSong?.title}}</p>
+      <p class="song-composer">{{ currentSong?.composer}}</p>
     </div>
   </div>
+    <ng-template #noLink>
+        <div class="song-info">
+            <img src="{{'https://avatar.iran.liara.run/public/48' }}" alt="Song Thumbnail" class="song-thumbnail" />
+            <div class="text">
+                <p class="song-title"  >{{'No Song Playing'}}</p>
+                <p class="song-composer">{{'Unknown Artist'}}</p>
+            </div>
+        </div>
+    </ng-template>
 
 
   <div class="play-controls">

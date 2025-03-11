@@ -48,12 +48,16 @@ export const historyReducer = createReducer(
     };
   }),
 
-  on(historyActions.createHistorySuccess, (state, { type }) => {
-    console.log(type);
-    return {
-      ...state,
-    };
-  }),
+  on(
+    historyActions.createHistorySuccess,
+    (state, { type, historySongList }) => {
+      console.log(type);
+      return {
+        ...state,
+        historySongList: historySongList,
+      };
+    },
+  ),
 
   on(historyActions.createHistoryFailure, (state, { error, type }) => {
     console.log(type);
