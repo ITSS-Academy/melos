@@ -1,7 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose} from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { NgIf } from '@angular/common';
@@ -24,10 +34,9 @@ import { PlaylistModel } from '../../../models/playlist.model';
     MatInput,
     MatLabel,
     ReactiveFormsModule,
-    NgIf,
   ],
   templateUrl: './dialog-edit-playlist.component.html',
-  styleUrl: './dialog-edit-playlist.component.scss'
+  styleUrl: './dialog-edit-playlist.component.scss',
 })
 export class DialogEditPlaylistComponent implements OnInit {
   form!: FormGroup;
@@ -38,19 +47,20 @@ export class DialogEditPlaylistComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: {name: string , img: string, description: string, },
-    private store: Store<{ auth: AuthState }>
+    @Inject(MAT_DIALOG_DATA)
+    public data: { name: string; img: string; description: string },
+    private store: Store<{ auth: AuthState }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
   }
 
   ngOnInit() {
     this.subscription.push(
-      this.auth$.subscribe(authData => {
+      this.auth$.subscribe((authData) => {
         if (authData?.idToken) {
           this.authData = authData;
         }
-      })
+      }),
     );
 
     this.form = this.fb.group({
@@ -59,7 +69,7 @@ export class DialogEditPlaylistComponent implements OnInit {
       file: [null],
       image_url: [''],
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
     });
 
     // Gán dữ liệu vào form nếu có
@@ -67,11 +77,10 @@ export class DialogEditPlaylistComponent implements OnInit {
       this.form.patchValue({
         name: this.data.name || '',
         description: this.data.description || '',
-        image_url: this.data.img || ''
+        image_url: this.data.img || '',
       });
     }
   }
-
 
   uploadImg(event: any) {
     const file = event.target.files[0];
@@ -101,12 +110,14 @@ export class DialogEditPlaylistComponent implements OnInit {
   savePlaylist() {
     if (this.form.valid) {
       const playlist: PlaylistModel = this.form.value;
-      console.log("🎵 Dữ liệu gửi đi:", playlist); // ✅ Kiểm tra dữ liệu
+      console.log('🎵 Dữ liệu gửi đi:', playlist); // ✅ Kiểm tra dữ liệu
       if (this.authData?.idToken) {
-        this.store.dispatch(PlaylistActions.editPlaylistById({
-          idToken: this.authData.idToken,
-          playlist: playlist
-        }));
+        this.store.dispatch(
+          PlaylistActions.editPlaylistById({
+            idToken: this.authData.idToken,
+            playlist: playlist,
+          }),
+        );
       }
     } else {
       alert('Vui lòng nhập đầy đủ thông tin!');

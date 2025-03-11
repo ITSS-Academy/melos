@@ -4,9 +4,9 @@
   <div id="playlist-detail">
     <div class="container-left">
       <div class="selected-playlist">
-        <img  [src]="playlistDetail.image_url" alt="" loading="lazy">
+        <img  [src]="playlistDetail?.image_url" alt="" loading="lazy">
       </div>
-      <h2>{{playlistDetail.name}}</h2>
+      <h2>{{playlistDetail?.name}}</h2>
       <div class="function">
         <button mat-icon-button  >
           <mat-icon class="material-symbols-outlined" (click)="editDialogDeletePlaylist()">border_color</mat-icon>
@@ -21,7 +21,13 @@
     </div>
     <div class="container-right">
       <div class="list_music">
+        @for (song of this.songPlaylist; track song.id){
+          <app-music-tab
+          [song]="song"
+          >
 
+          </app-music-tab>
+        }
       </div>
     </div>
   </div>

@@ -50,10 +50,6 @@ export const createPlaylistFailure = createAction(
   props<{ error: any }>(),
 );
 
-export const clearPlaylistDetail = createAction(
-  '[Playlist] Clear Playlist Detail',
-);
-
 //Delete Playlist
 export const deletePlaylistById = createAction(
   '[Playlist] Delete Playlist',
@@ -61,7 +57,6 @@ export const deletePlaylistById = createAction(
 );
 export const deletePlaylistByIdSuccess = createAction(
   '[Playlist] Delete Playlist Success',
-  props<{ playlist: PlaylistModel }>(),
 );
 export const deletePlaylistByIdFailure = createAction(
   '[Playlist] Delete Playlist Failure',
@@ -98,4 +93,8 @@ export const addSongToPlaylistSuccess = createAction(
 export const addSongToPlaylistFailure = createAction(
   '[Playlist] Add Song To Playlist Failure',
   props<{ error: any }>(),
+);
+
+export const clearStatePlaylist = createAction(
+  '[Playlist] Clear State Playlist',
 );

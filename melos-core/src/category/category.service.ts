@@ -25,8 +25,6 @@ export class CategoryService {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
-    console.log(data);
-
     return data[0] as Category;
   }
 
@@ -36,8 +34,6 @@ export class CategoryService {
       .from('categories')
       .select('*')
       .eq('id', id);
-
-    console.log(data);
 
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);

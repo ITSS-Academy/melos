@@ -46,10 +46,6 @@ export class PlaylistComponent implements OnInit {
           );
         }
       }),
-
-      this.playlists$.subscribe((playlists) => {
-        console.log(playlists);
-      }),
     );
   }
 

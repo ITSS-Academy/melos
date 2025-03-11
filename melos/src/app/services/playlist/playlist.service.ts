@@ -17,12 +17,12 @@ export class PlaylistService {
 
     return this.http.get<PlaylistModel[]>(
       `${environment.apiUrl}playlists/user?uid=${uid}`,
-      { headers }
+      { headers },
     );
   }
   getPlaylistDetail(playlistId: string) {
     return this.http.get<PlaylistModel>(
-      `${environment.apiUrl}playlists/user/playlist?id=${playlistId}`
+      `${environment.apiUrl}playlists/user/playlist?id=${playlistId}`,
     );
   }
 
@@ -30,14 +30,12 @@ export class PlaylistService {
     const headers = {
       Authorization: idToken,
     };
-    console.log(
-      `${environment.apiUrl}playlists/user/playlist?id=${playlistId}&uid=${uid}`
-    );
-    return this.http.delete<PlaylistModel>(
-      `${environment.apiUrl}playlists/user/playlist?id=${playlistId}&uid=${uid}`,
+    console.log(`${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`);
+    return this.http.delete(
+      `${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`,
       {
         headers,
-      }
+      },
     );
   }
   updatePlaylistById(playlist: PlaylistModel, idToken: string) {
@@ -56,7 +54,7 @@ export class PlaylistService {
       formData,
       {
         headers,
-      }
+      },
     );
   }
 
@@ -81,7 +79,7 @@ export class PlaylistService {
       formData,
       {
         headers,
-      }
+      },
     );
   }
 
@@ -89,7 +87,7 @@ export class PlaylistService {
     playlistId: string,
     songId: string,
     uid: string,
-    idToken: string
+    idToken: string,
   ) {
     const headers = {
       Authorization: idToken,
@@ -104,7 +102,7 @@ export class PlaylistService {
       body,
       {
         headers,
-      }
+      },
     );
   }
 }
