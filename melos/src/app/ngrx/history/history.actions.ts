@@ -30,3 +30,7 @@ export const createHistoryFailure = createAction(
   '[History] Create History Failure',
   props<{ error: any }>(),
 );
+
+export const  clearState = createAction(
+  '[History] Clear State',
+);

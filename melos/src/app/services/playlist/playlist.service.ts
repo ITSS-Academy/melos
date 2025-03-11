@@ -102,7 +102,7 @@ export class PlaylistService {
       Authorization: idToken,
     };
     const body = {
-      playlistId: playlistId,
+      id: playlistId,
       songId: songId,
       uid: uid,
     };

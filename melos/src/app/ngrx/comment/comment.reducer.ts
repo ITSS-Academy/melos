@@ -2,6 +2,7 @@ import { CommentState } from './comment.state';
 import { CommentModel } from '../../models/comment.model';
 import { createReducer, on } from '@ngrx/store';
 import * as CommentActions from './comment.actions';
+import {clearStateComment} from "./comment.actions";
 
 export const initialState: CommentState = {
   commentList: <CommentModel[]>[],
@@ -63,4 +64,11 @@ export const commentReducer = createReducer(
       isLoading: false,
     };
   }),
+    on(CommentActions.clearStateComment, (state, { type }) => {
+      console.log(type);
+      return {
+        ...state,
+        commentList: [],
+      };
+    }),
 );

@@ -1,4 +1,4 @@
-@if (orderAuth){
+@if (orderAuth != "1") {
 
   <div class="main-container">
 
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-} @else {
+} @else if (orderAuth == "1") {
   <div class="main-container-1">
     <app-dialog-login></app-dialog-login>
   </div>

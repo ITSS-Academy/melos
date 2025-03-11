@@ -8,7 +8,7 @@
             <img [src]="song?.image_url" alt="music-cover">
         </div>
         <div class="ns-info">
-            <span class="name-ns" [routerLink]="['/detail',song?.id]">{{song?.title}}</span>
+            <span class="name-ns" [routerLink]="['/detail',song?.id]" (click)="removeCmt()">{{song?.title}}</span>
             <p class="content-ns">{{song?.performer}}</p>
         </div>
         <div class="ns-time">
@@ -22,7 +22,7 @@
           <mat-icon>{{ isLike ? 'favorite' : 'favorite_border'}}</mat-icon>
         </button>
 <!--      }-->
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickOpenOverLay()">
                 <mat-icon>playlist_add</mat-icon>
             </button>
           @if (this.isQueue) {
@@ -36,3 +36,4 @@
           }
         </div>
     </div>
+

@@ -67,7 +67,7 @@
       white-space: nowrap;
     }
     span:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
     p {
       min-width: 10px;
@@ -97,7 +97,7 @@
     height: 100%;
     display: none;
     justify-content: flex-end;
-    button{
+    button {
       margin-right: 10px;
     }
   }
@@ -115,4 +115,16 @@
   .opt-btn {
     display: flex;
   }
+}
+
+.overlay-bkg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -15,3 +15,8 @@ export const getUploadSongListFailure = createAction(
   '[Uploaded]  Get Update Song List Failure',
   props<{ error: any }>(),
 );
+
+export const  clearState = createAction(
+  '[Uploaded] Clear State',
+);
+
