@@ -1,12 +1,15 @@
-<div class="history-container">
-    <app-loading *ngIf="isLoading$ | async"></app-loading>
-
-    <div class="list-music" *ngIf="!(isLoading$ | async)">
-        @for (song of historySongList; track song.id){
+@if(isLoading$ |async){
+  <div class="container-loading">
+    <app-loading></app-loading>
+  </div>
+} @else {
+  <div class="history-container">
+    <div class="list-music">
+      @for (song of historySongList; track $index){
         <app-music-tab [song]="song"></app-music-tab>
-        }
+      }
     </div>
+  </div>
+}
 
 
-
-</div>

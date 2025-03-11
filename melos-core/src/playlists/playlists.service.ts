@@ -392,4 +392,66 @@ export class PlaylistsService {
     let updatedPlaylist = await this.getPlaylistById(id);
     return updatedPlaylist;
   }
+
+  async removeSongFromPlaylist(
+    playlistId: string,
+    songId: string,
+    uid: string,
+  ) {
+    let playListUser = await this.getPlaylistById(playlistId);
+
+    if (!playListUser || playListUser === null || playListUser === undefined) {
+      throw new HttpException('Playlist not found', HttpStatus.BAD_REQUEST);
+    } else if (playListUser.uid !== uid) {
+      throw new HttpException(
+        'You are not authorized to update this playlist',
+        HttpStatus.UNAUTHORIZED,
+      );
+    } else {
+      if (playListUser.songs_id.includes(songId)) {
+        playListUser.songs_id = playListUser.songs_id.filter(
+          (song) => song !== songId,
+        );
+
+        const { data: playlistData, error: playlistError } =
+          await this.supabaseProvider
+            .getClient()
+            .from('playlists')
+            .upsert({
+              id: playlistId,
+              songs_id: playListUser.songs_id,
+            })
+            .eq('id', playlistId)
+            .single();
+
+        if (playlistError) {
+          throw new HttpException(
+            playlistError.message,
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        let playlist = await this.getPlaylistById(playlistId);
+        return playlist;
+      } else {
+        throw new HttpException(
+          'Song does not exist in playlist',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+  }
+
+  async getListSongsIdAllPlaylists(uid: string) {
+    const { data: listSongId, error: listSongIdError } =
+      await this.supabaseProvider
+        .getClient()
+        .rpc('get_unique_songs_by_user', { p_uid: uid });
+
+    if (listSongIdError) {
+      throw new HttpException(listSongIdError.message, HttpStatus.BAD_REQUEST);
+    }
+
+    return listSongId;
+  }
 }
