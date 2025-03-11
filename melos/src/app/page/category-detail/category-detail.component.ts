@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
 import { OnInit, OnDestroy } from '@angular/core';
@@ -78,6 +78,8 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
+
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.store.dispatch(SongActions.clearStateSongCategory());
