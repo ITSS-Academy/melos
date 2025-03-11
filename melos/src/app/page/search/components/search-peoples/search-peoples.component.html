@@ -1,4 +1,13 @@
 <div class="container-search-peoples">
-  <app-card-artist></app-card-artist>
+  <div class="list-users" *ngIf="(searchUsers$ | async)?.length ">
+    @for (user of (searchUsers$ | async); track user.uid) {
+      <app-card-artist [auth]="user"></app-card-artist>
+    }
+  </div>
+
+  <div class="no-results" *ngIf="(searchUsers$ | async)?.length === 0">
+    <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//search%20(1).svg">
+    <h6>Search with Melos to discover your favorite songs!</h6>
+  </div>
 
 </div>

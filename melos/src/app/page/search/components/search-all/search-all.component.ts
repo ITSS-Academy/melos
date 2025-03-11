@@ -3,7 +3,7 @@ import {CardArtistComponent} from '../../../../shared/components/card-artist/car
 import {MatTabsModule} from '@angular/material/tabs';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
-import {Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subscription} from 'rxjs';
 import {SongModel} from '../../../../models/song.model';
 import {SongState} from '../../../../ngrx/song/song.state';
 import {Store} from '@ngrx/store';
@@ -13,6 +13,8 @@ import {AsyncPipe, NgIf} from '@angular/common';
 import {AuthModel} from '../../../../models/auth.model';
 import * as UploadActions from '../../../../ngrx/uploaded/uploaded.actions';
 import * as SongActions from '../../../../ngrx/song/song.actions';
+import {SearchState} from '../../../../ngrx/search/search.state';
+import {LoadingComponent} from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-search-all',
@@ -24,7 +26,8 @@ import * as SongActions from '../../../../ngrx/song/song.actions';
     RouterOutlet,
     MusicTabComponent,
     AsyncPipe,
-    NgIf
+    NgIf,
+    LoadingComponent
 
   ],
   templateUrl: './search-all.component.html',
@@ -39,7 +42,8 @@ export class SearchAllComponent implements OnInit, OnDestroy {
   uploadSongList: SongModel[] = [];
   isLoading$!: Observable<boolean>;
   songsList$!: Observable<SongModel[]>;
-
+  searchUsers$!: Observable<AuthModel[]>; // Dành cho người dùng
+  searchSongs$!: Observable<SongModel[]>; // Dành cho bài hát
 
   constructor(
     private router: Router,
@@ -48,12 +52,17 @@ export class SearchAllComponent implements OnInit, OnDestroy {
       auth: AuthState;
       upload: UploadState;
       songs: SongState;
+      search: SearchState;
     }>,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
-    this.isLoading$ = this.store.select('upload', 'isLoading');
+    this.isLoading$ = this.store.select('search', 'isLoading');
     this.songsList$ = this.store.select('songs', 'songList');
     this.uploadSongList$ = this.store.select('upload', 'uploadSongList');
+    this.searchUsers$ = this.store.select((state) => state.search.search.auth || []); // Lấy người dùng từ auth
+    this.searchSongs$ = this.store.select((state) => state.search.search.songs || []); // Lấy bài hát từ songs
+    this.isLoading$ = this.store.select('search', 'isLoading');
+
   }
 
 
@@ -82,11 +91,22 @@ export class SearchAllComponent implements OnInit, OnDestroy {
           this.uploadSongList = []; // Đảm bảo luôn có giá trị mặc định
         }
       }),
+
+      // this.searchUsers$.subscribe((results) => {
+      //   console.log('Search results (users) from API:', results);
+      // }),
+      //
+      // this.searchSongs$.subscribe((results) => {
+      //   console.log('Search results (songs) from API:', results);
+      // }),
+
     );
 
     // this.songsList$.subscribe((songs) => {
     //   console.log('Danh sách bài hát từ API:', songs);
     // });
+
+
 
     // Gọi API để lấy danh sách bài hát
     this.store.dispatch(SongActions.getSongList());
@@ -94,7 +114,14 @@ export class SearchAllComponent implements OnInit, OnDestroy {
 
     if (this.authData) {
     }
+
+
+
   }
+
+
+
+
 
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());

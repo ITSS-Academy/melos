@@ -1,15 +1,16 @@
 <div class="container-search-songs">
-  <div class="list-music">
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
-    <app-music-tab></app-music-tab>
+  <div class="Songs">
+<!--    <h5 class="title">Song</h5>-->
+    <div class="list-music" *ngIf="(searchSongs$ | async)?.length">
+      @for (song of (searchSongs$ | async); track song.id) {
+        <app-music-tab [song]="song"></app-music-tab>
+      }
+    </div>
+
+    <div class="no-results" *ngIf="(searchSongs$ | async)?.length === 0">
+      <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//search%20(1).svg">
+      <h6>Search with Melos to discover your favorite songs!</h6>
+    </div>
 
   </div>
-
 </div>

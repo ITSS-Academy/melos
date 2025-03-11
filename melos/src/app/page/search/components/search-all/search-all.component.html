@@ -1,17 +1,35 @@
-<div class="container-search-all">
+<div class="container-search-all" >
+
   <div class="peoples">
-    <h5 class="title">Artist</h5>
-    <app-card-artist></app-card-artist>
+    <div class="list-users" *ngIf="(searchUsers$ | async)?.length ">
+      <h5 class="title">Peoples</h5>
+      <div class="list-users-1">
+        @for (user of (searchUsers$ | async); track user.uid) {
+          <app-card-artist [auth]="user"></app-card-artist>
+        }
+      </div>
+
+    </div>
   </div>
   <div class="Songs">
-    <h5 class="title">Song</h5>
-    <div class="list-music" *ngIf="!(isLoading$ | async)">
-      @for (song of (uploadSongList$ | async); track song.id){
+
+    <div class="list-music" *ngIf="(searchSongs$| async)?.length">
+      <h5 class="title">Songs</h5>
+      @for (song of (searchSongs$ | async); track song.id) {
         <app-music-tab [song]="song"></app-music-tab>
       }
-    </div>
+  </div>
 
   </div>
+
+  <!-- Hiển thị khi không có kết quả -->
+  <div class="no-results" *ngIf="(searchUsers$ | async)?.length === 0 && (searchSongs$ | async)?.length === 0">
+    <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//search%20(1).svg">
+    <h6>Search with Melos to discover your favorite songs!</h6>
+  </div>
+
+<!--  <div class="no-results-1" *ngIf="(isLoading$ | async)">-->
+<!--  </div>-->
 
 </div>
 
