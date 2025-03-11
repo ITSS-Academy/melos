@@ -4,7 +4,7 @@ import { MaterialModule } from '../../shared/material.module'; // Import Materia
 import { DialogCreateNewPlaylistComponent } from '../../shared/components/dialog-create-new-playlist/dialog-create-new-playlist.component';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { PlaylistModel } from '../../models/playlist.model';
 import { PlaylistState } from '../../ngrx/playlist/playlist.state';
 import { AuthState } from '../../ngrx/auth/auth.state';
@@ -24,6 +24,7 @@ export class PlaylistComponent implements OnInit {
   playlists$!: Observable<PlaylistModel[]>;
 
   authData$!: Observable<AuthModel | null>;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private deletePLaylist: MatDialog,
@@ -34,16 +35,22 @@ export class PlaylistComponent implements OnInit {
     this.authData$ = this.store.select((state) => state.auth.authData);
   }
   ngOnInit() {
-    this.authData$.subscribe((authData) => {
-      if (authData?.idToken && authData.uid) {
-        this.store.dispatch(
-          PlaylistActions.getPlaylistByUserId({
-            idToken: authData.idToken,
-            uid: authData.uid,
-          }),
-        );
-      }
-    });
+    this.subscriptions.push(
+      this.authData$.subscribe((authData) => {
+        if (authData?.idToken && authData.uid) {
+          this.store.dispatch(
+            PlaylistActions.getPlaylistByUserId({
+              idToken: authData.idToken,
+              uid: authData.uid,
+            }),
+          );
+        }
+      }),
+
+      this.playlists$.subscribe((playlists) => {
+        console.log(playlists);
+      }),
+    );
   }
 
   openDialogCreatNewList() {

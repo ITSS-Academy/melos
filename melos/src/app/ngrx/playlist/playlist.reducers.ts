@@ -26,6 +26,7 @@ export const playlistReducer = createReducer(
   on(
     PlaylistActions.getPlaylistByIdSuccess,
     (state, { playlistDetail, type }) => {
+      console.log(type);
       return <PlaylistState>{
         ...state,
         playlistDetail: playlistDetail,
@@ -83,10 +84,9 @@ export const playlistReducer = createReducer(
   }),
 
   on(PlaylistActions.createPlaylistSuccess, (state, { playlist, type }) => {
-    console.log(type);
     return <PlaylistState>{
       ...state,
-      playlistDetail: playlist,
+      playlistList: [...state.playlistList, playlist],
       isLoading: false,
     };
   }),

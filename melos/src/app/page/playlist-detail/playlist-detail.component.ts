@@ -13,6 +13,8 @@ import { AsyncPipe } from '@angular/common';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
+import { SongState } from '../../ngrx/song/song.state';
+import { SongModel } from '../../models/song.model';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -29,12 +31,15 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   auth$!: Observable<AuthModel | null>;
   authData!: AuthModel;
   playlistId!: string;
+  songPlaylist$!: Observable<SongModel[]>;
+  songPlaylist: SongModel[] = [];
 
   constructor(
     private openDialogDelete: MatDialog,
     private store: Store<{
       playlist: PlaylistState;
       auth: AuthState;
+      song: SongState;
     }>,
     private activeRoute: ActivatedRoute,
   ) {
@@ -44,6 +49,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       'isLoadingDetail',
     );
     this.auth$ = this.store.select('auth', 'authData');
+    this.songPlaylist$ = this.store.select('song', 'songPlaylist');
   }
 
   ngOnInit() {
@@ -53,7 +59,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       }),
 
       this.auth$.subscribe((auth) => {
-        if (auth?.uid) {
+        if (auth?.uid && auth.idToken) {
           this.authData = auth;
           this.store.dispatch(
             PlaylistActions.getPlaylistById({ id: this.playlistId }),
@@ -61,7 +67,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
           this.store.dispatch(
             SongActions.getSongByPlaylist({
               playlistId: this.playlistId,
-              idToken: this.authData.idToken || '',
+              idToken: auth.idToken,
             }),
           );
         }
@@ -71,6 +77,13 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         if (playlistDetail?.id) {
           this.playlistDetail = playlistDetail;
           console.log(playlistDetail);
+        }
+      }),
+
+      this.songPlaylist$.subscribe((playlistPlaylist) => {
+        if (playlistPlaylist.length > 0) {
+          this.songPlaylist = playlistPlaylist;
+          console.log('songPlaylist:', playlistPlaylist);
         }
       }),
     );
