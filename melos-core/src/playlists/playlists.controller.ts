@@ -132,6 +132,27 @@ export class PlaylistsController {
     }
   }
 
+  @Delete('song')
+  async deleteSongFromPlaylist(@Request() req: any) {
+    try {
+      const { id, songId, uid } = req.query;
+
+      if (!id) {
+        throw new HttpException('Id is required', HttpStatus.BAD_REQUEST);
+      }
+      if (!songId) {
+        throw new HttpException('SongId is required', HttpStatus.BAD_REQUEST);
+      }
+      return await this.playlistsService.removeSongFromPlaylist(
+        id,
+        songId,
+        uid,
+      );
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   @Get('user')
   async getPlayListsByUserId(@Request() req: any) {
     try {
@@ -148,6 +169,17 @@ export class PlaylistsController {
     try {
       const { id } = req.query;
       return await this.playlistsService.getPlaylistById(id);
+    } catch (e) {
+      throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('list-songsid')
+  async getListSongsIdByUid(@Request() req: any) {
+    try {
+      const { uid } = req.query;
+      console.log('uid list', uid);
+      return await this.playlistsService.getListSongsIdAllPlaylists(uid);
     } catch (e) {
       throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
     }
