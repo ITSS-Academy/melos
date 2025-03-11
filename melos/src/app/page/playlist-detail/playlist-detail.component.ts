@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as PlaylistActions from '../../ngrx/playlist/playlist.actions';
-import { Observable, Subscription } from 'rxjs';
+import {combineLatest, Observable, Subscription, take} from 'rxjs';
 import { PlaylistModel } from '../../models/playlist.model';
 import { PlaylistState } from '../../ngrx/playlist/playlist.state';
 import { MaterialModule } from '../../shared/material.module';
@@ -10,6 +10,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
 import { AsyncPipe } from '@angular/common';
+import {AuthModel} from '../../models/auth.model';
+import {AuthState} from '../../ngrx/auth/auth.state';
+import { Location } from '@angular/common';
+import {DialogEditPlaylistComponent} from '../../shared/components/dialog-edit-playlist/dialog-edit-playlist.component';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -23,10 +27,11 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistDetail!: PlaylistModel;
   subscription: Subscription[] = [];
   isPlaylistDetailLoading$!: Observable<boolean>;
-
+  authData$!: Observable<AuthModel | null>;
   constructor(
+    private location: Location,
     private openDialogDelete: MatDialog,
-    private store: Store<{ playlist: PlaylistState }>,
+    private store: Store<{ playlist: PlaylistState , auth: AuthState}>,
     private activeRoute: ActivatedRoute,
   ) {
     this.playlistDetail$ = this.store.select('playlist', 'playlistDetail');
@@ -34,6 +39,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       'playlist',
       'isLoadingDetail',
     );
+    this.authData$ = this.store.select((state) => state.auth.authData);
   }
 
   ngOnInit() {
@@ -57,26 +63,48 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     this.subscription.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PlaylistActions.clearStatePlaylistDetail());
   }
-
-  // openDialogCreatNewList(){
-  //   this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
-  //     width: '40vw',
-  //     maxWidth:'none',
-  //     data: {message: 'noi dung'}
-  //   })
-  // }
-
-  openDialogEditList() {}
-  // this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
-  //   width: '40vw',
-  //   maxWidth:'none',
-  //   data: {message: 'noi dung'}
-  // })
-  openDialogDeletePlaylist() {
-    this.openDialogDelete.open(DialogDeletePlaylistComponent, {
+  editDialogDeletePlaylist(){
+    const dialogRef = this.openDialogDelete.open(DialogEditPlaylistComponent, {
       width: '30vw',
       maxWidth: 'none',
-      data: { message: 'Would you like to delete this playlist' },
+      data: {
+        description: this.playlistDetail?.description,
+        img: this.playlistDetail?.image_url,
+        name: this.playlistDetail?.name || 'Unknown Playlist'
+      },
     });
   }
+
+  openDialogDeletePlaylist() {
+    const dialogRef = this.openDialogDelete.open(DialogDeletePlaylistComponent, {
+      width: '30vw',
+      maxWidth: 'none',
+      data: {
+        message: 'Would you like to delete this playlist?',
+        name: this.playlistDetail?.name || 'Unknown Playlist'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm' && this.playlistDetail?.id) {
+        this.authData$.pipe(take(1)).subscribe((authData) => {
+          if (authData?.idToken && authData?.uid) {
+            this.store.dispatch(
+              PlaylistActions.deletePlaylistById({
+                id: this.playlistDetail.id,
+                uid: authData.uid,
+                idToken: authData.idToken,
+              })
+            );
+            // //Quay lại trang trước đó
+            this.location.back();
+            // //cách khác
+            // this.router.navigate(['/playlists']);  // //Điều hướng đến danh sách Playlist
+          }
+        });
+      }
+    });
+  }
+
+
 }
