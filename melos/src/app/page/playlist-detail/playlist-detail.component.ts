@@ -62,6 +62,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     );
     this.auth$ = this.store.select('auth', 'authData');
     this.songPlaylist$ = this.store.select('song', 'songPlaylist');
+
   }
 
   ngOnInit() {
@@ -106,7 +107,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     this.store.dispatch(PlaylistActions.clearStatePlaylistDetail());
     this.store.dispatch(SongActions.clearStateSongPlaylist());
   }
-  editDialogDeletePlaylist() {
+  editDialogPlaylist() {
     const dialogRef = this.openDialogDelete.open(DialogEditPlaylistComponent, {
       width: '30vw',
       maxWidth: 'none',
