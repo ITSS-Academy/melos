@@ -60,10 +60,7 @@ export class PlaylistComponent implements OnInit {
       data: { message: 'noi dung' },
     });
   }
-  openDeletePlaylist(playlistId: string) {
-    //   this.store.dispatch(PlaylistActions.deletePlaylistById({ id: playlistId }));
-    //   console.log(playlistId);
-  }
+
   openEditPlaylist(playlistId: string) {
     // this.store.dispatch(PlaylistActions.editPlaylistById({ id: playlistId }));
     console.log(playlistId);

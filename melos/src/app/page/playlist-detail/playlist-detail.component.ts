@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as PlaylistActions from '../../ngrx/playlist/playlist.actions';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription, take } from 'rxjs';
 import { PlaylistModel } from '../../models/playlist.model';
 import { PlaylistState } from '../../ngrx/playlist/playlist.state';
 import { MaterialModule } from '../../shared/material.module';
@@ -15,6 +15,8 @@ import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
 import { SongState } from '../../ngrx/song/song.state';
 import { SongModel } from '../../models/song.model';
+import { Location } from '@angular/common';
+import { DialogEditPlaylistComponent } from '../../shared/components/dialog-edit-playlist/dialog-edit-playlist.component';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -35,18 +37,19 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   songPlaylist: SongModel[] = [];
 
   constructor(
+    private location: Location,
     private openDialogDelete: MatDialog,
     private store: Store<{
       playlist: PlaylistState;
       auth: AuthState;
       song: SongState;
     }>,
-    private activeRoute: ActivatedRoute,
+    private activeRoute: ActivatedRoute
   ) {
     this.playlistDetail$ = this.store.select('playlist', 'playlistDetail');
     this.isPlaylistDetailLoading$ = this.store.select(
       'playlist',
-      'isLoadingDetail',
+      'isLoadingDetail'
     );
     this.auth$ = this.store.select('auth', 'authData');
     this.songPlaylist$ = this.store.select('song', 'songPlaylist');
@@ -62,13 +65,13 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         if (auth?.uid && auth.idToken) {
           this.authData = auth;
           this.store.dispatch(
-            PlaylistActions.getPlaylistById({ id: this.playlistId }),
+            PlaylistActions.getPlaylistById({ id: this.playlistId })
           );
           this.store.dispatch(
             SongActions.getSongByPlaylist({
               playlistId: this.playlistId,
               idToken: auth.idToken,
-            }),
+            })
           );
         }
       }),
@@ -85,7 +88,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
           this.songPlaylist = playlistPlaylist;
           console.log('songPlaylist:', playlistPlaylist);
         }
-      }),
+      })
     );
   }
 
@@ -93,26 +96,49 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     this.subscription.forEach((sub) => sub.unsubscribe());
     this.store.dispatch(PlaylistActions.clearStatePlaylistDetail());
   }
-
-  // openDialogCreatNewList(){
-  //   this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
-  //     width: '40vw',
-  //     maxWidth:'none',
-  //     data: {message: 'noi dung'}
-  //   })
-  // }
-
-  openDialogEditList() {}
-  // this.newPLaylist.open(DialogCreateNewPlaylistComponent, {
-  //   width: '40vw',
-  //   maxWidth:'none',
-  //   data: {message: 'noi dung'}
-  // })
-  openDialogDeletePlaylist() {
-    this.openDialogDelete.open(DialogDeletePlaylistComponent, {
+  editDialogDeletePlaylist() {
+    const dialogRef = this.openDialogDelete.open(DialogEditPlaylistComponent, {
       width: '30vw',
       maxWidth: 'none',
-      data: { message: 'Would you like to delete this playlist' },
+      data: {
+        description: this.playlistDetail?.description,
+        img: this.playlistDetail?.image_url,
+        name: this.playlistDetail?.name || 'Unknown Playlist',
+      },
+    });
+  }
+
+  openDialogDeletePlaylist() {
+    const dialogRef = this.openDialogDelete.open(
+      DialogDeletePlaylistComponent,
+      {
+        width: '30vw',
+        maxWidth: 'none',
+        data: {
+          message: 'Would you like to delete this playlist?',
+          name: this.playlistDetail?.name || 'Unknown Playlist',
+        },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm' && this.playlistDetail?.id) {
+        this.auth$.pipe(take(1)).subscribe((authData) => {
+          if (authData?.idToken && authData?.uid) {
+            this.store.dispatch(
+              PlaylistActions.deletePlaylistById({
+                id: this.playlistDetail.id,
+                uid: authData.uid,
+                idToken: authData.idToken,
+              })
+            );
+            // //Quay lại trang trước đó
+            this.location.back();
+            // //cách khác
+            // this.router.navigate(['/playlists']);  // //Điều hướng đến danh sách Playlist
+          }
+        });
+      }
     });
   }
 }

@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {MaterialModule} from '../../material.module';
-import {Store} from '@ngrx/store';
-import * as PlaylistActions from '../../../ngrx/playlist/playlist.actions';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 
 
 @Component({
@@ -12,14 +12,5 @@ import * as PlaylistActions from '../../../ngrx/playlist/playlist.actions';
   styleUrl: './dialog-delete-playlist.component.scss'
 })
 export class DialogDeletePlaylistComponent {
-
-  @Input() id !: string
-  constructor( private store: Store<{
-
-  }>) {
-  }
-  DeletePlaylist(id : string){
-
-  }
-
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { message: string, name: string }) {}
 }

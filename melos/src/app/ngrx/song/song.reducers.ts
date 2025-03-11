@@ -136,7 +136,7 @@ export const songReducer = createReducer(
         songCategories: songCategories,
         isLoading: false,
       };
-    },
+    }
   ),
   on(SongActions.getSongCategoriesFailure, (state, { error, type }) => {
     console.log(type);
@@ -253,7 +253,7 @@ export const songReducer = createReducer(
         isLoading: false,
         songPlaylist: songPlaylist,
       };
-    },
+    }
   ),
 
   on(SongActions.deleteSongFromPlaylistFailure, (state, { error, type }) => {
@@ -263,5 +263,5 @@ export const songReducer = createReducer(
       error: error,
       isLoading: false,
     };
-  }),
+  })
 );
