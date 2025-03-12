@@ -104,8 +104,13 @@ export class AppComponent implements OnInit {
   }
 
   navigateToProfile() {
+  if(this.authData?.uid){
     this.activeLink = 'profile';
     this.router.navigate(['profile', this.authData?.uid]);
+  }else {
+    this.router.navigate(['profile',1]);
+
+  }
   }
 
   setActiveLink(): void {

@@ -9,25 +9,28 @@
       <p class="playlist-name"  *ngIf=" playlistDetail.name"  >{{playlistDetail.name}}</p>
       <p class="num-of-track" *ngIf=" playlistDetail.songs_id.length >= 0 " >{{playlistDetail.songs_id.length}} track</p>
       <div class="function">
-        <button mat-icon-button (click)="editDialogDeletePlaylist()" >
-          <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
-        </button>
+        <div class="media">
+          <button mat-icon-button (click)="editDialogPlaylist()" >
+            <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
+          </button>
 
-        <button mat-icon-button (click)="openDialogDeletePlaylist()" >
-          <mat-icon class="material-symbols-outlined">delete</mat-icon>
-        </button>
+          <button mat-icon-button (click)="openDialogDeletePlaylist()" >
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          </button>
 
+        </div>
+
+        <div class="action-song">
+          <button class="btn-play" mat-icon-button (click)="playSongInPlaylist()" >
+            <mat-icon class="material-symbols-outlined" >play_arrow</mat-icon>
+          </button>
+
+          <button class="btn-random" mat-icon-button (click)="playSongInPlaylistRandom()" >
+            <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
+          </button>
+        </div>
       </div>
 
-      <div class="action-song">
-        <button mat-icon-button (click)="playSongInPlaylist()" >
-          <mat-icon class="material-symbols-outlined" >play_arrow</mat-icon>
-        </button>
-
-        <button mat-icon-button (click)="playSongInPlaylistRandom()" >
-          <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
-        </button>
-      </div>
     </div>
     <div class="container-right">
       <div class="list_music">

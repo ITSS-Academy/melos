@@ -11,6 +11,8 @@
     height: 275px;
     text-align: center;
 
+
+
     .selected-playlist {
       width: 100%;
       height: 100%;
@@ -42,14 +44,50 @@
     .function {
       display: flex;
       justify-content: center;
+      flex-direction: column;
       align-items: center;
-      gap: 20px;
       font-size: 16px;
       color: var(--onSurfaceVariant);
       span {
         cursor: pointer;
       }
     }
+
+    button {
+      width: 60px;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover{
+        color: var(--surface);
+
+      }
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: var(--onSurface);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s;
+      opacity: 0;
+    }
+
+    button:hover::before {
+      width: 120px;  /* Kích thước lan rộng */
+      height: 120px;
+      opacity: 1;
+    }
+
+
   }
 
   .container-right {
@@ -65,5 +103,32 @@
       gap: 20px;
       margin-left: 30px;
     }
+  }
+  .media{
+    display: flex;
+    gap: 10px;
+    margin: auto;
+  }
+  .action-song{
+    display: flex;
+    gap: 10px;
+    margin: auto;
+
+
+  }
+  .btn-play{
+
+    color: var(--onSurface);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn-random{
+    color: var(--onSurface);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
   }
 }

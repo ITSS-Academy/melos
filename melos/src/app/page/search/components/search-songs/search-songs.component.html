@@ -6,11 +6,11 @@
         <app-music-tab [song]="song"></app-music-tab>
       }
     </div>
-
-    <div class="no-results" *ngIf="(searchSongs$ | async)?.length === 0">
-      <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//search-melos.svg">
-      <h6>Search with Melos to discover your favorite songs!</h6>
-    </div>
-
   </div>
+
+  <div class="no-results" *ngIf="(searchSongs$ | async)?.length === 0">
+    <img src="https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs//search-melos.svg">
+    <h6>Search with Melos to discover your favorite songs!</h6>
+  </div>
+
 </div>

@@ -26,6 +26,7 @@
       width: 50%;
       aspect-ratio: 1/1;
       background-color: var(--surfaceContainerLow);
+      height: 100%;
 
       border-radius: 40px;
       display: flex;
@@ -53,15 +54,14 @@
     #fileInput{
 
          display: none;
-       }
-
-
+    }
     .right-dialog{
       width: 50%;
       aspect-ratio: 1/1;
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      gap: 20px;
 
     }
   }
