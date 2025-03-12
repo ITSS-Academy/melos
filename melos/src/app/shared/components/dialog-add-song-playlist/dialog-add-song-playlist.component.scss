@@ -6,17 +6,25 @@
   //background-color: var(--surface);
   padding: 20px;
   border-radius: 24px;
+  h3 {
+    height: 10%;
+    margin: 0;
+  }
   .title-ctn {
     width: 100%;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
     justify-content: space-between;
     h3 {
       width: fit-content;
       margin: 0;
     }
   }
+}
+
+mat-dialog-content {
+  height: 80%;
 }
 
 .playlist-section::-webkit-scrollbar {
@@ -26,10 +34,10 @@
 .playlist-section {
   overflow-y: scroll;
   height: 100%;
-  gap: 20px;
 }
 
 .playlist-card {
+  margin-bottom: 20px;
   display: flex;
   .playlist-card-img {
     height: 80px;
@@ -42,37 +50,43 @@
       object-fit: cover;
     }
   }
-  .sub-ctn {
-    width: 80%;
+}
+
+.sub-ctn {
+  width: 80%;
+  max-width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10px;
+  .playlist-card-info {
     max-width: 80%;
+    width: 80%;
     display: flex;
-    justify-content: space-between;
-    margin-left: 10px;
-    .playlist-card-info {
-      max-width: 80%;
-      width: 80%;
-      display: flex;
-      flex-flow: column;
-      justify-content: center;
-      span {
-        font-size: 24px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      p {
-        font-size: 16px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        color: var(--onSurfaceVariant);
-      }
+    flex-flow: column;
+    justify-content: center;
+    span {
+      font-size: 24px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
-    .check-box-ctn {
-      width: 20%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    p {
+      font-size: 16px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      color: var(--onSurfaceVariant);
     }
   }
+  .check-box-ctn {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+mat-dialog-actions {
+  height: 10%;
 }
