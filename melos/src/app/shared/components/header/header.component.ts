@@ -7,7 +7,7 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { debounceTime, Observable, Subject, Subscription } from 'rxjs';
 import { AuthModel } from '../../../models/auth.model';
 import * as AuthActions from '../../../ngrx/auth/auth.actions';
-import {Router, RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ShareModule } from '../../share.module';
 import * as SearchActions from '../../../ngrx/search/search.actions';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
@@ -74,8 +74,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.store.dispatch(SongActions.clearStateSongLiked());
     this.store.dispatch(HistoryActions.clearState());
     this.store.dispatch(UploadedActions.clearState());
+    this.store.dispatch(SongActions.clearStateQueue());
     this.router.navigate(['/']);
-
   }
   onValueChange(event: Event) {
     const inputElement = event.target as HTMLInputElement;
