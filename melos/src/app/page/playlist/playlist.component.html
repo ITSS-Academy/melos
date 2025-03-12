@@ -1,5 +1,11 @@
-@if(this.authData?.uid){
-  <app-dialog-login></app-dialog-login>
+@if(!this.authData?.uid){
+  <div id="playlist-not-login">
+    <div class="dialog-login">
+      <app-dialog-login></app-dialog-login>
+
+    </div>
+
+  </div>
 } @else {
   <div id="playlist">
     <div class="header-playlist">
@@ -13,7 +19,7 @@
         <app-playlist-card *ngFor="let playlist of playlists"
                            [playlist]="playlist"
 
-                           (SelectIdEdit)="openEditPlaylist($event)"
+
 
         ></app-playlist-card>
       </ng-container>

@@ -424,7 +424,7 @@ export class PlaylistsService {
           );
         }
 
-        let playlist = await this.getPlaylistById(playlistId);
+        let playlist = await this.getSongByPlaylistId(playlistId);
         return playlist;
       } else {
         throw new HttpException(

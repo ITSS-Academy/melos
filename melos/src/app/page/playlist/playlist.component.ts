@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PlaylistCardComponent } from '../../shared/components/playlist-card/playlist-card.component';
 import { MaterialModule } from '../../shared/material.module'; // Import MaterialModul
 import { DialogCreateNewPlaylistComponent } from '../../shared/components/dialog-create-new-playlist/dialog-create-new-playlist.component';
@@ -28,7 +28,7 @@ import { DialogLoginComponent } from '../../shared/components/dialog-login/dialo
   templateUrl: './playlist.component.html',
   styleUrl: './playlist.component.scss',
 })
-export class PlaylistComponent implements OnInit {
+export class PlaylistComponent implements OnInit, OnDestroy {
   playlists$!: Observable<PlaylistModel[]>;
 
   authData$!: Observable<AuthModel | null>;
@@ -68,27 +68,7 @@ export class PlaylistComponent implements OnInit {
     });
   }
 
-  openEditPlaylist(playlistId: string) {
-    // this.store.dispatch(PlaylistActions.editPlaylistById({ id: playlistId }));
-    console.log(playlistId);
-  }
-
-  openDialogDeletePlaylist(playlist: PlaylistModel) {
-    console.log(playlist.id);
-    const diabloDelete = this.deletePLaylist.open(
-      DialogDeletePlaylistComponent,
-      {
-        width: '40vw',
-        maxWidth: 'none',
-        data: playlist,
-      },
-    );
-    diabloDelete.afterClosed().subscribe((result) => {
-      if (result) {
-        // this.store.dispatch(
-        //   PlaylistActions.deletePlaylistById({ id: playlist.id }),
-        // );
-      }
-    });
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

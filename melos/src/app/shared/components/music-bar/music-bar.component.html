@@ -27,13 +27,13 @@
         <mat-icon class="material-symbols-rounded">skip_previous</mat-icon>
       </button>
       <button mat-icon-button class="play-btn" (click)="togglePlayPause()">
-        <mat-icon class="material-symbols-rounded">{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
+        <mat-icon >{{ isPlaying ? 'pause' : 'play_arrow' }}</mat-icon>
       </button>
       <button mat-icon-button (click)="forward()">
-        <mat-icon class="material-symbols-rounded">skip_next</mat-icon>
+        <mat-icon >skip_next</mat-icon>
       </button>
       <button mat-icon-button (click)="loopClick()" class="loop-btn">
-          <mat-icon class="material-symbols-rounded" [ngStyle]="{'color': isLoop ? 'var(--primaryFixedDim)' : 'var(--onSurface)'}">
+          <mat-icon  [ngStyle]="{'color': isLoop ? 'var(--primaryFixedDim)' : 'var(--onSurface)'}">
               repeat
           </mat-icon>
           <span>

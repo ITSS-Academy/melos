@@ -6,17 +6,20 @@
         <mat-icon>{{isPlayingSong() ? 'pause' : 'play_arrow'}}</mat-icon>
       </button>
         <div class="song-title">
-            <h1 class="name-song">{{songDetail.title}}</h1>
+          <div class="background-text">
+            <h3 class="name-song">{{songDetail.title}}</h3>
             <span class="name-singer">{{songDetail.composer}}</span>
+          </div>
+
         </div>
       <div class="img-contain">
         <img [src]=songDetail.image_url alt="">
       </div>
     </div>
     <div class="opt-btn">
-      <button mat-stroked-button><mat-icon>favorite</mat-icon>Like</button>
-      <button mat-stroked-button><mat-icon>share</mat-icon>Share</button>
-      <button mat-stroked-button><mat-icon>playlist_add</mat-icon>Add to next up</button>
+<!--      <button mat-stroked-button><mat-icon>favorite</mat-icon>Like</button>-->
+<!--      <button mat-stroked-button><mat-icon>share</mat-icon>Share</button>-->
+<!--      <button mat-stroked-button><mat-icon>playlist_add</mat-icon>Add to next up</button>-->
     </div>
     <div class="song-info-contain">
 

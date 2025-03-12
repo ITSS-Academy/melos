@@ -38,7 +38,6 @@
           </div>
         </a>
 
-        @if (authData?.uid){
           <a class="center-flex" mat-list-item *ngFor="let item of menuItems2" (click)="navigateToProfile()"
              [ngClass]="{ 'active': item.route === activeLink }"
           >
@@ -50,7 +49,6 @@
               <span *ngIf="isExpanded" class="menu-title">{{ item.title }}</span>
             </div>
           </a>
-        }
       </mat-nav-list>
     </mat-sidenav>
 
