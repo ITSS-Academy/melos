@@ -12,11 +12,19 @@ import { Store } from '@ngrx/store';
 import { AuthModel } from '../../models/auth.model';
 import * as PlaylistActions from '../../ngrx/playlist/playlist.actions';
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { DialogLoginComponent } from '../../shared/components/dialog-login/dialog-login.component';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [MaterialModule, AsyncPipe, PlaylistCardComponent, NgForOf, NgIf],
+  imports: [
+    MaterialModule,
+    AsyncPipe,
+    PlaylistCardComponent,
+    NgForOf,
+    NgIf,
+    DialogLoginComponent,
+  ],
   templateUrl: './playlist.component.html',
   styleUrl: './playlist.component.scss',
 })
@@ -25,6 +33,7 @@ export class PlaylistComponent implements OnInit {
 
   authData$!: Observable<AuthModel | null>;
   subscriptions: Subscription[] = [];
+  authData: AuthModel | null = null;
 
   constructor(
     private deletePLaylist: MatDialog,
@@ -38,6 +47,8 @@ export class PlaylistComponent implements OnInit {
     this.subscriptions.push(
       this.authData$.subscribe((authData) => {
         if (authData?.idToken && authData.uid) {
+          this.authData = authData;
+          console.log(this.authData);
           this.store.dispatch(
             PlaylistActions.getPlaylistByUserId({
               idToken: authData.idToken,

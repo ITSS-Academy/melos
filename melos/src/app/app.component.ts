@@ -12,8 +12,6 @@ import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as CategoryActions from './ngrx/category/category.actions';
 import * as LikeActions from './ngrx/like/like.actions';
-import * as QueueActions from './ngrx/queue/queue.actions';
-import * as SongActions from './ngrx/song/song.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -36,6 +34,8 @@ export class AppComponent implements OnInit {
   isSongPlaying = false;
   subscription: Subscription[] = [];
   authData: AuthModel | undefined;
+  auth$!: Observable<AuthModel | null>;
+  authFromStore: AuthModel | null = null;
 
   constructor(
     private router: Router,
@@ -62,6 +62,8 @@ export class AppComponent implements OnInit {
           );
         }
         this.store.dispatch(AuthActions.storeAuth({ authData: this.authData }));
+      } else {
+        this.store.dispatch(AuthActions.storeAuth({ authData: null as any }));
       }
     });
   }
@@ -76,8 +78,6 @@ export class AppComponent implements OnInit {
     this.store.dispatch(CategoryActions.getCategoryList());
     const savedState = localStorage.getItem('isExpanded');
     this.isExpanded = savedState ? JSON.parse(savedState) : true;
-
-    this.subscription.push();
   }
 
   isExpanded = true; // Mở rộng sidebar mặc định
@@ -104,13 +104,12 @@ export class AppComponent implements OnInit {
   }
 
   navigateToProfile() {
-  if(this.authData?.uid){
-    this.activeLink = 'profile';
-    this.router.navigate(['profile', this.authData?.uid]);
-  }else {
-    this.router.navigate(['profile',1]);
-
-  }
+    if (this.authData?.uid) {
+      this.activeLink = 'profile';
+      this.router.navigate(['profile', this.authData?.uid]);
+    } else {
+      this.router.navigate(['profile', 1]);
+    }
   }
 
   setActiveLink(): void {
