@@ -22,9 +22,15 @@
           <mat-icon>{{ isLike ? 'favorite' : 'favorite_border'}}</mat-icon>
         </button>
 <!--      }-->
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickOpenOverLay()">
-                <mat-icon>playlist_add</mat-icon>
-            </button>
+          @if(this.isPlaylist) {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="removeFromPlaylist()">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          } @else {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickOpenOverLay()">
+                  <mat-icon>playlist_add</mat-icon>
+              </button>
+          }
           @if (this.isQueue) {
               <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="removeQueueSong()">
                   <mat-icon>delete</mat-icon>

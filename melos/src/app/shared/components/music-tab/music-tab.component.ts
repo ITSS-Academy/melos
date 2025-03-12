@@ -112,6 +112,18 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   @Input() song?: SongModel;
   @Input() isLike?: boolean;
   @Input() isQueue?: boolean;
+  @Input() isPlaylist?: boolean;
+  @Input() PlayListId?: string;
+
+  removeFromPlaylist () {
+    this.store.dispatch(SongActions.deleteSongFromPlaylist({
+        playlistId: this.PlayListId ?? '',
+        songId: this.song?.id ?? '',
+        uid: this.uid,
+        idToken: this.authData?.idToken ?? ''
+    }))
+    
+  }
 
   isPlayingQueue() {
     return this.song?.id == this.songService.currentPlaySong?.id;

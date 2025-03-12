@@ -37,6 +37,8 @@
         @for (song of this.songPlaylist; track song.id){
           <app-music-tab
           [song]="song"
+          [isPlaylist]="true"
+          [PlayListId]="this.playlistDetail.id"
           >
           </app-music-tab>
         }
