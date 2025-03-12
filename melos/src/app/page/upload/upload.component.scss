@@ -69,7 +69,7 @@
   margin-top: 30px;
   display: flex;
   flex-direction: column;
-user-select: none;
+  user-select: none;
   h5 {
     color: var(--onSurface);
     font-size: 20px;
@@ -196,21 +196,18 @@ user-select: none;
   height: 100%;
 }
 
-.not-logged-in{
+.not-logged-in {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
   border-radius: 200px;
-
-
 }
 
-.avatar-not-loggin{
+.avatar-not-loggin {
   width: 200px;
   height: 200px;
-
 }
 
 app-dialog-login {
@@ -219,14 +216,21 @@ app-dialog-login {
   display: block;
 }
 
-
-
 .infor-upload textarea {
-  max-height: 20px;
+  max-height: 25px;
 }
 textarea {
   resize: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+}
+textarea::-webkit-outer-spin-button,
+textarea::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.infor-upload mat-form-field:nth-child(4) textarea { min-height: 120px; }
-
+.infor-upload mat-form-field:nth-child(4) textarea {
+  min-height: 120px;
+}

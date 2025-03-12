@@ -93,4 +93,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.store.dispatch(SearchActions.searchAll({ query }));
     }
   }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
+  }
 }
