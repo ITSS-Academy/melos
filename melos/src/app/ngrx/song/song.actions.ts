@@ -152,3 +152,5 @@ export const deleteSongFromPlaylistFailure = createAction(
 export const clearStateSongPlaylist = createAction(
   '[Song] Clear State Song Playlist',
 );
+
+export const clearStateQueue = createAction('[Queue] Clear State Queue');

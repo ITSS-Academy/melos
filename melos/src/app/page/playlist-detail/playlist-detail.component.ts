@@ -21,6 +21,11 @@ import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.c
 import * as QueueActions from '../../ngrx/queue/queue.actions';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
 import { map } from 'rxjs/operators';
+import { SongService } from '../../services/song/song.service';
+import * as PlayActions from '../../ngrx/playlist/playlist.actions';
+import { PlayState } from '../../ngrx/play/play.state';
+import * as PlayAction from '../../ngrx/play/play.actions';
+import { LikeState } from '../../ngrx/like/like.state';
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
@@ -44,15 +49,22 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistId!: string;
   songPlaylist$!: Observable<SongModel[]>;
   songPlaylist: SongModel[] = [];
+  isPlaying: boolean = false;
+  isPlaying$!: Observable<boolean>;
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
 
   constructor(
     private location: Location,
     private openDialogDelete: MatDialog,
     private snackBarService: SnackbarService,
+    private songService: SongService,
     private store: Store<{
       playlist: PlaylistState;
       auth: AuthState;
       song: SongState;
+      play: PlayState;
+      like: LikeState;
     }>,
     private activeRoute: ActivatedRoute,
   ) {
@@ -63,13 +75,26 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     );
     this.auth$ = this.store.select('auth', 'authData');
     this.songPlaylist$ = this.store.select('song', 'songPlaylist');
-
+    this.isPlaying$ = this.store.select('play', 'isPlaying');
+    this.likeList$ = this.store.select('like', 'songIdLikes');
   }
 
   ngOnInit() {
     this.subscription.push(
       this.activeRoute.params.subscribe((params) => {
         this.playlistId = params['id'];
+      }),
+
+      this.isPlaying$.subscribe((isPlaying) => {
+        this.isPlaying = isPlaying;
+      }),
+
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+          console.log(likeLists);
+        }
       }),
 
       this.auth$.subscribe((auth) => {
@@ -144,6 +169,8 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
           idToken: this.authData.idToken,
         }),
       );
+
+      this.songService.setCurrentSong(this.songPlaylist[0]);
     } else {
       this.snackBarService.showAlert(
         'Please login to play this playlist',
@@ -165,6 +192,43 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         'Please login to play this playlist',
         'Close',
       );
+    }
+  }
+
+  isPlayingSong() {
+    return (
+      this.isPlaying &&
+      this.playlistDetail.songs_id.includes(this.songService.currentPlaySong.id)
+    );
+  }
+
+  playSong() {
+    if (this.isPlaying) {
+      if (
+        this.playlistDetail.songs_id.includes(
+          this.songService.currentPlaySong.id,
+        )
+      ) {
+        this.store.dispatch(PlayAction.pause());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.songPlaylist[0]);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
+    } else {
+      if (
+        this.playlistDetail.songs_id.includes(
+          this.songService.currentPlaySong.id,
+        )
+      ) {
+        this.store.dispatch(PlayAction.play());
+        return;
+      } else {
+        this.songService.setCurrentSong(this.songPlaylist[0]);
+        this.store.dispatch(PlayAction.play());
+        return;
+      }
     }
   }
 }

@@ -216,6 +216,14 @@ export const songReducer = createReducer(
     };
   }),
 
+  on(SongActions.clearStateQueue, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songQueue: [],
+    };
+  }),
+
   //get song by playlist id
 
   on(SongActions.getSongByPlaylist, (state, { type }) => {
