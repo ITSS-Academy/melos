@@ -44,13 +44,7 @@ export class SearchPeoplesComponent {
     this.searchUsers$ = this.store.select((state) => state.search.search.auth || []); // Lấy người dùng từ auth
   }
 
-  ngOnInit() {
-    this.subscription.push(
 
-      this.searchUsers$.subscribe((results) => {
-        console.log('Search results (songs) from API:', results);
-      }),
-    )}
 
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());

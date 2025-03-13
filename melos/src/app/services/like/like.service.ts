@@ -37,7 +37,7 @@ export class LikeService {
       Authorization: idToken,
     };
 
-    return this.http.delete<any>(
+    return this.http.delete<SongModel[]>(
       `${environment.apiUrl}like/delete-like?uid=${uid}&song_id=${songId}`,
       { headers },
     );
