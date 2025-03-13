@@ -53,7 +53,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
   auth$!: Observable<AuthModel | null>;
   authData: AuthModel | null = null;
-
+  isLoaded = false;
   isLoop = false;
   isRandom = false;
 
@@ -89,11 +89,13 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         if (song) {
           this.hlsUrl = `https://fribhpcpiubpvmuhgadg.supabase.co/storage/v1/object/public/songs/${song.file_path}`;
           this.hasUpdatedViews = false;
+
           this.setupHls();
         }
       }),
       this.play$.subscribe((isPlaying) => {
         if (isPlaying) {
+
           this.audioPlayer.nativeElement.play();
           this.isPlaying = isPlaying;
         } else {
@@ -145,18 +147,23 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       hls.loadSource(this.hlsUrl!);
       hls.attachMedia(audio);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play().then((r) => this.store.dispatch(PlayActions.play()));
+        if (!this.isLoaded) {
+          audio.play().then((r) => this.store.dispatch(PlayActions.pause()));
+          this.isLoaded = true;
+        } else {
+          audio.play().then((r) => this.store.dispatch(PlayActions.play()));
+        }
       });
     } else {
       audio.src = this.hlsUrl!;
       audio.preload = 'auto';
+
       audio.play().then((r) => this.store.dispatch(PlayActions.play()));
     }
-
     // Cập nhật tiến trình
     audio.ontimeupdate = () => {
       this.currentTime = audio.currentTime;
-      this.duration = audio.duration || 100;
+      this.duration = audio.duration || 1;
 
       this.updateProgressBar(); // Gọi hàm cập nhật thanh tiến trình
       if (this.currentTime >= this.duration) {
@@ -169,6 +176,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         this.hasUpdatedViews = true;
       }
     };
+
 
     // Cập nhật trạng thái play/pause
     audio.onplay = () => this.store.dispatch(PlayActions.play());

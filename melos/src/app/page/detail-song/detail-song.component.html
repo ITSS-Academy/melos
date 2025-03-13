@@ -63,6 +63,7 @@
             @if (music.id != songDetail.id) {
               <app-music-tab
                 [song]="music"
+                [isLike]="likeList.includes(music.id)"
               ></app-music-tab>}
           }
         </div>

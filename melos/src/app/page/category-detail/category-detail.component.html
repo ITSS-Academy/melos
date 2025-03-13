@@ -6,6 +6,9 @@
 
 } @else {
   <div id="category-detail">
+      <button mat-icon-button (click)="clickBack()">
+          <mat-icon>arrow_back_ios</mat-icon>
+      </button>
     <div class="container-left">
       <div class="selected-category">
         <img [src]=categoryDetail!.image_url alt="">
