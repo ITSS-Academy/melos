@@ -38,6 +38,8 @@ app-dialog-login {
   align-items: center;
   gap: 15px;
   border-radius: 16px;
+  user-select: none;
+  pointer-events: none;
 }
 
 .avatar {
@@ -56,10 +58,13 @@ app-dialog-login {
   height: 50px;
   border-radius: 20px;
   margin: 10px;
+
 }
 
 .mat-tab-group {
   border-radius: 20px;
+
+
 }
 
 ::ng-deep .mat-mdc-tab-body-wrapper{
@@ -69,5 +74,7 @@ app-dialog-login {
 ::ng-deep .mat-mdc-tab-header {
   border-bottom: none;
   width: fit-content;
+  user-select: none;
+
 }
 
