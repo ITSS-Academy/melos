@@ -13,7 +13,7 @@
         } @else {
           <app-music-tab
             [song]="song"
-
+            [isLike]="likeList.includes(song.id)"
           ></app-music-tab>
       }
       }
