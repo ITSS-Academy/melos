@@ -25,7 +25,7 @@ import * as SearchActions from '../../ngrx/search/search.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
 import { SnackbarService } from '../../services/snackbar/snackbar.service';
-
+import { LikeState } from '../../ngrx/like/like.state';
 @Component({
   selector: 'app-detail-song',
   standalone: true,
@@ -56,6 +56,8 @@ export class DetailSongComponent implements OnInit, OnDestroy {
   auth$!: Observable<AuthModel | null>;
   authData!: AuthModel | null;
   formComment: CommentModel = <CommentModel>{};
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
 
   constructor(
     private songService: SongService,
@@ -68,6 +70,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       category: CategoryState;
       comment: CommentState;
       auth: AuthState;
+      like: LikeState;
     }>,
   ) {
     this.activatedRoute.params.subscribe((params) => {
@@ -83,6 +86,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     this.mayLike$ = this.store.select('song', 'songCategories');
     this.auth$ = this.store.select('auth', 'authData');
     this.commentList$ = this.store.select('comment', 'commentList');
+    this.likeList$ = this.store.select('like', 'songIdLikes');
   }
 
   ngOnInit() {
@@ -117,6 +121,13 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       this.commentList$.subscribe((commentList) => {
         this.commentList = commentList;
       }),
+        this.likeList$.subscribe((likeLists) => {
+          //chose
+          if (likeLists.length > 0) {
+            this.likeList = likeLists;
+            console.log(likeLists);
+          }
+        }),
     );
   }
 

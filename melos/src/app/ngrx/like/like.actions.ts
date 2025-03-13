@@ -42,10 +42,23 @@ export const deleteLike = createAction(
 
 export const deleteLikeSuccess = createAction(
   '[Like] Delete Like Success',
-  props<{ songId: string }>()
+  props<{ songId: string}>()
 );
 
 export const deleteLikeFailure = createAction(
   '[Like] Delete Like Failure',
   props<{ error: any }>()
+);
+
+
+export const clearStateSongIdLikes = createAction(
+  '[Like] Clear State Song Id Likes',
+);
+
+export const clearStateDeleteLikeSuccess = createAction(
+  '[Like] Clear State Delete Like Success',
+);
+
+export const clearStateLikeSuccess = createAction(
+  '[Like] Clear State Like Successe',
 );

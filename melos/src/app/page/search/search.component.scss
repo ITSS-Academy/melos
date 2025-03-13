@@ -1,16 +1,29 @@
 .container-search{
   background-color: var(--surface);
   padding: 24px;
+  height: 100%;
   //border-radius: 16px;
+
+
 }
 
 .btn-tabs {
-  width: 300px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
+  margin-top: 20px;
 }
 
-.mat-tab-group{
-  border-radius: 20px;
+.btn-tabs-group{
+height: 100%;
 
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper{
+  height: 100% !important;
+}
+
+::ng-deep .mat-mdc-tab-header {
+  border-bottom: none;
+  width: fit-content;
 }

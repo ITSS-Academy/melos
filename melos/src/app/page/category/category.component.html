@@ -6,10 +6,16 @@
 
 } @else {
   <div class="container">
-    <h2>Category</h2>
+      <div class="sub-container">
+          <h2>Category</h2>
+          <div class="search-cate">
+              <mat-icon  class="material-symbols-rounded">search</mat-icon>
+              <input type="text" placeholder="Search the categories" class="search-input" (keyup.enter)="onEnter($event)"/>
+          </div>
+      </div>
     <div id="category">
-      @for (category of categoryList; track $index) {
-        <app-category-card [category]="category" ></app-category-card>
+      @for (category of filledCategoryList; track $index) {
+          <app-category-card [category]="category" ></app-category-card>
       }
 
 

@@ -12,6 +12,9 @@ import { AuthModel } from './models/auth.model';
 import * as AuthActions from './ngrx/auth/auth.actions';
 import * as CategoryActions from './ngrx/category/category.actions';
 import * as LikeActions from './ngrx/like/like.actions';
+import * as HistoryActions from './ngrx/history/history.actions';
+import * as SongActions from './ngrx/song/song.actions';
+import * as UploadedActions from './ngrx/uploaded/uploaded.actions';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -110,8 +113,27 @@ export class AppComponent implements OnInit {
   }
 
   navigateToProfile() {
-    if (this.authData?.uid) {
+    if (this.authData?.uid && this.authData?.idToken) {
       this.activeLink = 'profile';
+      this.store.dispatch(HistoryActions.clearState());
+      this.store.dispatch(SongActions.clearStateSongLiked());
+      this.store.dispatch(UploadedActions.clearState());
+      this.store.dispatch(LikeActions.clearStateSongIdLikes());
+      this.store.dispatch(HistoryActions.getHistorySongList({
+        idToken: this.authData.idToken ,
+        uid: this.authData.uid ,
+      }));
+
+      this.store.dispatch(UploadedActions.getUploadSongList({
+        uid: this.authData.uid,
+        idToken: this.authData.idToken ,
+      }))
+
+      this.store.dispatch(LikeActions.getSongIdLiked({
+        idToken: this.authData.idToken,
+        uid: this.authData.uid,
+      }));
+
       this.router.navigate(['profile', this.authData?.uid]);
     } else {
       this.router.navigate(['profile', 1]);

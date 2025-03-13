@@ -1,18 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {AuthModel} from '../../../../models/auth.model';
 import {SongModel} from '../../../../models/song.model';
 import {Store} from '@ngrx/store';
 import {AuthState} from '../../../../ngrx/auth/auth.state';
 import {SongState} from '../../../../ngrx/song/song.state';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {LoadingComponent} from '../../../../shared/components/loading/loading.component';
 import {MusicTabComponent} from '../../../../shared/components/music-tab/music-tab.component';
 import * as SongActions from '../../../../ngrx/song/song.actions';
 import {ActivatedRoute} from '@angular/router';
 import {LikeState} from '../../../../ngrx/like/like.state';
-
-
+import * as LikeActions from '../../../../ngrx/like/like.actions';
 @Component({
   selector: 'app-like',
   standalone: true,
@@ -20,12 +19,11 @@ import {LikeState} from '../../../../ngrx/like/like.state';
     AsyncPipe,
     LoadingComponent,
     MusicTabComponent,
-    NgIf
   ],
   templateUrl: './like.component.html',
   styleUrl: './like.component.scss'
 })
-export class LikeComponent implements OnInit {
+export class LikeComponent implements OnInit, OnDestroy {
   auth$!: Observable<AuthModel | null>;
   songListLiked$!: Observable<SongModel[]>;
   subscription: Subscription[] = [];
@@ -35,6 +33,8 @@ export class LikeComponent implements OnInit {
   orderAuth: any;
   likeList$!: Observable<string[]>;
   likeList: string[] = [];
+  isLikedDeleteSuccess$!: Observable<boolean>
+  isLikedSuccess$!: Observable<boolean>
 
 
   constructor(
@@ -50,25 +50,42 @@ export class LikeComponent implements OnInit {
     this.songListLiked$ = this.store.select('song', 'songListLiked');
     this.isLoading$ = this.store.select('song', 'isLoading');
     this.likeList$ = this.store.select('like', 'songIdLikes');
+    this.isLikedDeleteSuccess$ = this.store.select('like', 'isLikedDeleteSuccess');
+    this.isLikedSuccess$ = this.store.select('like', 'isLikedSuccess');
   }
 
 
   ngOnInit() {
     this.subscription.push(
+      this.auth$.subscribe(auth => {
+        if (auth?.uid && auth.idToken) {
+          this.authData = auth;
+        }
+      }),
 
 
       this.activateRoute.params.subscribe(params => {
-        console.log('params-------------------', params['id']);
         const id = params['id'];
         if (id){
           this.orderAuth = id;
-          console.log('orderAuth-------------------', this.orderAuth);
-          this.store.dispatch(
-            SongActions.getSongLiked({
-              uid: this.orderAuth,
-              idToken: this.orderAuth.idToken ?? '1',
-            }),
-          );
+          if (this.authData?.idToken) {
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.orderAuth,
+                idToken: this.authData?.idToken
+              }),
+            );
+          }
+
+        }
+      }),
+
+
+
+      this.songListLiked$.subscribe((songList) => {
+        //chose
+        if (songList.length > 0 ) {
+          console.log(songList)
         }
       }),
 
@@ -80,21 +97,44 @@ export class LikeComponent implements OnInit {
         }
       }),
 
-      this.songListLiked$.subscribe((songListLiked) => {
-        console.log('songListLiked', songListLiked);
-        if (songListLiked.length > 0) {
-          this.songListLiked = songListLiked;
-          console.log('[Like Component] Updated likeSongList:', this.songListLiked);
+      this.isLikedDeleteSuccess$.subscribe((isLikedDeleteSuccess) => {
+        if (isLikedDeleteSuccess) {
+          console.log('like delete success');
+          if (this.authData?.uid && this.authData.idToken){
+            console.log('like delete success');
+
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.authData?.uid,
+                idToken: this.authData.idToken ,
+              }),
+            );
+            this.store.dispatch(LikeActions.clearStateDeleteLikeSuccess());
+          }
         }
       }),
+      this.isLikedSuccess$.subscribe((isLikedDeleteSuccess) => {
+        if (isLikedDeleteSuccess) {
+          if (this.authData?.uid && this.authData.idToken){
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.authData?.uid,
+                idToken: this.authData.idToken ,
+              }),
+            );
+            this.store.dispatch(LikeActions.clearStateLikeSuccess());
+          }
+        }
+      }),
+
     );
 
-    if (this.authData) {
-    }
+
   }
 
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(LikeActions.clearStateSongIdLikes());
   }
 
 }
