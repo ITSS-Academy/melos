@@ -176,6 +176,7 @@ export const songReducer = createReducer(
 
   on(SongActions.getSongLikedFailure, (state, { error, type }) => {
     console.log(type);
+    console.log(error);
     return {
       ...state,
       error: error,

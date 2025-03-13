@@ -1,13 +1,21 @@
-<div class="upload-container">
-  <app-loading *ngIf="isLoading$ | async"></app-loading>
+@if((this.isLoading$|async)){
+  <div class="container-loading">
+    <app-loading></app-loading>
+  </div>
+} @else {
+  <div class="upload-container">
 
-  <div class="list-music" *ngIf="!(isLoading$ | async)">
-    @for (song of (uploadSongList$ | async); track song.id){
-      <app-music-tab
-        [song]="song"
-        [isLike]="likeList.includes(song.id)"
-      ></app-music-tab>
-    }
+    <div class="list-music">
+      @for (song of (uploadSongList$ | async); track song.id){
+        <app-music-tab
+          [song]="song"
+          [isLike]="likeList.includes(song.id)"
+        ></app-music-tab>
+      }
+    </div>
+
   </div>
 
-</div>
+}
+
+

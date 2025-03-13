@@ -11,7 +11,7 @@
       <div class="main">
         <div class="container-profile">
 
-          <mat-tab-group>
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
             @if (authData?.uid === orderAuth) {
               <mat-tab label="History">
                 <app-history></app-history>

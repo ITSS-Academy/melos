@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { LikeService } from '../../services/like/like.service';
 import * as LikeActions from './like.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
+import {SongModel} from '../../models/song.model';
 
 export const createSong = createEffect(
   (actions$ = inject(Actions), likeService = inject(LikeService)) => {
@@ -50,7 +51,6 @@ export const deleteSong = createEffect(
       exhaustMap((action) =>
         likeService.deleteLike(action.songId, action.uid, action.idToken).pipe(
           map(() => {
-            console.log('Deleted songId:', action.songId);
             return LikeActions.deleteLikeSuccess({ songId: action.songId });
           }),
           catchError((error) => of(LikeActions.deleteLikeFailure({ error }))),
