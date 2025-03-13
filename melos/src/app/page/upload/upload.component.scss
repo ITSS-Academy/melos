@@ -230,3 +230,10 @@ textarea {
 
 .infor-upload mat-form-field:nth-child(4) textarea { min-height: 120px; }
 
+mat-form-field{
+  cursor: pointer;
+}
+
+mat-label{
+  cursor: pointer;
+}

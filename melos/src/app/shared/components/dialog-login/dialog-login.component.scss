@@ -22,12 +22,17 @@
 .logo-melos {
   width: auto;
   height: 75px;
+  user-select: none;
+  pointer-events: none;
+
+
 }
 
 h2 {
   color: var(--onSurface);
   font-size: 24px;
   margin-bottom: 20px;
+  user-select: none;
 }
 
 .google-login {
@@ -57,6 +62,8 @@ h2 {
   margin-right: 15px;
   width: 24px ;
   height: 24px;
+  pointer-events: none;
+  user-select: none;
 }
 
 

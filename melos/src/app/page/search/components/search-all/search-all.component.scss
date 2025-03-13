@@ -39,4 +39,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  user-select: none;
+  pointer-events: none;
 }
