@@ -3,7 +3,19 @@
 <!--    <h5 class="title">Song</h5>-->
     <div class="list-music" *ngIf="(searchSongs$ | async)?.length">
       @for (song of (searchSongs$ | async); track song.id) {
-        <app-music-tab [song]="song"></app-music-tab>
+        @if (likeList.includes(song.id)){
+
+          <app-music-tab
+            [song]="song"
+            [isLike]="likeList.includes(song.id)"
+
+          ></app-music-tab>
+        } @else {
+          <app-music-tab
+            [song]="song"
+
+          ></app-music-tab>
+      }
       }
     </div>
   </div>
