@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { DialogLoginComponent } from '../../../../shared/components/dialog-login/dialog-login.component';
 import { MusicTabComponent } from '../../../../shared/components/music-tab/music-tab.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
-import {LikeState} from '../../../../ngrx/like/like.state';
+import { LikeState } from '../../../../ngrx/like/like.state';
 
 @Component({
   selector: 'app-history',
@@ -51,14 +51,14 @@ export class HistoryComponent implements OnInit, OnDestroy {
         }
       }),
       this.historySongList$.subscribe((historySongList) => {
-        if (historySongList.length > 0) {
+        if (
+          historySongList.length > 0 ||
+          historySongList != this.historySongList
+        ) {
           this.historySongList = historySongList;
-
         }
       }),
     );
-
-
   }
 
   ngOnDestroy() {

@@ -24,8 +24,9 @@ import { RouterLink } from '@angular/router';
 import { NgIf, NgStyle } from '@angular/common';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
 import { LocalstoreSongService } from '../../../services/localstore-song/localstore.song.service';
-import { getSongById } from '../../../ngrx/song/song.actions';
-import * as PlayAction from '../../../ngrx/play/play.actions';
+import { LikeState } from '../../../ngrx/like/like.state';
+import { QueueState } from '../../../ngrx/queue/queue.state';
+import * as QueueActions from '../../../ngrx/queue/queue.actions';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -48,6 +49,12 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   songListsQueue: SongModel[] = [];
   songListsQueue$!: Observable<SongModel[]>;
 
+  likeList$!: Observable<string[]>;
+  likeList: string[] = [];
+
+  isCreateSuccess$!: Observable<boolean>;
+  isRemoveSuccess$!: Observable<boolean>;
+
   hasUpdatedViews = false;
   play$!: Observable<boolean>;
 
@@ -67,6 +74,8 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       song: SongState;
       play: PlayState;
       auth: AuthState;
+      like: LikeState;
+      queue: QueueState;
     }>,
     private renderer: Renderer2,
     private localStoreSongService: LocalstoreSongService,
@@ -74,6 +83,9 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     this.songListsQueue$ = this.store.select('song', 'songQueue');
     this.play$ = this.store.select('play', 'isPlaying');
     this.auth$ = this.store.select('auth', 'authData');
+    this.likeList$ = this.store.select('like', 'songIdLikes');
+    this.isCreateSuccess$ = this.store.select('queue', 'isCreateSuccess');
+    this.isRemoveSuccess$ = this.store.select('queue', 'isRemoveSuccess');
   }
 
   ngOnInit() {
@@ -103,8 +115,27 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         }
       }),
       this.songListsQueue$.subscribe((songLists) => {
-        if (songLists.length > 0) {
+        if (songLists.length > 0 || songLists != this.songListsQueue) {
           this.songListsQueue = songLists;
+        }
+      }),
+      this.likeList$.subscribe((likeList) => {
+        if (likeList.length > 0) {
+          this.likeList = likeList;
+        }
+      }),
+
+      this.isCreateSuccess$.subscribe((isCreateSuccess) => {
+        if (isCreateSuccess) {
+          this.clickGetQueue();
+          this.store.dispatch(QueueActions.clearStateCreateQueueSuccess());
+        }
+      }),
+
+      this.isRemoveSuccess$.subscribe((isRemoveSuccess) => {
+        if (isRemoveSuccess) {
+          this.clickGetQueue();
+          this.store.dispatch(QueueActions.clearStateRemoveQueueSuccess());
         }
       }),
     );
@@ -128,13 +159,13 @@ export class MusicBarComponent implements OnInit, OnDestroy {
         idToken: this.authData?.idToken ?? '',
       }),
     );
-    this.Queuesubscriptions.push(
-      this.songListsQueue$.subscribe((songLists) => {
-        if (songLists.length > 0) {
-          this.songListsQueue = songLists;
-        }
-      }),
-    );
+    // this.Queuesubscriptions.push(
+    //   this.songListsQueue$.subscribe((songLists) => {
+    //     if (songLists.length > 0 || songLists != this.songListsQueue) {
+    //       this.songListsQueue = songLists;
+    //     }
+    //   }),
+    // );
   }
 
   setupHls(): void {

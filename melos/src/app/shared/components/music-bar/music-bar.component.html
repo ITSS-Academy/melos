@@ -73,11 +73,23 @@
     <h6>Next Song</h6>
     <div class="next-song-list">
         @for (music of songListsQueue; track $index) {
+          @if (likeList.includes(music.id)){
+
             <app-music-tab
-                    [song]="music"
-                    [isQueue]="true"
+              [song]="music"
+              [isLike]="likeList.includes(music.id)"
+              [isQueue]="true"
 
             ></app-music-tab>
+          } @else {
+            <app-music-tab
+              [song]="music"
+              [isLike]="likeList.includes(music.id)"
+              [isQueue]="true"
+
+            ></app-music-tab>
+          }
+
         }
     </div>
 </div>

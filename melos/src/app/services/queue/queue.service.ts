@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { QueueModel } from '../../models/queue.model';
 import { environment } from '../../../environments/environment';
+import { SongModel } from '../../models/song.model';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,7 @@ export class QueueService {
       playlistId: playlistId,
     };
 
-    return this.http.post(
+    return this.http.post<SongModel>(
       `${environment.apiUrl}queue/playlist-queues-random`,
       body,
       {

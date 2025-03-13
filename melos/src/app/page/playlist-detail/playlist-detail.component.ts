@@ -25,6 +25,8 @@ import * as PlayActions from '../../ngrx/playlist/playlist.actions';
 import { PlayState } from '../../ngrx/play/play.state';
 import * as PlayAction from '../../ngrx/play/play.actions';
 import { LikeState } from '../../ngrx/like/like.state';
+import { QueueState } from '../../ngrx/queue/queue.state';
+
 @Component({
   selector: 'app-playlist-detail',
   standalone: true,
@@ -41,17 +43,27 @@ import { LikeState } from '../../ngrx/like/like.state';
 export class PlaylistDetailComponent implements OnInit, OnDestroy {
   playlistDetail$!: Observable<PlaylistModel>;
   playlistDetail: PlaylistModel = {} as PlaylistModel;
+
   subscription: Subscription[] = [];
+
   isPlaylistDetailLoading$!: Observable<boolean>;
+
   auth$!: Observable<AuthModel | null>;
   authData!: AuthModel;
+
   playlistId!: string;
+
   songPlaylist$!: Observable<SongModel[]>;
   songPlaylist: SongModel[] = [];
+
   isPlaying: boolean = false;
+
   isPlaying$!: Observable<boolean>;
   likeList$!: Observable<string[]>;
   likeList: string[] = [];
+
+  songQueueRandom$!: Observable<SongModel>;
+  songQueueRandom!: SongModel;
 
   constructor(
     private location: Location,
@@ -64,6 +76,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       song: SongState;
       play: PlayState;
       like: LikeState;
+      queue: QueueState;
     }>,
     private activeRoute: ActivatedRoute,
   ) {
@@ -76,6 +89,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
     this.songPlaylist$ = this.store.select('song', 'songPlaylist');
     this.isPlaying$ = this.store.select('play', 'isPlaying');
     this.likeList$ = this.store.select('like', 'songIdLikes');
+    this.songQueueRandom$ = this.store.select('queue', 'songQueueRandom');
   }
 
   ngOnInit() {
@@ -92,6 +106,13 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         //chose
         if (likeLists.length > 0) {
           this.likeList = likeLists;
+        }
+      }),
+
+      this.songQueueRandom$.subscribe((songQueueRandom) => {
+        if (songQueueRandom.id) {
+          this.songService.setCurrentSong(songQueueRandom);
+          this.store.dispatch(QueueActions.clearStateAddQueueRandomSuccess());
         }
       }),
 
@@ -117,7 +138,10 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       }),
 
       this.songPlaylist$.subscribe((playlistPlaylist) => {
-        if (playlistPlaylist.length > 0) {
+        if (
+          playlistPlaylist.length > 0 ||
+          playlistPlaylist != this.songPlaylist
+        ) {
           this.songPlaylist = playlistPlaylist;
         }
       }),
@@ -214,6 +238,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       } else {
         this.songService.setCurrentSong(this.songPlaylist[0]);
         this.store.dispatch(PlayAction.play());
+        this.playSongInPlaylist();
         return;
       }
     } else {
@@ -223,10 +248,14 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         )
       ) {
         this.store.dispatch(PlayAction.play());
+        this.playSongInPlaylist();
+
         return;
       } else {
         this.songService.setCurrentSong(this.songPlaylist[0]);
         this.store.dispatch(PlayAction.play());
+        this.playSongInPlaylist();
+
         return;
       }
     }

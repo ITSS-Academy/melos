@@ -79,6 +79,6 @@ export class QueueService {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
-    return true;
+    return data;
   }
 }

@@ -2,12 +2,18 @@ import { QueueState } from './queue.state';
 import { createReducer, on } from '@ngrx/store';
 import * as QueueActions from './queue.actions';
 import { QueueModel } from '../../models/queue.model';
-import { removeSongQueue } from './queue.actions';
+import {
+  clearStateAddQueueRandomSuccess,
+  removeSongQueue,
+} from './queue.actions';
+import { SongModel } from '../../models/song.model';
 
 export const initialState: QueueState = {
   songsQueue: <QueueModel>{},
+  songQueueRandom: <SongModel>{},
   error: null,
   isCreateSuccess: false,
+  isRemoveSuccess: false,
   isLoading: false,
 };
 
@@ -18,6 +24,7 @@ export const queueReducer = createReducer(
     return {
       ...state,
       isLoading: true,
+      isCreateSuccess: false,
     };
   }),
   on(QueueActions.addToSongQueueSuccess, (state, { queue, type }) => {
@@ -42,6 +49,7 @@ export const queueReducer = createReducer(
     return {
       ...state,
       isLoading: true,
+      isRemoveSuccess: false,
     };
   }),
   on(QueueActions.removeSongQueueSuccess, (state, { queue, type }) => {
@@ -50,6 +58,7 @@ export const queueReducer = createReducer(
       ...state,
       songsQueue: queue,
       isLoading: false,
+      isRemoveSuccess: true,
     };
   }),
   on(QueueActions.removeSongQueueFailure, (state, { error, type }) => {
@@ -59,6 +68,7 @@ export const queueReducer = createReducer(
       ...state,
       error: error,
       isLoading: false,
+      isRemoveSuccess: false,
     };
   }),
 
@@ -105,15 +115,19 @@ export const queueReducer = createReducer(
     };
   }),
 
-  on(QueueActions.createQueueWithPlaylistRandomSuccess, (state, { type }) => {
-    console.log(type);
-    return {
-      ...state,
-      isCreating: false,
-      isCreateSuccess: true,
-      error: null,
-    };
-  }),
+  on(
+    QueueActions.createQueueWithPlaylistRandomSuccess,
+    (state, { type, songQueueRandom }) => {
+      console.log(type);
+      return {
+        ...state,
+        songQueueRandom: songQueueRandom,
+        isCreating: false,
+        isCreateSuccess: true,
+        error: null,
+      };
+    },
+  ),
 
   on(
     QueueActions.createQueueWithPlaylistRandomFailure,
@@ -128,4 +142,21 @@ export const queueReducer = createReducer(
       };
     },
   ),
+
+  //clear state
+  on(QueueActions.clearStateCreateQueueSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isCreateSuccess: false,
+    };
+  }),
+
+  on(QueueActions.clearStateAddQueueRandomSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songQueueRandom: <SongModel>{},
+    };
+  }),
 );

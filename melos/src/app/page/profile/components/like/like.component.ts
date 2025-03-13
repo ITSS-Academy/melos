@@ -75,15 +75,9 @@ export class LikeComponent implements OnInit, OnDestroy {
         }
       }),
 
-      this.songListLiked$.subscribe((songList) => {
-        //chose
-        if (songList.length > 0) {
-        }
-      }),
-
       this.likeList$.subscribe((likeLists) => {
         //chose
-        if (likeLists.length > 0) {
+        if (likeLists.length > 0 || likeLists !== this.likeList) {
           this.likeList = likeLists;
         }
       }),

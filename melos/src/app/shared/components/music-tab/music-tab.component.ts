@@ -207,12 +207,6 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           },
         }),
       );
-      this.store.dispatch(
-        SongActions.getSongQueue({
-          uid: this.uid,
-          idToken: this.authData?.idToken ?? '',
-        }),
-      );
     } else {
       this.snackbarService.showAlert(
         'Please login to add this song to queue',
@@ -222,6 +216,11 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   }
   async removeQueueSong() {
     if (this.song && this.authData?.uid) {
+      if (this.song?.id == this.songService.currentPlaySong?.id) {
+        this.store.dispatch(PlayAction.pause());
+        // this.songService.setCurrentSong();
+      }
+
       this.store.dispatch(
         QueueActions.removeSongQueue({
           idToken: this.authData?.idToken ?? '',
@@ -229,12 +228,6 @@ export class MusicTabComponent implements OnInit, OnDestroy {
             song_id: this.song.id,
             uid: this.uid,
           },
-        }),
-      );
-      this.store.dispatch(
-        SongActions.getSongQueue({
-          uid: this.uid,
-          idToken: this.authData?.idToken ?? '',
         }),
       );
     } else {

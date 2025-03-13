@@ -68,7 +68,11 @@ export const CreateQueueWithPlaylistRandom = createEffect(
         return queueService
           .createQueueWithPlaylistRandom(action.playlistId, action.idToken)
           .pipe(
-            map(() => QueueActions.createQueueWithPlaylistRandomSuccess()),
+            map((songQueueRandom) =>
+              QueueActions.createQueueWithPlaylistRandomSuccess({
+                songQueueRandom: songQueueRandom,
+              }),
+            ),
             catchError((error) =>
               of(QueueActions.createQueueWithPlaylistRandomFailure({ error })),
             ),

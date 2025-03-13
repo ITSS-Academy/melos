@@ -54,9 +54,22 @@ export const createQueueWithPlaylistRandom = createAction(
 
 export const createQueueWithPlaylistRandomSuccess = createAction(
   '[Queue] Create Queue With Playlist Random Success',
+  props<{ songQueueRandom: SongModel }>(),
 );
 
 export const createQueueWithPlaylistRandomFailure = createAction(
   '[Queue] Create Queue With Playlist Random Failure',
   props<{ error: any }>(),
+);
+
+export const clearStateCreateQueueSuccess = createAction(
+  '[Queue] Clear State Create Queue Success',
+);
+
+export const clearStateRemoveQueueSuccess = createAction(
+  '[Queue] Clear State Remove Queue Success',
+);
+
+export const clearStateAddQueueRandomSuccess = createAction(
+  '[Queue] Clear State Add Queue Random Success',
 );
