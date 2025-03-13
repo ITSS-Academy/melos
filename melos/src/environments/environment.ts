@@ -8,5 +8,5 @@ export const environment = {
     messagingSenderId: '494365343338',
   },
   production: true,
-  apiUrl: 'http://localhost:3000/',
+  apiUrl: 'https://melos.ext.itss.edu.vn/',
 };

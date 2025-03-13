@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { QueueModel } from '../../models/queue.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class QueueService {
     };
     console.log(headers);
     return this.http.post<QueueModel>(
-      'http://localhost:3000/queue/create-song-queues',
+      `${environment.apiUrl}queue/create-song-queues`,
       body,
       { headers },
     );
@@ -29,7 +30,7 @@ export class QueueService {
       Authorization: idToken,
     };
     return this.http.delete<QueueModel>(
-      'http://localhost:3000/queue/delete-song-queues?uid=' +
+      `${environment.apiUrl}queue/delete-song-queues?uid=` +
         queue.uid +
         '&songId=' +
         queue.song_id,
@@ -45,7 +46,7 @@ export class QueueService {
       playlistId: playlistId,
     };
 
-    return this.http.post('http://localhost:3000/queue/playlist-queues', body, {
+    return this.http.post(`${environment.apiUrl}queue/playlist-queues`, body, {
       headers,
     });
   }
@@ -60,7 +61,7 @@ export class QueueService {
     };
 
     return this.http.post(
-      'http://localhost:3000/queue/playlist-queues-random',
+      `${environment.apiUrl}queue/playlist-queues-random`,
       body,
       {
         headers,
