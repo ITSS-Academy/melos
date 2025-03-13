@@ -33,6 +33,7 @@ import { FormsModule } from '@angular/forms';
 import { DialogEditPlaylistComponent } from '../dialog-edit-playlist/dialog-edit-playlist.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddSongPlaylistComponent } from '../dialog-add-song-playlist/dialog-add-song-playlist.component';
+import { DialogDeleteSongComponent } from '../dialog-delete-song/dialog-delete-song.component';
 @Component({
   selector: 'app-music-tab',
   standalone: true,
@@ -112,6 +113,22 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   @Input() song?: SongModel;
   @Input() isLike?: boolean;
   @Input() isQueue?: boolean;
+  @Input() isPlaylist?: boolean;
+  @Input() PlayListId?: string;
+
+  removeFromPlaylist() {
+    if (this.PlayListId && this.song && this.authData?.uid) {
+      const dialogRef = this.openDialogAddSong.open(DialogDeleteSongComponent, {
+        width: 'fit-content',
+        maxWidth: 'none',
+        data: {
+          song: this.song,
+          playlistId: this.PlayListId,
+          auth: this.authData,
+        },
+      });
+    }
+  }
 
   isPlayingQueue() {
     return this.song?.id == this.songService.currentPlaySong?.id;
@@ -124,17 +141,24 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   }
 
   clickOpenOverLay() {
-    const dialogRef = this.openDialogAddSong.open(
-      DialogAddSongPlaylistComponent,
-      {
-        width: 'fit-content',
-        maxWidth: 'none',
-        data: {
-          songId: this.song?.id,
-          auth: this.authData,
+    if (this.authData?.uid) {
+      const dialogRef = this.openDialogAddSong.open(
+        DialogAddSongPlaylistComponent,
+        {
+          width: 'fit-content',
+          maxWidth: 'none',
+          data: {
+            songId: this.song?.id,
+            auth: this.authData,
+          },
         },
-      },
-    );
+      );
+    } else {
+      this.snackbarService.showAlert(
+        'Please login to add this song to playlist',
+        'Close',
+      );
+    }
   }
 
   playSong() {
@@ -173,7 +197,7 @@ export class MusicTabComponent implements OnInit, OnDestroy {
   }
 
   async addQueueSong() {
-    if (this.song) {
+    if (this.song && this.authData?.uid) {
       this.store.dispatch(
         QueueActions.addToSongQueue({
           idToken: this.authData?.idToken ?? '',
@@ -189,10 +213,15 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           idToken: this.authData?.idToken ?? '',
         }),
       );
+    } else {
+      this.snackbarService.showAlert(
+        'Please login to add this song to queue',
+        'Close',
+      );
     }
   }
   async removeQueueSong() {
-    if (this.song) {
+    if (this.song && this.authData?.uid) {
       this.store.dispatch(
         QueueActions.removeSongQueue({
           idToken: this.authData?.idToken ?? '',
@@ -202,13 +231,18 @@ export class MusicTabComponent implements OnInit, OnDestroy {
           },
         }),
       );
+      this.store.dispatch(
+        SongActions.getSongQueue({
+          uid: this.uid,
+          idToken: this.authData?.idToken ?? '',
+        }),
+      );
+    } else {
+      this.snackbarService.showAlert(
+        'Please login to remove this song from queue',
+        'Close',
+      );
     }
-    this.store.dispatch(
-      SongActions.getSongQueue({
-        uid: this.uid,
-        idToken: this.authData?.idToken ?? '',
-      }),
-    );
   }
 
   async likeSong(songId: string) {

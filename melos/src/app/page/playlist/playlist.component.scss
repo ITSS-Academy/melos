@@ -58,3 +58,21 @@
     height: 100%;
   }
 }
+
+#playlist-not-login {
+  height: 100%;
+  width: 100%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  justify-content: center;
+}

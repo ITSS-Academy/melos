@@ -11,7 +11,13 @@ import * as AuthActions from '../../../ngrx/auth/auth.actions';
   styleUrl: './dialog-login.component.scss',
 })
 export class DialogLoginComponent {
-  constructor(private store: Store<{ auth: AuthState }>) {}
+  constructor(private store: Store<{ auth: AuthState }>) {
+    this.store.select('auth').subscribe((auth) => {
+      if (auth.isLogging) {
+        this.store.dispatch(AuthActions.clearState());
+      }
+    });
+  }
 
   login() {
     this.store.dispatch(AuthActions.login());

@@ -23,9 +23,9 @@ import { AuthState } from '../../../ngrx/auth/auth.state';
 import { RouterLink } from '@angular/router';
 import { NgIf, NgStyle } from '@angular/common';
 import * as HistoryActions from '../../../ngrx/history/history.actions';
-import {LocalstoreSongService} from "../../../services/localstore-song/localstore.song.service";
-import {getSongById} from "../../../ngrx/song/song.actions";
-import * as PlayAction from "../../../ngrx/play/play.actions";
+import { LocalstoreSongService } from '../../../services/localstore-song/localstore.song.service';
+import { getSongById } from '../../../ngrx/song/song.actions';
+import * as PlayAction from '../../../ngrx/play/play.actions';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -110,7 +110,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     );
 
     const savedSong = this.localStoreSongService.getSong();
-    if (savedSong && SongActions.getSongById({id : savedSong.id})) {
+    if (savedSong && SongActions.getSongById({ id: savedSong.id })) {
       this.songService.setCurrentSong(savedSong);
     }
     this.section = document.getElementById('next-song-section');
@@ -221,7 +221,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  togglePlayPause() {
+  public togglePlayPause() {
     const audio = this.audioPlayer.nativeElement;
     if (audio.paused) {
       audio.play().then((r) => this.store.dispatch(PlayActions.play()));
@@ -302,6 +302,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.Queuesubscriptions.forEach((subscription) =>
         subscription.unsubscribe(),
       );
+      this.store.dispatch(SongActions.clearStateQueue());
     } else {
       this.overlayOn();
       this.overlayOpen = true;

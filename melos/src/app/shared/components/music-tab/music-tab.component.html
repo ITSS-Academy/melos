@@ -15,16 +15,27 @@
             <span>{{ formatTime(song?.duration ?? 0)}}</span>
         </div>
       <div class="opt-btn">
-<!--      @if (this.isLoadingLike$ |async) {-->
-<!--        <mat-spinner></mat-spinner>-->
-<!--      } @else {-->
-     <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')">
-          <mat-icon>{{ isLike ? 'favorite' : 'favorite_border'}}</mat-icon>
-        </button>
-<!--      }-->
-            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickOpenOverLay()">
-                <mat-icon>playlist_add</mat-icon>
-            </button>
+
+        @if (isLike) {
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')" >
+            <mat-icon>favorite</mat-icon>
+          </button>
+        } @else {
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="likeSong(song?.id ?? '')">
+            <mat-icon>favorite_border</mat-icon>
+          </button>
+        }
+
+
+          @if(this.isPlaylist) {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="removeFromPlaylist()">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          } @else {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="clickOpenOverLay()">
+                  <mat-icon>playlist_add</mat-icon>
+              </button>
+          }
           @if (this.isQueue) {
               <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="removeQueueSong()">
                   <mat-icon>delete</mat-icon>

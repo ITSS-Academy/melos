@@ -192,11 +192,9 @@ export const songReducer = createReducer(
   }),
 
   on(SongActions.getSongQueue, (state, { type, uid, idToken }) => {
-    console.log(uid);
     console.log(type);
     return {
       ...state,
-      isLoading: true,
     };
   }),
   on(SongActions.getSongQueueSuccess, (state, { songQueue, type }) => {
@@ -204,7 +202,6 @@ export const songReducer = createReducer(
     return <SongState>{
       ...state,
       songQueue: songQueue,
-      isLoading: false,
     };
   }),
   on(SongActions.getSongQueueFailure, (state, { error, type }) => {
@@ -212,7 +209,14 @@ export const songReducer = createReducer(
     return {
       ...state,
       error: error,
-      isLoading: false,
+    };
+  }),
+
+  on(SongActions.clearStateQueue, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      songQueue: [],
     };
   }),
 

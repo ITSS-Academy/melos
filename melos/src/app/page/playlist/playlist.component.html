@@ -1,25 +1,36 @@
-<div id="playlist">
-  <div class="header-playlist">
-    <h2>Your playlist</h2>
-    <span (click)="openDialogCreatNewList()" class="material-symbols-outlined">
+@if(!this.authData?.uid){
+  <div id="playlist-not-login">
+    <div class="dialog-login">
+      <app-dialog-login></app-dialog-login>
+
+    </div>
+
+  </div>
+} @else {
+  <div id="playlist">
+    <div class="header-playlist">
+      <h2>Your playlist</h2>
+      <span (click)="openDialogCreatNewList()" class="material-symbols-outlined">
       add_circle
     </span>
+    </div>
+    <div id="playlist-main">
+      <ng-container *ngIf="playlists$ | async as playlists; else noPlaylist">
+        <app-playlist-card *ngFor="let playlist of playlists"
+                           [playlist]="playlist"
+
+
+
+        ></app-playlist-card>
+      </ng-container>
+
+      <ng-template #noPlaylist>
+        <p class="empty-message">No playlists found. Create a new one!</p>
+      </ng-template>
+
+    </div>
+
   </div>
-  <div id="playlist-main">
-    <ng-container *ngIf="playlists$ | async as playlists; else noPlaylist">
-      <app-playlist-card *ngFor="let playlist of playlists"
-                         [playlist]="playlist"
 
-                         (SelectIdEdit)="openEditPlaylist($event)"
 
-      ></app-playlist-card>
-    </ng-container>
-
-    <ng-template #noPlaylist>
-      <p class="empty-message">No playlists found. Create a new one!</p>
-    </ng-template>
-
-  </div>
-
-</div>
-
+}

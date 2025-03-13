@@ -2,7 +2,6 @@
   background-color: var(--surface);
   padding: 24px;
   border-radius: 16px;
-
 }
 
 .sub-contain-list {
@@ -50,8 +49,8 @@
       pointer-events: auto;
       z-index: 1000;
       justify-content: center;
-        align-items: center;
-      border: black 2px solid;
+      align-items: center;
+      //border: black 2px solid;
       mat-icon {
         width: 15px;
       }
@@ -68,7 +67,7 @@
       z-index: 1000;
       justify-content: center;
       align-items: center;
-      border: black 2px solid;
+      //border: black 2px solid;
       mat-icon {
         width: 24px;
       }

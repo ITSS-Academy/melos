@@ -7,6 +7,6 @@ export const environment = {
     authDomain: 'melos-db2e8.firebaseapp.com',
     messagingSenderId: '494365343338',
   },
-  production: false,
-  apiUrl: 'http://localhost:3000/',
+  production: true,
+  apiUrl: 'https://melos.ext.itss.edu.vn/',
 };

@@ -24,6 +24,7 @@ import { CommentModel } from '../../models/comment.model';
 import * as SearchActions from '../../ngrx/search/search.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
+import { SnackbarService } from '../../services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-detail-song',
@@ -59,6 +60,7 @@ export class DetailSongComponent implements OnInit, OnDestroy {
   constructor(
     private songService: SongService,
     private activatedRoute: ActivatedRoute,
+    private snackBarService: SnackbarService,
     private router: Router,
     private store: Store<{
       song: SongState;
@@ -189,6 +191,8 @@ export class DetailSongComponent implements OnInit, OnDestroy {
           idToken: this.authData.idToken,
         }),
       );
+    } else {
+      this.snackBarService.showAlert('Please login to comment', 'Close');
     }
     inputElement.value = '';
   }

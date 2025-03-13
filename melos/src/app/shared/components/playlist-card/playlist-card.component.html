@@ -1,6 +1,6 @@
-<div id="playlist-card">
+<div [routerLink]="['/playlist-detail/', playlist.id]" id="playlist-card">
   <div class="playlist-card-img">
-    <img [routerLink]="['/playlist-detail/', playlist.id]"  [src]=playlist.image_url alt="">
+    <img   [src]=playlist.image_url alt="">
   </div>
   <div class="group">
     <p class="playlist-card-title">{{playlist.name}}</p>

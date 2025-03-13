@@ -4,38 +4,65 @@
   <div id="playlist-detail">
     <div class="container-left">
       <div class="selected-playlist">
-        <img  *ngIf="playlistDetail.image_url" [src]="playlistDetail.image_url" alt="" loading="lazy">
+        <img *ngIf="playlistDetail.image_url" [src]="playlistDetail?.image_url" alt="" loading="lazy">
       </div>
       <p class="playlist-name"  *ngIf=" playlistDetail.name"  >{{playlistDetail.name}}</p>
-      <p class="num-of-track" *ngIf=" playlistDetail.songs_id.length >= 0 " >{{playlistDetail.songs_id.length}} track</p>
+      <p class="num-of-track" *ngIf="(playlistDetail$| async)?.songs_id" >{{playlistDetail.songs_id.length}} track</p>
       <div class="function">
-        <button mat-icon-button (click)="editDialogDeletePlaylist()" >
-          <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
-        </button>
+        <div class="media">
+          <button mat-icon-button (click)="editDialogPlaylist()" >
+            <mat-icon class="material-symbols-outlined" >border_color</mat-icon>
+          </button>
 
-        <button mat-icon-button (click)="openDialogDeletePlaylist()" >
-          <mat-icon class="material-symbols-outlined">delete</mat-icon>
-        </button>
+          <button mat-icon-button (click)="openDialogDeletePlaylist()" >
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          </button>
 
+        </div>
+
+        <div class="action-song">
+          @if((playlistDetail$| async)?.songs_id){
+            @if (!isPlayingSong()){
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()"  >
+                <mat-icon> play_arrow</mat-icon>
+              </button>
+            } @else {
+              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" class="play-btn" (click)="playSong()" >
+                <mat-icon>pause</mat-icon>
+              </button>
+            }
+
+          }
+
+
+
+          <button class="btn-random" mat-icon-button (click)="playSongInPlaylistRandom()" >
+            <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
+          </button>
+        </div>
       </div>
 
-      <div class="action-song">
-        <button mat-icon-button (click)="playSongInPlaylist()" >
-          <mat-icon class="material-symbols-outlined" >play_arrow</mat-icon>
-        </button>
-
-        <button mat-icon-button (click)="playSongInPlaylistRandom()" >
-          <mat-icon class="material-symbols-outlined">shuffle</mat-icon>
-        </button>
-      </div>
     </div>
     <div class="container-right">
       <div class="list_music">
         @for (song of this.songPlaylist; track song.id){
-          <app-music-tab
-          [song]="song"
-          >
-          </app-music-tab>
+
+
+            @if (likeList.includes(song.id)){
+
+              <app-music-tab
+                [song]="song"
+                [isPlaylist]="true"
+                [PlayListId]="this.playlistDetail.id"
+                [isLike]="likeList.includes(song.id)"
+              ></app-music-tab>
+            } @else {
+              <app-music-tab
+                [song]="song"
+                [isPlaylist]="true"
+                [PlayListId]="this.playlistDetail.id"
+              ></app-music-tab>
+            }
         }
       </div>
     </div>

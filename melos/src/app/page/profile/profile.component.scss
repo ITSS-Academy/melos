@@ -1,5 +1,4 @@
 .main-container {
-  font-family: Arial, sans-serif;
   background-color: var(--background);
   color: var(--onSurface);
   margin: 0;
@@ -7,7 +6,6 @@
 
 }
 .main-container-1 {
-  font-family: Arial, sans-serif;
   background-color: var(--background);
   color: var(--onSurface);
   margin: 0;
@@ -23,7 +21,6 @@ app-dialog-login {
   overflow: hidden;
   display: block;
 }
-
 
 .container {
   width: 100%;
@@ -59,10 +56,8 @@ app-dialog-login {
   height: 50px;
   border-radius: 20px;
   margin: 10px;
-
 }
 
 .mat-tab-group {
   border-radius: 20px;
 }
-

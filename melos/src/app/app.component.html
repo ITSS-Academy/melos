@@ -38,17 +38,17 @@
           </div>
         </a>
 
-        <a class="center-flex" mat-list-item *ngFor="let item of menuItems2" (click)="navigateToProfile()"
-           [ngClass]="{ 'active': item.route === activeLink }"
-        >
-          <div
-            class="center-flex"
-            [ngClass]="{ 'center-flex-collapsed': !isExpanded, 'center-flex-expanded': isExpanded }"
+          <a class="center-flex" mat-list-item *ngFor="let item of menuItems2" (click)="navigateToProfile()"
+             [ngClass]="{ 'active': item.route === activeLink }"
           >
-            <mat-icon class="material-symbols-rounded">{{ item.icon }}</mat-icon>
-            <span *ngIf="isExpanded" class="menu-title">{{ item.title }}</span>
-          </div>
-        </a>
+            <div
+              class="center-flex"
+              [ngClass]="{ 'center-flex-collapsed': !isExpanded, 'center-flex-expanded': isExpanded }"
+            >
+              <mat-icon class="material-symbols-rounded">{{ item.icon }}</mat-icon>
+              <span *ngIf="isExpanded" class="menu-title">{{ item.title }}</span>
+            </div>
+          </a>
       </mat-nav-list>
     </mat-sidenav>
 
