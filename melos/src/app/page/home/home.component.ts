@@ -47,7 +47,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (songLists.length > 0) {
           this.songLists = this.shuffleArray([...songLists]); // Trộn ngẫu nhiên mỗi lần reload trang
           this.songLists = this.shuffleArray(songLists);
-          console.log(songLists);
         }
       }),
     );
@@ -59,7 +58,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get categorySongs(): SongModel[] {
     return this.songLists.filter(
-      (song) => song.category_id == '22825f6e-086d-4b6c-9091-dc314811fe35' && song.views >= 10,
+      (song) =>
+        song.category_id == '22825f6e-086d-4b6c-9091-dc314811fe35' &&
+        song.views >= 10,
     );
   }
 

@@ -48,7 +48,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       this.authData$.subscribe((authData) => {
         if (authData?.idToken && authData.uid) {
           this.authData = authData;
-          console.log(this.authData);
           this.store.dispatch(
             PlaylistActions.getPlaylistByUserId({
               idToken: authData.idToken,

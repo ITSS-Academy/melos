@@ -27,9 +27,7 @@ import { Store } from '@ngrx/store';
 export class DialogDeleteSongComponent {
   data = inject(MAT_DIALOG_DATA);
   dialogRef = inject(MatDialogRef<DialogDeleteSongComponent>);
-  constructor(private store: Store) {
-    console.log(this.data);
-  }
+  constructor(private store: Store) {}
 
   deleteSongFromPlaylist() {
     if (this.data.auth.uid) {

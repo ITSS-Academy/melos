@@ -117,7 +117,6 @@ export class DialogEditPlaylistComponent implements OnInit {
   savePlaylist() {
     if (this.form.valid) {
       const playlist: PlaylistModel = this.form.value;
-      console.log('🎵 Dữ liệu gửi đi:', playlist); // ✅ Kiểm tra dữ liệu
       if (this.authData?.idToken) {
         this.store.dispatch(
           PlaylistActions.editPlaylistById({

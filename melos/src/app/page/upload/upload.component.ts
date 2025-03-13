@@ -33,9 +33,8 @@ import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { DialogLoginComponent } from '../../shared/components/dialog-login/dialog-login.component';
 import { MaterialModule } from '../../shared/material.module';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-upload',
@@ -114,8 +113,6 @@ export class UploadComponent implements OnInit, OnDestroy {
           this.trackInforForm.controls[
             'category_name'
           ].updateValueAndValidity();
-
-          // console.log('categories:', this.cateGoryList);
         }
       }),
     );
@@ -186,8 +183,6 @@ export class UploadComponent implements OnInit, OnDestroy {
         }),
       );
     }
-
-    console.log('formData:', this.formData);
   }
 
   ngOnDestroy() {
@@ -315,16 +310,6 @@ export class UploadComponent implements OnInit, OnDestroy {
 
   checkFormCompletion() {
     if (this.fileUploadForm.valid && this.trackInforForm.valid) {
-      console.log('Thông tin bài hát:', {
-        audioFile: this.fileUploadForm.value.audioFile,
-        coverImage: this.trackInforForm.value.coverImage,
-        title: this.trackInforForm.value.title,
-        artist: this.trackInforForm.value.artist,
-        // other: this.trackInforForm.value.other,
-        category: this.trackInforForm.value.category_name,
-        category_id: this.trackInforForm.value.category_id,
-        description: this.trackInforForm.value.description,
-      });
     }
   }
 

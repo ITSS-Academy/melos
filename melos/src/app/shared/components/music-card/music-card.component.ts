@@ -16,18 +16,6 @@ export class MusicCardComponent {
 
   @Input() song!: SongModel;
   playSong() {
-    console.log(this.song);
-
     this.songService.setCurrentSong(this.song);
-    // setTimeout(() => {
-    //   const audioElement = document.getElementById(
-    //     'singleAudio',
-    //   ) as HTMLAudioElement;
-    //   if (audioElement) {
-    //     audioElement
-    //       .play()
-    //       .catch((err) => console.error('Lỗi khi phát nhạc:', err));
-    //   }
-    // }, 500);
   }
 }

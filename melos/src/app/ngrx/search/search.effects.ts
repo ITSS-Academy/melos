@@ -11,7 +11,6 @@ export const searchAll = createEffect(
       exhaustMap((action) =>
         searchService.searchSong(action.query).pipe(
           map((search) => {
-            console.log(search);
             return SearchActions.searchAllSuccess({ search });
           }),
           catchError((error) => of(SearchActions.searchAllFailure({ error }))),

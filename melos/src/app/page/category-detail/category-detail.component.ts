@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
 import { OnInit, OnDestroy } from '@angular/core';
@@ -13,8 +13,7 @@ import * as CategoryActions from '../../ngrx/category/category.actions';
 import { LikeState } from '../../ngrx/like/like.state';
 import { AsyncPipe, Location } from '@angular/common';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { MaterialModule } from "../../shared/material.module";
-
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-category-detail',
@@ -40,7 +39,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       category: CategoryState;
       like: LikeState;
     }>,
-    private location: Location
+    private location: Location,
   ) {
     this.songListsCategory$ = this.store.select('song', 'songCategories');
     this.categoryDetail$ = this.store.select('category', 'categoryDetail');
@@ -56,8 +55,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params) => {
       const id = params['id'];
       if (id) {
-        console.log('id: ', id);
-
         this.store.dispatch(SongActions.getSongCategories({ id: id }));
         this.store.dispatch(CategoryActions.getCategoryById({ id: id }));
       }
@@ -66,7 +63,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       this.songListsCategory$.subscribe((songLists) => {
         if (songLists.length > 0) {
           this.songListsCategory = songLists;
-          console.log(songLists);
         }
       }),
 
@@ -74,18 +70,15 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
         //chose
         if (likeLists.length > 0) {
           this.likeList = likeLists;
-          console.log(likeLists);
         }
       }),
       this.categoryDetail$.subscribe((categoryDetail) => {
         if (categoryDetail) {
           this.categoryDetail = categoryDetail;
-          console.log(categoryDetail);
         }
       }),
     );
   }
-
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());

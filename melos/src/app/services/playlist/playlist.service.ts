@@ -30,7 +30,6 @@ export class PlaylistService {
     const headers = {
       Authorization: idToken,
     };
-    console.log(`${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`);
     return this.http.delete(
       `${environment.apiUrl}playlists?id=${playlistId}&uid=${uid}`,
       {
@@ -72,8 +71,6 @@ export class PlaylistService {
       Authorization: idToken,
     };
 
-    console.log('song services create playlist', playlist);
-    console.log(playlist.uid);
     const formData = new FormData();
     formData.append('uid', playlist.uid);
     formData.append('name', playlist.name);

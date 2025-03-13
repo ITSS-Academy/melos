@@ -28,7 +28,6 @@ export const searchReducer = createReducer(
 
   on(SearchActions.searchAllSuccess, (state, { search, type }) => {
     console.log(type);
-    console.log(search);
     return {
       ...state,
       search: search,

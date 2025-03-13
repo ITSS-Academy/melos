@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { LikeService } from '../../services/like/like.service';
 import * as LikeActions from './like.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
-import {SongModel} from '../../models/song.model';
+import { SongModel } from '../../models/song.model';
 
 export const createSong = createEffect(
   (actions$ = inject(Actions), likeService = inject(LikeService)) => {
@@ -12,7 +12,6 @@ export const createSong = createEffect(
       exhaustMap((action) =>
         likeService.createLike(action.songId, action.uid, action.idToken).pipe(
           map((songId) => {
-            console.log('songId', songId);
             return LikeActions.likeSongSuccess({ songId: songId.song_id });
           }),
           catchError((error) => of(LikeActions.likeSongFailure({ error }))),
@@ -30,7 +29,6 @@ export const getSongIdLiked = createEffect(
       exhaustMap((action) =>
         likeService.getSongIdLiked(action.uid, action.idToken).pipe(
           map((songIdLikes) => {
-            console.log('songIdLikes', songIdLikes);
             return LikeActions.getSongIdLikedSuccess({ songIdLikes });
           }),
           catchError((error) =>
@@ -42,7 +40,6 @@ export const getSongIdLiked = createEffect(
   },
   { functional: true },
 );
-
 
 export const deleteSong = createEffect(
   (actions$ = inject(Actions), likeService = inject(LikeService)) => {
@@ -60,4 +57,3 @@ export const deleteSong = createEffect(
   },
   { functional: true },
 );
-

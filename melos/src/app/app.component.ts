@@ -48,7 +48,6 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         const token = await user?.getIdToken();
-        console.log(token);
         this.authData = {
           idToken: token,
           displayName: user.displayName,
@@ -82,7 +81,6 @@ export class AppComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         this.setActiveLink();
-        console.log(this.router.url);
       });
     this.store.dispatch(CategoryActions.getCategoryList());
     const savedState = localStorage.getItem('isExpanded');
@@ -119,20 +117,26 @@ export class AppComponent implements OnInit {
       this.store.dispatch(SongActions.clearStateSongLiked());
       this.store.dispatch(UploadedActions.clearState());
       this.store.dispatch(LikeActions.clearStateSongIdLikes());
-      this.store.dispatch(HistoryActions.getHistorySongList({
-        idToken: this.authData.idToken ,
-        uid: this.authData.uid ,
-      }));
+      this.store.dispatch(
+        HistoryActions.getHistorySongList({
+          idToken: this.authData.idToken,
+          uid: this.authData.uid,
+        }),
+      );
 
-      this.store.dispatch(UploadedActions.getUploadSongList({
-        uid: this.authData.uid,
-        idToken: this.authData.idToken ,
-      }))
+      this.store.dispatch(
+        UploadedActions.getUploadSongList({
+          uid: this.authData.uid,
+          idToken: this.authData.idToken,
+        }),
+      );
 
-      this.store.dispatch(LikeActions.getSongIdLiked({
-        idToken: this.authData.idToken,
-        uid: this.authData.uid,
-      }));
+      this.store.dispatch(
+        LikeActions.getSongIdLiked({
+          idToken: this.authData.idToken,
+          uid: this.authData.uid,
+        }),
+      );
 
       this.router.navigate(['profile', this.authData?.uid]);
     } else {
@@ -143,19 +147,14 @@ export class AppComponent implements OnInit {
   setActiveLink(): void {
     if (this.router.url.includes('/home')) {
       this.activeLink = this.menuItems[0].route;
-      console.log(this.activeLink);
     } else if (this.router.url.includes('/playlist')) {
       this.activeLink = this.menuItems[1].route;
-      console.log(this.activeLink);
     } else if (this.router.url.includes('/category')) {
       this.activeLink = this.menuItems[2].route;
-      console.log(this.activeLink);
     } else if (this.router.url.includes('/upload')) {
       this.activeLink = this.menuItems[3].route;
-      console.log(this.activeLink);
     } else if (this.router.url.includes('/profile')) {
       this.activeLink = this.menuItems2[0].route;
-      console.log(this.activeLink);
     } else {
       this.activeLink = '';
     }

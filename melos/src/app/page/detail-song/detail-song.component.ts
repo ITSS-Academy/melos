@@ -76,7 +76,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params) => {
       const id = params['id'];
       if (id) {
-        console.log('id: \n', id);
         this.store.dispatch(SongActions.getSongById({ id: id }));
         this.store.dispatch(CommentActions.getCommentBySong({ songId: id }));
       }
@@ -94,7 +93,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       this.songDetail$.subscribe((songDetail) => {
         if (songDetail.id && songDetail.category_id) {
           this.songDetail = songDetail;
-          console.log('Get song detail: ', songDetail);
           this.store.dispatch(
             SongActions.getSongCategories({
               id: this.songDetail.category_id,
@@ -108,7 +106,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       this.mayLike$.subscribe((songLists) => {
         if (songLists.length > 0) {
           this.mayLike = songLists;
-          console.log(songLists);
         }
       }),
 
@@ -121,13 +118,12 @@ export class DetailSongComponent implements OnInit, OnDestroy {
       this.commentList$.subscribe((commentList) => {
         this.commentList = commentList;
       }),
-        this.likeList$.subscribe((likeLists) => {
-          //chose
-          if (likeLists.length > 0) {
-            this.likeList = likeLists;
-            console.log(likeLists);
-          }
-        }),
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+        }
+      }),
     );
   }
 
@@ -176,7 +172,6 @@ export class DetailSongComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value;
     this.commentSubject.next(query);
-    console.log('Search query:', query);
   }
 
   onEnter(event: Event) {

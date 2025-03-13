@@ -17,7 +17,6 @@ export class QueueService {
       uid: queue.uid,
       songId: queue.song_id,
     };
-    console.log(headers);
     return this.http.post<QueueModel>(
       `${environment.apiUrl}queue/create-song-queues`,
       body,

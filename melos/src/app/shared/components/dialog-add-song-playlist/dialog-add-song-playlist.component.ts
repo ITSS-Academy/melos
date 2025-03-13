@@ -40,7 +40,6 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
       this.playlist$.subscribe((playlist: PlaylistModel[]) => {
         if (playlist.length > 0 || playlist != this.playlist) {
           this.playlist = playlist;
-          console.log(this.playlist);
         }
       }),
       this.isAddSongSuccess$.subscribe((isAddSongSuccess) => {

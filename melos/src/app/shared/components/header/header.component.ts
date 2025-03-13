@@ -39,11 +39,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscription.push(
       this.auth$.subscribe((auth) => {
         if (auth?.idToken) {
-          console.log(auth);
           this.authData = auth;
         }
       }),
-
     );
   }
 
@@ -54,9 +52,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
   openDialog() {
     const dialogRef = this.dialog.open(DialogLoginComponent);
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
   }
 
   onImageError(event: Event) {
@@ -85,7 +80,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value;
     if (keyboardEvent.key === 'Enter') {
-      console.log('Enter');
       this.store.dispatch(SearchActions.searchAll({ query }));
     }
   }

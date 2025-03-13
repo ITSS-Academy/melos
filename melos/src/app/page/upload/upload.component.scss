@@ -196,21 +196,18 @@
   height: 100%;
 }
 
-.not-logged-in{
+.not-logged-in {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
   border-radius: 200px;
-
-
 }
 
-.avatar-not-loggin{
+.avatar-not-loggin {
   width: 200px;
   height: 200px;
-
 }
 
 app-dialog-login {
@@ -219,14 +216,13 @@ app-dialog-login {
   display: block;
 }
 
-
-
 .infor-upload textarea {
-  max-height: 20px;
+  max-height: 26px;
 }
 textarea {
   resize: none !important;
 }
 
-.infor-upload mat-form-field:nth-child(4) textarea { min-height: 120px; }
-
+.infor-upload mat-form-field:nth-child(4) textarea {
+  min-height: 120px;
+}

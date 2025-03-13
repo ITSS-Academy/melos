@@ -39,7 +39,6 @@ export const getSongByCategory = createEffect(
     return actions$.pipe(
       ofType(SongActions.getSongCategories),
       exhaustMap((action) => {
-        console.log(action.id);
         return songService.getSongByCategory(action.id).pipe(
           map((songList) =>
             SongActions.getSongCategoriesSuccess({ songCategories: songList }),
@@ -59,7 +58,6 @@ export const getSongQueue = createEffect(
     return actions$.pipe(
       ofType(SongActions.getSongQueue),
       exhaustMap((action) => {
-        console.log(action.uid);
         return songService.getSongQueue(action.uid, action.idToken).pipe(
           map((songList) =>
             SongActions.getSongQueueSuccess({ songQueue: songList }),
@@ -111,7 +109,6 @@ export const getSongLike = createEffect(
       exhaustMap((action) =>
         songService.getSongLiked(action.uid, action.idToken).pipe(
           map((songListLiked) => {
-            console.log('[Effect] songListLiked:', songListLiked);
             return SongActions.getSongLikedSuccess({ songListLiked });
           }),
           catchError((error) => of(SongActions.getSongLikedFailure({ error }))),

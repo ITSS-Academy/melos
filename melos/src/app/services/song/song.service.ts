@@ -4,15 +4,17 @@ import { SongModel } from '../../models/song.model';
 import { BehaviorSubject } from 'rxjs';
 import { idToken } from '@angular/fire/auth';
 import { environment } from '../../../environments/environment';
-import {LocalstoreSongService} from "../localstore-song/localstore.song.service";
+import { LocalstoreSongService } from '../localstore-song/localstore.song.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SongService {
   public currentPlaySong: any;
-  constructor(private http: HttpClient,
-              private localStoreSongService: LocalstoreSongService) {}
+  constructor(
+    private http: HttpClient,
+    private localStoreSongService: LocalstoreSongService,
+  ) {}
 
   getSongDetail(songId: string) {
     return this.http.get<SongModel>(`${environment.apiUrl}songs?id=${songId}`);
@@ -23,7 +25,6 @@ export class SongService {
   }
 
   getSongByCategory(categoryId: string) {
-    console.log('getSongByCategory', categoryId);
     return this.http.get<SongModel[]>(
       `${environment.apiUrl}songs/category-song?id=${categoryId}`,
     );
@@ -33,7 +34,6 @@ export class SongService {
     const headers = {
       Authorization: idToken,
     };
-    console.log('getSongQueue', uid);
     return this.http.get<SongModel[]>(
       `${environment.apiUrl}queue/get-song-queues-user?uid=` + uid,
       { headers },
@@ -56,7 +56,6 @@ export class SongService {
       Authorization: idToken,
     };
 
-    console.log('song services create song', song);
     const formData = new FormData();
     formData.append('title', song.title);
     formData.append('composer', song.composer);
@@ -94,10 +93,6 @@ export class SongService {
     uid: string,
     idToken: string,
   ) {
-    console.log('playlistId', playlistId);
-    console.log('songId', songId);
-    console.log('uid', uid);
-    console.log('idToken', idToken);
     const headers = {
       Authorization: idToken,
     };

@@ -1,23 +1,24 @@
-.container-search-all{
+.container-search-all {
   background-color: var(--surface);
   padding: 0 24px 24px 24px;
   border-radius: 0 0 16px 16px;
   margin-top: 20px;
-  height: 100%;
-  .title{
+  height: calc(100% - 20px);
+
+  .title {
     color: var(--on-surface);
     font-weight: bold;
     margin-bottom: 10px;
   }
 
-  .list-music{
+  .list-music {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     gap: 20px;
   }
 
-  .list-users{
+  .list-users {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -25,14 +26,14 @@
     justify-content: flex-start;
   }
 
-  .list-users-1{
+  .list-users-1 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 30px;
     justify-content: flex-start;
   }
-  .no-results{
+  .no-results {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +42,6 @@
     user-select: none;
     pointer-events: none;
   }
-
 }
 
 //.title{

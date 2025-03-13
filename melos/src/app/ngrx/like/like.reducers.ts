@@ -2,7 +2,6 @@ import { LikeState } from './like.state';
 import * as LikeActions from './like.actions';
 import { createReducer, on } from '@ngrx/store';
 
-
 export const initialState: LikeState = {
   songIdLikes: [],
   isLoading: false,
@@ -10,7 +9,6 @@ export const initialState: LikeState = {
   isLikedSuccess: false,
   error: null,
 };
-
 
 export const likeReducer = createReducer(
   initialState,
@@ -20,13 +18,12 @@ export const likeReducer = createReducer(
     return {
       ...state,
       isLoading: true,
-      isLikedSuccess: false
+      isLikedSuccess: false,
     };
   }),
 
   on(LikeActions.likeSongSuccess, (state, { songId, type }) => {
     console.log(type);
-    console.log(songId);
     return <LikeState>{
       ...state,
       songIdLikes: [...state.songIdLikes, songId],
@@ -52,8 +49,6 @@ export const likeReducer = createReducer(
       isLikedSuccess: false,
     };
   }),
-
-
 
   on(LikeActions.getSongIdLiked, (state, { type }) => {
     console.log(type);
@@ -81,17 +76,17 @@ export const likeReducer = createReducer(
     };
   }),
 
-  on(LikeActions.clearStateSongIdLikes, (state) => {
+  on(LikeActions.clearStateSongIdLikes, (state, { type }) => {
+    console.log(type);
     return {
       ...state,
       songIdLikes: [],
     };
   }),
 
-
   // Xử lý delete like
-  on(LikeActions.deleteLike, (state, { songId }) => {
-    console.log('Deleting like for song:', songId);
+  on(LikeActions.deleteLike, (state, { type }) => {
+    console.log(type);
     return {
       ...state,
       isLoading: true,
@@ -99,8 +94,8 @@ export const likeReducer = createReducer(
     };
   }),
 
-  on(LikeActions.deleteLikeSuccess, (state, { songId }) => {
-    console.log('Deleted like for song:', songId);
+  on(LikeActions.deleteLikeSuccess, (state, { songId, type }) => {
+    console.log(type);
     return {
       ...state,
       songIdLikes: state.songIdLikes.filter((id) => id !== songId),
@@ -109,7 +104,8 @@ export const likeReducer = createReducer(
     };
   }),
 
-  on(LikeActions.deleteLikeFailure, (state, { error }) => {
+  on(LikeActions.deleteLikeFailure, (state, { error, type }) => {
+    console.log(type);
     console.error('Delete like failed:', error);
     return {
       ...state,
@@ -125,7 +121,5 @@ export const likeReducer = createReducer(
       ...state,
       isLikedDeleteSuccess: false,
     };
-  })
-
-
+  }),
 );

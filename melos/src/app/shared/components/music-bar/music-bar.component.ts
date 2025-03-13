@@ -95,7 +95,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       }),
       this.play$.subscribe((isPlaying) => {
         if (isPlaying) {
-
           this.audioPlayer.nativeElement.play();
           this.isPlaying = isPlaying;
         } else {
@@ -106,7 +105,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.songListsQueue$.subscribe((songLists) => {
         if (songLists.length > 0) {
           this.songListsQueue = songLists;
-          console.log('Song List Queue: ', songLists);
         }
       }),
     );
@@ -134,7 +132,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.songListsQueue$.subscribe((songLists) => {
         if (songLists.length > 0) {
           this.songListsQueue = songLists;
-          console.log('Song List Queue: ', songLists);
         }
       }),
     );
@@ -177,7 +174,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       }
     };
 
-
     // Cập nhật trạng thái play/pause
     audio.onplay = () => this.store.dispatch(PlayActions.play());
     audio.onpause = () => this.store.dispatch(PlayActions.pause());
@@ -197,10 +193,8 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   loopClick() {
     this.isLoop = !this.isLoop;
     if (this.isLoop) {
-      console.log('Looping song');
       this.loopSong();
     } else {
-      console.log('No Looping song');
       this.noLoopSong();
     }
   }
@@ -241,7 +235,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
   updateViews() {
     if (this.currentSong) {
-      console.log('Updating views for song:', this.currentSong.id);
       this.store.dispatch(
         SongActions.updateSongViews({ id: this.currentSong.id }),
       );
@@ -282,7 +275,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     if (volumeBar) {
       const volume = this.volume || 50; // Giả sử mặc định là 50%
       volumeBar.style.setProperty('--volume', `${volume}%`);
-      console.log('Volume:', volume);
     }
   }
 
@@ -342,7 +334,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(unmuteBtn, 'display', 'none');
       this.renderer.setStyle(muteBtn, 'display', 'flex');
     }
-    console.log('mute');
     this.updateChangeVolume();
   }
   clickUnmute() {
@@ -355,7 +346,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.renderer.setStyle(unmuteBtn, 'display', 'flex');
       this.renderer.setStyle(muteBtn, 'display', 'none');
     }
-    console.log('unmute');
     this.updateChangeVolume();
   }
 }

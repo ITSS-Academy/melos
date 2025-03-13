@@ -9,7 +9,7 @@ import { MaterialModule } from '../../shared/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { AsyncPipe, NgIf , Location} from '@angular/common';
+import { AsyncPipe, NgIf, Location } from '@angular/common';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
@@ -92,7 +92,6 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
         //chose
         if (likeLists.length > 0) {
           this.likeList = likeLists;
-          console.log(likeLists);
         }
       }),
 
@@ -114,14 +113,12 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       this.playlistDetail$.subscribe((playlistDetail) => {
         if (playlistDetail.id) {
           this.playlistDetail = playlistDetail;
-          console.log(playlistDetail);
         }
       }),
 
       this.songPlaylist$.subscribe((playlistPlaylist) => {
         if (playlistPlaylist.length > 0) {
           this.songPlaylist = playlistPlaylist;
-          console.log('songPlaylist:', playlistPlaylist);
         }
       }),
     );
