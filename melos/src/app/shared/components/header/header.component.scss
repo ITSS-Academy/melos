@@ -29,8 +29,9 @@
 }
 
 .logo-melos {
-  width: 168px;
-  cursor: pointer;
+    width: 168px;
+  pointer-events: none;
+  user-select: none;
 }
 
 .outline-search {

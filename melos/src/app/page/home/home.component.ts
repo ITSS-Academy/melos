@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   get categorySongs(): SongModel[] {
     return this.songLists.filter(
-      (song) => song.category_id == '22825f6e-086d-4b6c-9091-dc314811fe35',
+      (song) => song.category_id == '22825f6e-086d-4b6c-9091-dc314811fe35' && song.views >= 10,
     );
   }
 

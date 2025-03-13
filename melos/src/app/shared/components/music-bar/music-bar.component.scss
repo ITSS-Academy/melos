@@ -128,6 +128,8 @@ button.mat-icon-button:hover {
   border-radius: 5px;
   position: relative;
   transition: background 0.1s linear;
+  cursor: pointer;
+
 }
 
 .progress-bar::-webkit-slider-thumb {
