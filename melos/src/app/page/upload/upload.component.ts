@@ -211,7 +211,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     ];
 
     // (GB -> MB -> KB -> Bytes)
-    const maxFileSize = 4 * 1024 * 1024 * 1024;
+    const maxFileSize = 1 * 1024 * 1024 * 1024;
 
     if (!allowedTypes.includes(file.type)) {
       alert(

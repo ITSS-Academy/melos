@@ -71,6 +71,14 @@ export class SearchAllComponent implements OnInit,  OnDestroy {
 
         }
       }),
+
+      this.likeList$.subscribe((likeLists) => {
+        //chose
+        if (likeLists.length > 0) {
+          this.likeList = likeLists;
+          console.log(likeLists);
+        }
+      }),
     )
   }
 
