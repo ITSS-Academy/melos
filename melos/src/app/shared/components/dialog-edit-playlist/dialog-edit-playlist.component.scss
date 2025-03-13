@@ -32,6 +32,7 @@
       align-items: center;
       justify-content: center;
 
+
     }
     #uploadDiv{
 
@@ -54,17 +55,16 @@
 
       display: none;
     }
-
-
     .right-dialog{
       width: 50%;
+      height: 100%;
       aspect-ratio: 1/1;
       display: flex;
       justify-content: space-between;
       flex-direction: column;
       gap: 20px;
-
     }
+
   }
   group-btn{
     width: 100%;
@@ -111,8 +111,6 @@
     width: 100%;
     margin: 0;
     padding: 0;
-
-
   }
 
   textarea {
