@@ -1,18 +1,10 @@
-<div class="container-artist">
 
-<div class="card">
-  <div class="card-artist">
-    <img class="img-artist" [src]="auth.picture">
-    <p>{{auth.name}}  </p>
-<!--    <p>{{auth.email}}</p>-->
+
+  <div class="card-artist" (click)="navigateToProfile(user.uid)">
+    <img class="img-artist" [src]="user.picture" (error)="onError($event)">
+    <p>{{user.name}}  </p>
   </div>
 
-</div>
-
-
-
-
-</div>
 
 
 

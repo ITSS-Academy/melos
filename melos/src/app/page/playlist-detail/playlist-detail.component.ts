@@ -134,7 +134,7 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
   }
   editDialogPlaylist() {
     const dialogRef = this.openDialogDelete.open(DialogEditPlaylistComponent, {
-      width: '30vw',
+      width: '40vw',
       maxWidth: 'none',
       data: {
         description: this.playlistDetail?.description,

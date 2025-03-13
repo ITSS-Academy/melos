@@ -43,10 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.authData = auth;
         }
       }),
-      this.searchSubject.pipe(debounceTime(3000)).subscribe((query) => {
-        console.log(query);
-        this.store.dispatch(SearchActions.searchAll({ query }));
-      }),
+
     );
   }
 
@@ -81,7 +78,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value;
     this.searchSubject.next(query);
-    console.log('Search query:', query);
   }
 
   onEnter(event: Event) {

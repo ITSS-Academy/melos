@@ -1,7 +1,7 @@
 <div class="container-search-peoples">
   <div class="list-users" *ngIf="(searchUsers$ | async)?.length ">
     @for (user of (searchUsers$ | async); track user.uid) {
-      <app-card-artist [auth]="user"></app-card-artist>
+      <app-card-artist [user]="user"></app-card-artist>
     }
   </div>
 
