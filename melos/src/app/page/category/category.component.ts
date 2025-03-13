@@ -53,13 +53,10 @@ export class CategoryComponent implements OnInit, OnDestroy {
   }
 
   onEnter(event: Event) {
-    const keyboardEvent = event as KeyboardEvent;
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value;
-    if (keyboardEvent.key === 'Enter') {
-      this.filledCategoryList = this.categoryList.filter((category) =>
+    this.filledCategoryList = this.categoryList.filter((category) =>
         category.name.toLowerCase().includes(query.toLowerCase())
-      );
-    }
+    );
   }
 }
