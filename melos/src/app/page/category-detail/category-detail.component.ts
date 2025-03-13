@@ -11,13 +11,15 @@ import { CategoryModel } from '../../models/category.model';
 import { CategoryState } from '../../ngrx/category/category.state';
 import * as CategoryActions from '../../ngrx/category/category.actions';
 import { LikeState } from '../../ngrx/like/like.state';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { MaterialModule } from "../../shared/material.module";
+
 
 @Component({
   selector: 'app-category-detail',
   standalone: true,
-  imports: [MusicTabComponent, AsyncPipe, LoadingComponent],
+  imports: [MusicTabComponent, AsyncPipe, LoadingComponent, MaterialModule],
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.scss',
 })
@@ -38,11 +40,16 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       category: CategoryState;
       like: LikeState;
     }>,
+    private location: Location
   ) {
     this.songListsCategory$ = this.store.select('song', 'songCategories');
     this.categoryDetail$ = this.store.select('category', 'categoryDetail');
     this.isLoadingDetail$ = this.store.select('category', 'isLoading');
     this.likeList$ = this.store.select('like', 'songIdLikes');
+  }
+
+  clickBack() {
+    this.location.back();
   }
 
   ngOnInit() {

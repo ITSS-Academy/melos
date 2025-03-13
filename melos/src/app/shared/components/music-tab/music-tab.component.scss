@@ -56,7 +56,8 @@
   .ns-info {
     display: flex;
     flex-flow: column;
-    width: 50%;
+    width: 70%;
+    min-width: 10px;
     span {
       max-width: 100%;
       cursor: pointer;

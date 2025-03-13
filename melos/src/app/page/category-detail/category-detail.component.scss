@@ -8,11 +8,24 @@
   display: flex;
   justify-content: space-evenly;
   gap: 20px;
+
   background-color: var(--surface);
+  button {
+    color: var(--primary);
+    mat-icon {
+      width: 12px;
+    }
+  }
   .container-left{
     width: 275px;
     height: 275px;
     text-align: center;
+    .btn-container {
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      margin-bottom: 10px;
+    }
 
 
     .selected-category{
