@@ -6,6 +6,15 @@
   justify-content: space-evenly;
   gap: 20px;
   background-color: var(--surface);
+  .btn-contain {
+    button {
+      color: var(--primary);
+      mat-icon {
+        width: 12px;
+      }
+    }
+  }
+
   .container-left {
     width: 275px;
     height: 275px;
