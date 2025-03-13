@@ -49,3 +49,8 @@ export const deleteLikeFailure = createAction(
   '[Like] Delete Like Failure',
   props<{ error: any }>()
 );
+
+
+export const clearStateSongIdLikes = createAction(
+  '[Like] Clear State Song Id Likes',
+);

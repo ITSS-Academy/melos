@@ -64,6 +64,13 @@ export const likeReducer = createReducer(
     };
   }),
 
+  on(LikeActions.clearStateSongIdLikes, (state) => {
+    return {
+      ...state,
+      songIdLikes: [],
+    };
+  }),
+
 
   // Xử lý delete like
   on(LikeActions.deleteLike, (state, { songId }) => {

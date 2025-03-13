@@ -54,20 +54,6 @@ export class UploadedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription.push(
-      this.auth$.subscribe((auth) => {
-        if (auth?.uid) {
-          this.authData = auth;
-          console.log('authData', this.authData);
-          this.store.dispatch(
-
-            UploadActions.getUploadSongList({
-              uid: this.authData.uid ?? '',
-              idToken: this.authData.idToken ?? '',
-            }),
-          );
-        }
-      }),
-
       this.likeList$.subscribe((likeLists) => {
         //chose
         if (likeLists.length > 0) {
@@ -75,28 +61,8 @@ export class UploadedComponent implements OnInit, OnDestroy {
           console.log(likeLists);
         }
       }),
+    )
 
-      this.uploadSongList$.subscribe((uploadSongList) => {
-        // console.log(uploadSongList);
-        if (uploadSongList.length > 0) {
-          this.uploadSongList = uploadSongList;
-          console.log('uploadSongList', this.uploadSongList);
-        } else {
-          this.uploadSongList = []; // Đảm bảo luôn có giá trị mặc định
-        }
-      }),
-    );
-
-    // this.songsList$.subscribe((songs) => {
-    //   console.log('Danh sách bài hát từ API:', songs);
-    // });
-
-    // Gọi API để lấy danh sách bài hát
-    this.store.dispatch(SongActions.getSongList());
-
-
-    if (this.authData) {
-    }
   }
 
   ngOnDestroy() {

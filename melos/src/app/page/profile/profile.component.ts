@@ -18,6 +18,9 @@ import {UploadedComponent} from './components/uploaded/uploaded.component';
 import {IdToAvatarPipe} from '../../shared/pipes/id-to-avatar.pipe';
 import {IdToNamePipe} from '../../shared/pipes/id-to-name.pipe';
 import * as AuthActions from '../../ngrx/auth/auth.actions';
+import * as SongActions from '../../ngrx/song/song.actions';
+import * as LikeActions from '../../ngrx/like/like.actions';
+import * as UploadedActions from '../../ngrx/uploaded/uploaded.actions';
 
 
 @Component({
@@ -33,7 +36,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   subscription: Subscription[] = [];
   authData: AuthModel | null = null;
   historySongList: SongModel[] = [];
-orderAuth$!: Observable<any>;
   orderAuth: any
 
   constructor(
@@ -45,6 +47,7 @@ orderAuth$!: Observable<any>;
 
     private router: Router,
   ) {
+
     this.auth$ = this.store.select('auth', 'authData');
     this.historySongList$ = this.store.select('history', 'historySongList');
 
@@ -67,13 +70,33 @@ orderAuth$!: Observable<any>;
           this.authData = auth;
           console.log('authData History', this.authData);
 
-          if(this.authData.uid != this.orderAuth) {
-            this.store.dispatch(
-              HistoryActions.getHistorySongList({
-                uid: this.authData.uid ?? '',
-                idToken: this.authData.idToken ?? '',
-              }),
-            );
+          if((this.authData.uid != this.orderAuth) && this.authData.idToken) {
+            this.store.dispatch(UploadedActions.getUploadSongList({
+              uid: this.orderAuth,
+              idToken: this.authData.idToken ,
+            }))
+            this.store.dispatch(HistoryActions.getHistorySongList({
+              idToken: this.authData.idToken ,
+              uid: this.orderAuth.uid ,
+            }));
+
+
+          }else if((this.orderAuth === this.authData.uid) && this.authData.idToken && this.authData.uid) {
+            this.store.dispatch(HistoryActions.getHistorySongList({
+              idToken: this.authData.idToken ,
+              uid: this.authData.uid ,
+            }));
+
+            this.store.dispatch(UploadedActions.getUploadSongList({
+              uid: this.authData.uid,
+              idToken: this.authData.idToken ,
+            }))
+
+            this.store.dispatch(LikeActions.getSongIdLiked({
+              idToken: this.authData.idToken,
+              uid: this.authData.uid,
+            }));
+
           }
         }
       }),
@@ -82,6 +105,12 @@ orderAuth$!: Observable<any>;
 
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());
+    this.store.dispatch(HistoryActions.clearState());
+    this.store.dispatch(SongActions.clearStateSongLiked());
+    this.store.dispatch(UploadedActions.clearState());
+    this.store.dispatch(LikeActions.clearStateSongIdLikes());
+
+
   }
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;

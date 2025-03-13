@@ -45,14 +45,6 @@ export class SearchSongsComponent {
     this.searchSongs$ = this.store.select((state) => state.search.search.songs || []); // Lấy bài hát từ songs
   }
 
-  ngOnInit() {
-    this.subscription.push(
-
-      this.searchSongs$.subscribe((results) => {
-        console.log('Search results (songs) from API:', results);
-      }),
-    )}
-
   ngOnDestroy() {
     this.subscription.forEach((sub) => sub.unsubscribe());
   }

@@ -44,45 +44,21 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription.push(
-      this.auth$.subscribe((auth) => {
-        if (auth?.uid) {
-          this.authData = auth;
-          console.log('authData History', this.authData);
-          this.store.dispatch(
-            HistoryActions.getHistorySongList({
-              uid: this.authData.uid ?? '',
-              idToken: this.authData.idToken ?? '',
-            }),
-          );
-        }
-      }),
-
       this.likeList$.subscribe((likeLists) => {
         //chose
         if (likeLists.length > 0) {
           this.likeList = likeLists;
-          console.log(likeLists);
         }
       }),
-
-
       this.historySongList$.subscribe((historySongList) => {
-        console.log(
-          '[History Component] Received historySongList:',
-          historySongList,
-        );
         if (historySongList.length > 0) {
           this.historySongList = historySongList;
-          console.log(
-            '[History Component] Updated historySongList:',
-            this.historySongList,
-          );
+
         }
       }),
     );
 
-    if (this.authData) {
-    }
+
   }
 
   ngOnDestroy() {

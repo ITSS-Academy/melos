@@ -68,6 +68,7 @@ export const historyReducer = createReducer(
   }),
 
   on(historyActions.clearState, (state, {type}) => {
+    console.log(type);
     return{
       historySongList: <SongModel[]>[],
       isLoading: false,
