@@ -9,13 +9,12 @@ import { MaterialModule } from '../../shared/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeletePlaylistComponent } from '../../shared/components/dialog-delete-playlist/dialog-delete-playlist.component';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf , Location} from '@angular/common';
 import * as SongActions from '../../ngrx/song/song.actions';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { AuthModel } from '../../models/auth.model';
 import { SongState } from '../../ngrx/song/song.state';
 import { SongModel } from '../../models/song.model';
-import { Location } from '@angular/common';
 import { DialogEditPlaylistComponent } from '../../shared/components/dialog-edit-playlist/dialog-edit-playlist.component';
 import { MusicTabComponent } from '../../shared/components/music-tab/music-tab.component';
 import * as QueueActions from '../../ngrx/queue/queue.actions';
@@ -200,6 +199,10 @@ export class PlaylistDetailComponent implements OnInit, OnDestroy {
       this.isPlaying &&
       this.playlistDetail.songs_id.includes(this.songService.currentPlaySong.id)
     );
+  }
+
+  clickBack() {
+    this.location.back();
   }
 
   playSong() {

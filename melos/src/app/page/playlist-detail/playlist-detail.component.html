@@ -2,6 +2,11 @@
     <app-loading></app-loading>
 }@else {
   <div id="playlist-detail">
+      <div class="btn-contain">
+          <button mat-icon-button (click)="clickBack()">
+              <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+      </div>
     <div class="container-left">
       <div class="selected-playlist">
         <img *ngIf="playlistDetail.image_url" [src]="playlistDetail?.image_url" alt="" loading="lazy">
