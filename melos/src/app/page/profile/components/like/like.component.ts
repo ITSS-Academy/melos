@@ -33,6 +33,8 @@ export class LikeComponent implements OnInit, OnDestroy {
   orderAuth: any;
   likeList$!: Observable<string[]>;
   likeList: string[] = [];
+  isLikedDeleteSuccess$!: Observable<boolean>
+  isLikedSuccess$!: Observable<boolean>
 
 
   constructor(
@@ -48,23 +50,42 @@ export class LikeComponent implements OnInit, OnDestroy {
     this.songListLiked$ = this.store.select('song', 'songListLiked');
     this.isLoading$ = this.store.select('song', 'isLoading');
     this.likeList$ = this.store.select('like', 'songIdLikes');
+    this.isLikedDeleteSuccess$ = this.store.select('like', 'isLikedDeleteSuccess');
+    this.isLikedSuccess$ = this.store.select('like', 'isLikedSuccess');
   }
 
 
   ngOnInit() {
     this.subscription.push(
+      this.auth$.subscribe(auth => {
+        if (auth?.uid && auth.idToken) {
+          this.authData = auth;
+        }
+      }),
 
 
       this.activateRoute.params.subscribe(params => {
         const id = params['id'];
         if (id){
           this.orderAuth = id;
-          this.store.dispatch(
-            SongActions.getSongLiked({
-              uid: this.orderAuth,
-              idToken: this.orderAuth.idToken ?? '1',
-            }),
-          );
+          if (this.authData?.idToken) {
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.orderAuth,
+                idToken: this.authData?.idToken
+              }),
+            );
+          }
+
+        }
+      }),
+
+
+
+      this.songListLiked$.subscribe((songList) => {
+        //chose
+        if (songList.length > 0 ) {
+          console.log(songList)
         }
       }),
 
@@ -76,7 +97,38 @@ export class LikeComponent implements OnInit, OnDestroy {
         }
       }),
 
-    )
+      this.isLikedDeleteSuccess$.subscribe((isLikedDeleteSuccess) => {
+        if (isLikedDeleteSuccess) {
+          console.log('like delete success');
+          if (this.authData?.uid && this.authData.idToken){
+            console.log('like delete success');
+
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.authData?.uid,
+                idToken: this.authData.idToken ,
+              }),
+            );
+            this.store.dispatch(LikeActions.clearStateDeleteLikeSuccess());
+          }
+        }
+      }),
+      this.isLikedSuccess$.subscribe((isLikedDeleteSuccess) => {
+        if (isLikedDeleteSuccess) {
+          if (this.authData?.uid && this.authData.idToken){
+            this.store.dispatch(
+              SongActions.getSongLiked({
+                uid: this.authData?.uid,
+                idToken: this.authData.idToken ,
+              }),
+            );
+            this.store.dispatch(LikeActions.clearStateLikeSuccess());
+          }
+        }
+      }),
+
+    );
+
 
   }
 

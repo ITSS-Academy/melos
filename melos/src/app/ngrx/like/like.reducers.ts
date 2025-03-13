@@ -2,11 +2,15 @@ import { LikeState } from './like.state';
 import * as LikeActions from './like.actions';
 import { createReducer, on } from '@ngrx/store';
 
+
 export const initialState: LikeState = {
   songIdLikes: [],
   isLoading: false,
+  isLikedDeleteSuccess: false,
+  isLikedSuccess: false,
   error: null,
 };
+
 
 export const likeReducer = createReducer(
   initialState,
@@ -16,6 +20,7 @@ export const likeReducer = createReducer(
     return {
       ...state,
       isLoading: true,
+      isLikedSuccess: false
     };
   }),
 
@@ -26,6 +31,7 @@ export const likeReducer = createReducer(
       ...state,
       songIdLikes: [...state.songIdLikes, songId],
       isLoading: false,
+      isLikedSuccess: true,
     };
   }),
 
@@ -35,8 +41,19 @@ export const likeReducer = createReducer(
       ...state,
       error: error,
       isLoading: false,
+      isLikedSuccess: false,
     };
   }),
+
+  on(LikeActions.clearStateLikeSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLikedSuccess: false,
+    };
+  }),
+
+
 
   on(LikeActions.getSongIdLiked, (state, { type }) => {
     console.log(type);
@@ -78,6 +95,7 @@ export const likeReducer = createReducer(
     return {
       ...state,
       isLoading: true,
+      isLikedDeleteSuccess: false,
     };
   }),
 
@@ -86,6 +104,7 @@ export const likeReducer = createReducer(
     return {
       ...state,
       songIdLikes: state.songIdLikes.filter((id) => id !== songId),
+      isLikedDeleteSuccess: true,
       isLoading: false,
     };
   }),
@@ -95,7 +114,16 @@ export const likeReducer = createReducer(
     return {
       ...state,
       error,
+      isLikedDeleteSuccess: false,
       isLoading: false,
+    };
+  }),
+
+  on(LikeActions.clearStateDeleteLikeSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isLikedDeleteSuccess: false,
     };
   })
 

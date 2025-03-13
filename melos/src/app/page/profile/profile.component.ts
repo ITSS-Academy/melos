@@ -79,8 +79,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
               idToken: this.authData.idToken ,
               uid: this.orderAuth.uid ,
             }));
-
-
           }else if((this.orderAuth === this.authData.uid) && this.authData.idToken && this.authData.uid) {
             this.store.dispatch(HistoryActions.getHistorySongList({
               idToken: this.authData.idToken ,
@@ -91,15 +89,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
               uid: this.authData.uid,
               idToken: this.authData.idToken ,
             }))
-
             this.store.dispatch(LikeActions.getSongIdLiked({
               idToken: this.authData.idToken,
               uid: this.authData.uid,
             }));
-
           }
         }
       }),
+
+
+
     );
   }
 
