@@ -62,6 +62,11 @@ export class AppComponent implements OnInit {
           );
         }
         this.store.dispatch(AuthActions.storeAuth({ authData: this.authData }));
+        this.store.dispatch(
+          AuthActions.getAuth({
+            idToken: this.authData?.idToken || '',
+          }),
+        );
       } else {
         this.store.dispatch(AuthActions.storeAuth({ authData: null as any }));
         this.authData = null as any;

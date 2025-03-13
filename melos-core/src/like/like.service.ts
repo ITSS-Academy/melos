@@ -8,7 +8,6 @@ export class LikeService {
   constructor(private supabaseProvider: SupabaseProvider) {}
 
   async create(song_id: string, uid: string) {
-
     const { data, error } = await this.supabaseProvider
       .getClient()
       .rpc('create_like', {
@@ -19,8 +18,6 @@ export class LikeService {
     if (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
-
-
 
     return data;
   }
@@ -65,6 +62,7 @@ export class LikeService {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
 
-    return true;
+    let result = await this.getSongLikedByUid(uid);
+    return result;
   }
 }
