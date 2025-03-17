@@ -27,6 +27,7 @@ import { LocalstoreSongService } from '../../../services/localstore-song/localst
 import { LikeState } from '../../../ngrx/like/like.state';
 import { QueueState } from '../../../ngrx/queue/queue.state';
 import * as QueueActions from '../../../ngrx/queue/queue.actions';
+import { SnackbarService } from '../../../services/snackbar/snackbar.service';
 @Component({
   selector: 'app-music-bar',
   standalone: true,
@@ -70,6 +71,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   section: HTMLElement | null = null;
   constructor(
     private songService: SongService,
+    private snackBarService: SnackbarService,
     private store: Store<{
       song: SongState;
       play: PlayState;
@@ -127,6 +129,10 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
       this.isCreateSuccess$.subscribe((isCreateSuccess) => {
         if (isCreateSuccess) {
+          this.snackBarService.showAlert(
+            'Add song to queue successfully',
+            'Close',
+          );
           this.clickGetQueue();
           this.store.dispatch(QueueActions.clearStateCreateQueueSuccess());
         }

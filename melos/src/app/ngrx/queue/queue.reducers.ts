@@ -32,6 +32,7 @@ export const queueReducer = createReducer(
     return <QueueState>{
       ...state,
       songsQueue: queue,
+      isCreateSuccess: true,
       isLoading: false,
     };
   }),
@@ -42,6 +43,7 @@ export const queueReducer = createReducer(
       ...state,
       error: error,
       isLoading: false,
+      isCreateSuccess: false,
     };
   }),
   on(QueueActions.removeSongQueue, (state, { type }) => {

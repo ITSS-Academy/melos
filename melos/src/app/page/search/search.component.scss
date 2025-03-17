@@ -2,7 +2,6 @@
   background-color: var(--surface);
   padding: 24px;
   height: 100%;
-  //border-radius: 16px;
 }
 
 .btn-tabs-group {
@@ -11,6 +10,15 @@
 
 ::ng-deep .mat-mdc-tab-body-wrapper {
   height: 100% !important;
+
+  overflow: auto;
+  //border-radius: 16px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+}
+::ng-deep .mat-mdc-tab-body-wrapper ::-webkit-scrollbar {
+  display: none !important;
 }
 
 ::ng-deep .mat-mdc-tab-header {

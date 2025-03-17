@@ -7,6 +7,7 @@ export const initialState: AuthState = {
   isLogging: false,
   error: null,
   auth: null,
+  loggingSuccess: false,
 };
 
 export const authReducer = createReducer(
@@ -16,14 +17,15 @@ export const authReducer = createReducer(
     return <AuthState>{
       authData: null,
       isLogging: true,
+      loggingSuccess: false,
     };
   }),
   on(AuthActions.loginSuccess, (state, { type }) => {
     console.log(type);
-    window.location.reload();
     return <AuthState>{
       ...state,
       isLogging: false,
+      loggingSuccess: true,
     };
   }),
   on(AuthActions.loginFailure, (state, { error, type }) => {
@@ -32,6 +34,7 @@ export const authReducer = createReducer(
       ...state,
       isLogging: false,
       error: error,
+      loggingSuccess: false,
     };
   }),
   on(AuthActions.storeAuth, (state, { authData, type }) => {
@@ -126,6 +129,14 @@ export const authReducer = createReducer(
       isLogging: false,
       error: null,
       auth: null,
+    };
+  }),
+
+  on(AuthActions.clearStateLoggingSuccess, (state, { type }) => {
+    console.log(type);
+    return <AuthState>{
+      ...state,
+      loggingSuccess: false,
     };
   }),
 );

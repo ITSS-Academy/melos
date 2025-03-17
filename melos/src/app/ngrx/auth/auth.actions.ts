@@ -53,3 +53,7 @@ export const getAuthByUidFailure = createAction(
   '[Auth] Get Auth By Uid Failure',
   props<{ error: any }>(),
 );
+
+export const clearStateLoggingSuccess = createAction(
+  '[Auth] Clear State Logging Success',
+);

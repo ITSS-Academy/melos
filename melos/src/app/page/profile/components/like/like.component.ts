@@ -12,6 +12,7 @@ import * as SongActions from '../../../../ngrx/song/song.actions';
 import { ActivatedRoute } from '@angular/router';
 import { LikeState } from '../../../../ngrx/like/like.state';
 import * as LikeActions from '../../../../ngrx/like/like.actions';
+import { SnackbarService } from '../../../../services/snackbar/snackbar.service';
 @Component({
   selector: 'app-like',
   standalone: true,
@@ -34,6 +35,7 @@ export class LikeComponent implements OnInit, OnDestroy {
 
   constructor(
     private activateRoute: ActivatedRoute,
+    private snackBarService: SnackbarService,
 
     private store: Store<{
       auth: AuthState;

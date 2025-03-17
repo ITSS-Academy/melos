@@ -81,7 +81,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const query = inputElement.value;
     if (keyboardEvent.key === 'Enter') {
       this.store.dispatch(SearchActions.searchAll({ query }));
+      inputElement.blur();
     }
+  }
+
+  selectText(event: FocusEvent) {
+    (event.target as HTMLInputElement).select();
   }
 
   navigateToHome() {

@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { PlaylistModel } from '../../../models/playlist.model';
 import { Observable, Subscription } from 'rxjs';
 import * as PlaylistAction from '../../../ngrx/playlist/playlist.actions';
+import { SnackbarService } from '../../../services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-dialog-add-song-playlist',
@@ -22,6 +23,7 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
   isAddSongSuccess$!: Observable<boolean>;
 
   constructor(
+    private snackBarService: SnackbarService,
     private store: Store<{
       playlist: PlaylistState;
     }>,
@@ -49,6 +51,14 @@ export class DialogAddSongPlaylistComponent implements OnInit, OnDestroy {
               uid: this.data.auth.uid,
               idToken: this.data.auth.idToken,
             }),
+          );
+
+          this.snackBarService.showAlert(
+            'Add song to playlist success',
+            'Close',
+          );
+          this.store.dispatch(
+            PlaylistAction.clearStateAddSongToPlaylistSuccess(),
           );
         }
       }),

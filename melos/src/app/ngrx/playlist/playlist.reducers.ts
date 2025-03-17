@@ -206,4 +206,12 @@ export const playlistReducer = createReducer(
       isAddSongSuccess: false,
     };
   }),
+
+  on(PlaylistActions.clearStateAddSongToPlaylistSuccess, (state, { type }) => {
+    console.log(type);
+    return {
+      ...state,
+      isAddSongSuccess: false,
+    };
+  }),
 );

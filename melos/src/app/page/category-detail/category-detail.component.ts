@@ -43,7 +43,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   ) {
     this.songListsCategory$ = this.store.select('song', 'songCategories');
     this.categoryDetail$ = this.store.select('category', 'categoryDetail');
-    this.isLoadingDetail$ = this.store.select('category', 'isLoading');
+    this.isLoadingDetail$ = this.store.select('category', 'isLoadingDetail');
     this.likeList$ = this.store.select('like', 'songIdLikes');
   }
 

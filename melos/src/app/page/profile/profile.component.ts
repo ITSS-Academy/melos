@@ -1,11 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthState } from '../../ngrx/auth/auth.state';
 import { HistoryState } from '../../ngrx/history/history.state';
 import * as HistoryActions from '../../../app/ngrx/history/history.actions';
-import { Observable, Subscription } from 'rxjs';
+import { filter, Observable, Subscription } from 'rxjs';
 import { AuthModel } from '../../models/auth.model';
 import { SongModel } from '../../models/song.model';
 import { DialogLoginComponent } from '../../shared/components/dialog-login/dialog-login.component';
@@ -46,24 +51,55 @@ export class ProfileComponent implements OnInit, OnDestroy {
   authData: AuthModel | null = null;
   historySongList: SongModel[] = [];
   orderAuth: any;
+  isLoggingSuccess$!: Observable<boolean>;
+  currentUrl: string = '';
 
   constructor(
     private activateRoute: ActivatedRoute,
+    private router: Router,
     private store: Store<{
       auth: AuthState;
       history: HistoryState;
     }>,
-
-    private router: Router,
   ) {
     this.auth$ = this.store.select('auth', 'authData');
     this.historySongList$ = this.store.select('history', 'historySongList');
+    this.isLoggingSuccess$ = this.store.select('auth', 'loggingSuccess');
   }
 
   ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentUrl = event.urlAfterRedirects;
+        console.log('Current URL:', this.currentUrl);
+      });
+
     this.subscription.push(
       this.activateRoute.params.subscribe((params) => {
         const id = params['id'];
+        this.isLoggingSuccess$.subscribe((isLoggingSuccess) => {
+          if (
+            isLoggingSuccess &&
+            this.authData?.uid &&
+            this.authData?.idToken &&
+            this.currentUrl.includes('/profile')
+          ) {
+            this.router
+              .navigate(['profile', this.authData?.uid])
+              .then((r) => window.location.reload());
+
+            //reload page
+            // this.store.dispatch(
+            //   HistoryActions.getHistorySongList({
+            //     idToken: this.authData.idToken,
+            //     uid: this.authData.uid,
+            //   }),
+            // );
+
+            this.store.dispatch(AuthActions.clearStateLoggingSuccess());
+          }
+        });
         if (id) {
           this.orderAuth = id.toString();
         }

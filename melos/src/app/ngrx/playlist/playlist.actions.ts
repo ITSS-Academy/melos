@@ -98,3 +98,7 @@ export const addSongToPlaylistFailure = createAction(
 export const clearStatePlaylist = createAction(
   '[Playlist] Clear State Playlist',
 );
+
+export const clearStateAddSongToPlaylistSuccess = createAction(
+  '[Playlist] Clear State Add Song To Playlist Success',
+);
